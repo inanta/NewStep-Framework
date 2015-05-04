@@ -1,0 +1,146 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: KOMA 0.1\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Inanta Martsanto <inanta@inationsoft.com>\n"
+"Language-Team: Inationsoft\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: INDONESIA\n"
+
+msgid "January"
+msgstr "Januari"
+
+msgid "February"
+msgstr "Februari"
+
+msgid "March"
+msgstr "Maret"
+
+msgid "April"
+msgstr ""
+
+msgid "May"
+msgstr "Mei"
+
+msgid "June"
+msgstr "Juni"
+
+msgid "July"
+msgstr "Juli"
+
+msgid "August"
+msgstr "Agustus"
+
+msgid "September"
+msgstr ""
+
+msgid "October"
+msgstr "Oktober"
+
+msgid "November"
+msgstr "November"
+
+msgid "December"
+msgstr "Desember"
+
+msgid "Jan"
+msgstr ""
+
+msgid "Feb"
+msgstr ""
+
+msgid "Mar"
+msgstr ""
+
+msgid "Apr"
+msgstr ""
+
+msgid "Jun"
+msgstr ""
+
+msgid "Jul"
+msgstr "Jul"
+
+msgid "Aug"
+msgstr "Ags"
+
+msgid "Sep"
+msgstr ""
+
+msgid "Oct"
+msgstr "Okt"
+
+msgid "Nov"
+msgstr ""
+
+msgid "Dec"
+msgstr "Des"
+
+msgid "Sunday"
+msgstr "Minggu"
+
+msgid "Monday"
+msgstr "Senin"
+
+msgid "Tuesday"
+msgstr "Selasa"
+
+msgid "Wednesday"
+msgstr "Rabu"
+
+msgid "Thursday"
+msgstr "Kamis"
+
+msgid "Friday"
+msgstr "Jumat"
+
+msgid "Saturday"
+msgstr "Sabtu"
+
+msgid "Sun"
+msgstr "Min"
+
+msgid "Mon"
+msgstr "Sen"
+
+msgid "Tue"
+msgstr "Sel"
+
+msgid "Wed"
+msgstr "Rab"
+
+msgid "Thu"
+msgstr "Kam"
+
+msgid "Fri"
+msgstr "Jum"
+
+msgid "Sat"
+msgstr "Sab"
+
+msgid "Su"
+msgstr "Mg"
+
+msgid "Mo"
+msgstr "Sn"
+
+msgid "Tu"
+msgstr "Sl"
+
+msgid "We"
+msgstr "Rb"
+
+msgid "Th"
+msgstr "Km"
+
+msgid "Fr"
+msgstr "Jm"
+
+msgid "Sa"
+msgstr "Sb"
+

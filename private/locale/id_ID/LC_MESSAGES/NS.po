@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: NS 0.1\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Inanta Martsanto <inanta@inationsoft.com>\n"
+"Language-Team: Inationsoft\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: INDONESIA\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+
+msgid "The page cannot be displayed due to internal error"
+msgstr "Halaman ini tidak bisa ditampilkan karena kesalahan internal"
+
+msgid "NS Error Message"
+msgstr "Pesan Kesalahan NS"
+
+msgid "PHP Fatal Error"
+msgstr "Kesalahan Fatal PHP"
+
+msgid "Exception"
+msgstr "Eksepsi Kesalahan"
+
+msgid "File"
+msgstr "Arsip"
+
+msgid "Last Output From Buffer"
+msgstr "Keluaran Terakhir"
+
+msgid "Trace"
+msgstr "Jejak"
+
+msgid "If the page does not automatically reload, please click here"
+msgstr "Jika halaman tidak berpindah secara otomatis, silahkan klik disini"
+
+msgid "Redirecting..."
+msgstr "Mengalihkan..."
+

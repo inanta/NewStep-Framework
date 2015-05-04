@@ -1,0 +1,104 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: KOMA 0.1\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Inanta Martsanto <inanta@inationsoft.com>\n"
+"Language-Team: Inationsoft\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: INDONESIA\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+
+msgid "(GMT-12:00) Eniwetok, Kwajalein"
+msgstr ""
+
+msgid "(GMT-11:00) Midway Island, Samoa"
+msgstr ""
+
+msgid "(GMT-10:00) Hawaii"
+msgstr ""
+
+msgid "(GMT-9:00) Alaska"
+msgstr ""
+
+msgid "(GMT-8:00) Pacific Time (US &amp; Canada)"
+msgstr "(GMT-8:00) Waktu Pasifik (AS &amp; Kanada)"
+
+msgid "(GMT-7:00) Mountain Time (US &amp; Canada)"
+msgstr "(GMT-7:00) Waktu Pegunungan (AS &amp; Kanada)"
+
+msgid "(GMT-6:00) Central Time (US &amp; Canada), Mexico City"
+msgstr "(GMT-6:00) Waktu Tengah (AS &amp; Kanada), Mexico City"
+
+msgid "(GMT-5:00) Eastern Time (US &amp; Canada), Bogota, Lima, Quito"
+msgstr "(GMT-5:00) Waktu Timur (AS &amp; Kanada), Bogota, Lima, Quito"
+
+msgid "(GMT-4:00) Atlantic Time (Canada), Caracas, La Paz"
+msgstr "(GMT-4:00) Waktu Atlantik (Kanada), Caracas, La Paz"
+
+msgid "(GMT-3:30) Newfoundland"
+msgstr ""
+
+msgid "(GMT-3:00) Brasilia, Buenos Aires, Georgetown"
+msgstr ""
+
+msgid "(GMT-2:00) Mid-Atlantic"
+msgstr ""
+
+msgid "(GMT-1:00) Azores, Cape Verde Islands"
+msgstr ""
+
+msgid "(GMT) Greenwich Mean Time, London, Dublin, Lisbon, Casablanca, Monrovia"
+msgstr ""
+
+msgid "(GMT+1:00) Amsterdam, Berlin, Rome, Copenhagen, Brussels, Madrid, Paris"
+msgstr "(GMT+1:00) Amsterdam, Berlin, Roma, Copenhagen, Brussels, Madrid, Paris"
+
+msgid "(GMT+2:00) Athens, Istanbul, Minsk, Helsinki, Jerusalem, South Africa"
+msgstr "(GMT+2:00) Athena, Istanbul, Minsk, Helsinki, Yerusalem, Afrika Selatan"
+
+msgid "(GMT+3:00) Baghdad, Kuwait, Riyadh, Moscow, St. Petersburg"
+msgstr "(GMT+3:00) Baghdad, Kuwait, Riyadh, Moskwa, St. Petersburg"
+
+msgid "(GMT+3:30) Tehran"
+msgstr "(GMT+3:30) Taheran"
+
+msgid "(GMT+4:00) Abu Dhabi, Muscat, Baku, Tbilisi"
+msgstr ""
+
+msgid "(GMT+4:30) Kabul"
+msgstr ""
+
+msgid "(GMT+5:00) Ekaterinburg, Islamabad, Karachi, Tashkent"
+msgstr ""
+
+msgid "(GMT+5:30) Bombay, Calcutta, Madras, New Delhi"
+msgstr "(GMT+5:30) Bombay, Kalkuta, Madras, New Delhi"
+
+msgid "(GMT+6:00) Almaty, Dhaka, Colombo"
+msgstr ""
+
+msgid "(GMT+7:00) Bangkok, Hanoi, Jakarta"
+msgstr ""
+
+msgid "(GMT+8:00) Beijing, Perth, Singapore, Hong Kong, Urumqi, Taipei"
+msgstr "(GMT+8:00) Beijing, Perth, Singapura, Hong Kong, Urumqi, Taipei"
+
+msgid "(GMT+9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk"
+msgstr ""
+
+msgid "(GMT+9:30) Adelaide, Darwin"
+msgstr ""
+
+msgid "(GMT+10:00) Brisbane, Canberra, Melbourne, Sydney, Guam,Vlasdiostok"
+msgstr ""
+
+msgid "(GMT+11:00) Magadan, Solomon Islands, New Caledonia"
+msgstr "(GMT+11:00) Magadan, Pulau Solomon, New Caledonia"
+
+msgid "(GMT+12:00) Auckland, Wellington, Fiji, Kamchatka, Marshall Island"
+msgstr ""
+

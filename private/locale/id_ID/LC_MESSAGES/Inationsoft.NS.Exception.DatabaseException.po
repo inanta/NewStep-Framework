@@ -1,0 +1,38 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: NS 0.1\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Inanta Martsanto <inanta@inationsoft.com>\n"
+"Language-Team: Inationsoft\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Indonesian\n"
+"X-Poedit-Country: INDONESIA\n"
+"X-Poedit-SourceCharset: iso-8859-1\n"
+
+msgid "Unable to connect to server host [%s]"
+msgstr "Tidak bisa tersambung ke alamat [%s]"
+
+msgid "Access denied for user [%s] to database [%s]"
+msgstr "Akses ditolak untuk pengguna [%s] ke basis data [%s]"
+
+msgid "Unable to select or open database [%s]"
+msgstr "Tidak bisa memilih atau membuka basis data [%s]"
+
+msgid "Unable to execute query [%s] please check if the query is correct"
+msgstr "Tidak bisa mengeksekusi query [%s] silahkan cek apakah query sudah benar"
+
+msgid "Unable to execute query [%s] please check table name in the query"
+msgstr "Tidak bisa mengeksekusi query [%s] silahkan cek nama tabel di query"
+
+msgid "Unable to execute query [%s] please check column name in the query"
+msgstr "Tidak bisa mengeksekusi query [%s] silahkan cek nama kolom di query"
+
+msgid "Connection name [%s] is not defined"
+msgstr "Nama koneks [%s] tidak didefinisikan"
+
+msgid "Unknown database error [%s] with code [%s] when executing query [%s]"
+msgstr "Kesalahan basis data yang tidak diketahui [%s] dengan code [%s] ketika mengeksekusi query [%s]"
+
