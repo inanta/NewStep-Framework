@@ -78,7 +78,7 @@ class NS {
 
 			$this->triggerEvent($Event['beforeApplicationOutput']);
 
-			if($cf->Application->HttpCompression && stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false && function_exists('gzencode')) {
+			if(isset($_SERVER['HTTP_ACCEPT_ENCODING']) && $cf->Application->HttpCompression && stripos($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') !== false && function_exists('gzencode')) {
 				header('Content-Encoding: gzip');
 				echo gzencode($router->App->Content);
 			} else {

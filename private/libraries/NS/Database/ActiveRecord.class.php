@@ -693,6 +693,8 @@ class ActiveRecord {
 		$this->_columns = array_merge($this->_columns, $ar_columns);
 		$this->_lastQueriedColumns = array_merge($this->_lastQueriedColumns, $ar_key_columns);
 
+		$column = '';
+
 		foreach($ar_key_columns as $ar_key_column) {
 			$column .= ', ' . $relation['ar']->quote($ar_key_column);
 
