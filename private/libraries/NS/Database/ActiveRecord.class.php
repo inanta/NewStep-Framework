@@ -129,7 +129,7 @@ class ActiveRecord {
 			$this->_constructJoin($this, $with_relation, false, $constructed);
 		}
 
-		if(count($constructed['join']) > 0) {
+		if(isset($constructed['join']) && count($constructed['join']) > 0) {
 			$this->LastQuery = 'SELECT COUNT(' . $this->quote(key($this->_columns)) . ') FROM ' . $this->Table . ' ' . implode(' ', $constructed['join']);
 		} else {
 			$this->LastQuery = 'SELECT COUNT(' . $this->quote(key($this->_columns)) . ') FROM ' . $this->Table;
