@@ -129,13 +129,10 @@ class Number extends Object {
 	*
 	*/
 	static function toWords($value) {
+		self::loadLocale();
+
 		// Based on: http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/
 
-		$hyphen      = '-';
-		$conjunction = ' and ';
-		$separator   = ', ';
-		$negative    = 'negative ';
-		$decimal     = ' comma ';
 		$dictionary  = self::$_locale['NumberDictionary'];
     
 		if (!is_numeric($value)) {
@@ -148,7 +145,7 @@ class Number extends Object {
 		}
     
 		if ($value < 0) {
-			return $negative . self::toWords(abs($value));
+			return $dictionary['negative'] . self::toWords(abs($value));
 		}
     
 		$string = $fraction = null;
@@ -166,7 +163,7 @@ class Number extends Object {
 				$units  = $value % 10;
 				$string = $dictionary[$tens];
 				if ($units) {
-				    $string .= $hyphen . $dictionary[$units];
+				    $string .= $dictionary['hypen'] . $dictionary[$units];
 				}
 				break;
 			case $value < 1000:
@@ -174,7 +171,7 @@ class Number extends Object {
 				$remainder = $value % 100;
 				$string = $dictionary[$hundreds] . ' ' . $dictionary[100];
 				if ($remainder) {
-				    $string .= $conjunction . self::toWords($remainder);
+				    $string .= $dictionary['conjunction'] . self::toWords($remainder);
 				}
 				break;
 			default:
@@ -183,14 +180,14 @@ class Number extends Object {
 				$remainder = $value % $baseUnit;
 				$string = self::toWords($numBaseUnits) . ' ' . $dictionary[$baseUnit];
 				if ($remainder) {
-				    $string .= $remainder < 100 ? $conjunction : $separator;
+				    $string .= $remainder < 100 ? $dictionary['conjunction'] : $dictionary['separator'];
 				    $string .= self::toWords($remainder);
 				}
 				break;
 		}
     
 		if (null !== $fraction && is_numeric($fraction)) {
-			$string .= $decimal;
+			$string .= $dictionary['decimal'];
 			$words = array();
 			foreach (str_split((string) $fraction) as $value) {
 			    $words[] = $dictionary[$value];

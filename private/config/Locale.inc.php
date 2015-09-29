@@ -43,7 +43,13 @@ $Locale = array(
 		1000000000          => 'milyar',
 		1000000000000       => 'billion',
 		1000000000000000    => 'quadrilion',
-		1000000000000000000 => 'quintilion'
+		1000000000000000000 => 'quintilion',
+
+		'hypen'		    => '-',
+		'conjunction'	    => ' and ',
+		'separator'	    => ', ',
+		'negative'	    => 'negative ',
+		'decimal'	    => ' comma '
 	)
 );
 ?>
