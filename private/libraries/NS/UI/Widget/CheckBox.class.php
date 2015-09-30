@@ -29,8 +29,8 @@ use NS\UI\UI;
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
 class CheckBox extends UI {
-	function __construct($name, $value = '', $checked = false, $text = '', $args = array()) {
-		if($checked) $this->_attr['checked'] = 'checked';
+	function __construct($name, $value = '', $is_checked = false, $label = '', $args = array()) {
+		if($is_checked) $this->_attr['checked'] = 'checked';
 
 		$this->_attr['class'] = 'NS-Checkbox';
 
@@ -45,10 +45,11 @@ class CheckBox extends UI {
 		$this->_attr['type'] = 'checkbox';
 		$this->_attr['value'] = $value;
 
-		if(!empty($text)) {
-			$this->_attr['label'] = $text;
+		if(!empty($label)) {
+			$this->_attr['label'] = $label;
 		}
-		parent::__construct($this->constructUI('input'), false, $text);;
+
+		parent::__construct($this->constructUI('input'), false, $label);;
 	}
 
 	protected function constructUI($tag = null, $close_tag = false, $content = '') {
