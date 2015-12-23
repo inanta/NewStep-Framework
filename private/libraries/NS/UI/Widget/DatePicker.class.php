@@ -51,7 +51,8 @@ class DatePicker extends UI {
 		if(!isset($options['dateFormat'])) $options['dateFormat'] = 'dd/mm/yy';
 
 		$count = $this->getUICount(__CLASS__);
-		$args['class'] = 'NS-Datepicker NS-DatePicker-' . $count;
+		$args['class'] = (isset($args['class']) ? $args['class'] . ' ' : '') . 'NS-Datepicker NS-DatePicker-' . $count;
+
 		parent::__construct(new Text($id, $value, $placeholder, $validators, $args));
 		$scm->addScript('jQuery(function(){ jQuery(".NS-DatePicker-' . $count . '").datepicker(' . json_encode($options) . '); });');
 	}

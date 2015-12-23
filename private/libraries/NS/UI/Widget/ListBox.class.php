@@ -44,11 +44,13 @@ class ListBox extends UI {
 
 		$this->createProperties(array('Selected' => ($selected == null) ? null : $selected));
 
-		if($value != null) $this->addItem($value);
-		parent::__construct($this->constructUI('select', true, implode('', $this->Options)));
+		if($value != null) {
+			$this->addItem($value);
+		} else {
+		    parent::__construct($this->constructUI('select', true, implode('', $this->Options)));
+		}
 
 		if($validators != null) ValidatorManager::getInstance()->initializeValidator($name, $validators);
-		
 	}
 
 	function addItem($item, $name = '') {
