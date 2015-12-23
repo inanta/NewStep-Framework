@@ -129,6 +129,8 @@ class Number extends Object {
 	*
 	*/
 	static function toWords($value) {
+		if(!is_numeric($value)) return '';
+
 		self::loadLocale();
 
 		// Based on: http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/
