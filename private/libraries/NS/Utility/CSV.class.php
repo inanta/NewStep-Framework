@@ -23,6 +23,7 @@ namespace NS\Utility;
 
 use NS\Iterable;
 use NS\Exception\IOException;
+use NS\IO\FileWriter;
 
 /**
  *CSV (Comma-separated values) file processing
@@ -61,19 +62,7 @@ class CSV extends Iterable {
 	}
 	
 	function download($filename = 'CSV.csv') {
-		$csv = 'sep=;';
-		$csv .= "\r\n";
-
-		foreach($this->_columns as $column => $index) {
-			$csv .= $column . ';';
-		}
-
-		$csv .= "\r\n";
-
-		foreach($this->_collection as $collection) {
-			$csv .= implode(';', $collection);
-			$csv .= "\r\n";
-		}
+		$csv = $this->_getContent();
 
 		header('Content-Description: File Transfer');
 		header('Content-Type: text/csv');
@@ -142,20 +131,42 @@ class CSV extends Iterable {
 		parent::__construct();
 	}
 
-	function _addSingleData($columns) {
+	function saveFile($filename) {
+		$fw = new FileWriter($filename);
+		$fw->write($this->_getContent());
+	}
+
+	private function _addSingleData($columns) {
 		if(count($columns) != count($this->_columns)) return;
 
 		$data = array();
 		
 		foreach($this->_columns as $column => $index) {
-			// $this->_collection[][$column] = $columns[$index];
 			$data[$column] = $columns[$index];
 		    
 		}
 
 		$this->_collection[] = $data;
 	}
+
+	private function _getContent() {
+		$csv = 'sep=;';
+		$csv .= "\r\n";
+
+		foreach($this->_columns as $column => $index) {
+			$csv .= $column . ';';
+		}
+
+		$csv .= "\r\n";
+
+		foreach($this->_collection as $collection) {
+			$csv .= implode(';', $collection);
+			$csv .= "\r\n";
+		}
 		
+		return $csv;
+	}
+
 	function __get($k) {
 		if(isset($this->_columns[$k])) {
 			return ($this->_collection[$this->_iterator][$k]);
