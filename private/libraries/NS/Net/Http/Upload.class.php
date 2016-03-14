@@ -54,7 +54,7 @@ class Upload extends Object {
 			'Type' => ''
 		));
 
-		if(@is_array($_FILES[$name]['name'])) $this->_fileNumber = count($_FILES[$name]['name']);
+		if(@is_array($_FILES[$name]['name'])) $this->_fileNumber = (count($_FILES[$name]['name']) - 1);
 
 		$this->next();
 	}
