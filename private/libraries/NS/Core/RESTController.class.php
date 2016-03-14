@@ -30,6 +30,9 @@ use NS\UI\ScriptManager;
 use NS\UI\StyleManager;
 use NS\Utility\XML;
 
+define('NS_JS_RENDERED', true);
+define('NS_CSS_RENDERED', true);
+
 /**
  *Controller base class for REST
  *

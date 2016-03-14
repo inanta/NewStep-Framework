@@ -77,7 +77,7 @@ class Router extends SingletonObject {
 		if(!class_exists($class)) throw new PageNotFoundException();
 
 		$this->App = new $class;
-		//if(!$this->App instanceof Controller) throw new PageNotFoundException();
+		if(!$this->App instanceof Controller && !$this->App instanceof RESTController) throw new PageNotFoundException();
 
 		$this->App->Path = NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder;
 
