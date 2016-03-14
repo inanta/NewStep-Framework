@@ -32,11 +32,11 @@ interface IDatabaseDriver {
 	function close();
 	function connect();
 	function escape($query);
-	function fetchArray(&$result);
-	function fetchAssoc(&$result);
-	function fetchRow(&$result);
+	function fetchArray($result);
+	function fetchAssoc($result);
+	function fetchRow($result);
 	function lastInsertID();
-	function numRows(&$result);
+	function numRows($result);
 	function query($query);
 }
 ?>

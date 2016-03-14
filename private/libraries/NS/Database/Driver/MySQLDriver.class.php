@@ -104,7 +104,7 @@ class MySQLDriver extends Database implements IDatabaseDriver {
 	*Fetch query result as array
 	*
 	*/
-	function fetchArray(&$result) {
+	function fetchArray($result) {
 		return @mysql_fetch_array($result);
 	}
 
@@ -112,7 +112,7 @@ class MySQLDriver extends Database implements IDatabaseDriver {
 	*Fetch query result as associative array
 	*
 	*/
-	function fetchAssoc(&$result) {
+	function fetchAssoc($result) {
 		return @mysql_fetch_assoc($result);
 	}
 
@@ -120,7 +120,7 @@ class MySQLDriver extends Database implements IDatabaseDriver {
 	*Fetch query result as array with numerical key
 	*
 	*/
-	function fetchRow(&$result) {
+	function fetchRow($result) {
 		return @mysql_fetch_row($result);
 	}
 
@@ -128,7 +128,7 @@ class MySQLDriver extends Database implements IDatabaseDriver {
 	*Get columns name that selected in last query
 	*
 	*/
-	function fieldName(&$result, $offset) {
+	function fieldName($result, $offset) {
 		return @mysql_field_name($result, $offset);
 	}
 
@@ -159,7 +159,7 @@ class MySQLDriver extends Database implements IDatabaseDriver {
 	*Get number of columns name that selected in last query
 	*
 	*/
-	function numFields(&$result) {
+	function numFields($result) {
 		return @mysql_num_fields($result);
 	}
 
@@ -167,7 +167,7 @@ class MySQLDriver extends Database implements IDatabaseDriver {
 	*Get number of result after query
 	*
 	*/
-	function numRows(&$result) {
+	function numRows($result) {
 		return @mysql_num_rows($result);
 	}
 

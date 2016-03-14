@@ -57,6 +57,11 @@ class ActiveRecord {
 	 */
 	public $LastQuery;
 
+	/**
+	 *@var DatabaseFunction Database function
+	 */
+	public $Function;
+
 	protected $_isUsedInRelation = null;
 	private $_multiRowResult = null, $_columns, $_originalColumns, $_lastQueriedColumns,
 		$_numRows = 0, $_rowIterator, $_isDataInitialized = false, $_hasRelation = false, $_dataShadow,
@@ -74,6 +79,7 @@ class ActiveRecord {
 	function __construct($table, $pk = null, $connection_data = '') {
 		$this->Table = $table;
 		$this->PrimaryKey = $pk;
+		$this->Function = new DatabaseFunction($this);
 
 		$this->Database = Database::getInstance($connection_data);
 		$this->initializeColumns();
@@ -769,9 +775,14 @@ class ActiveRecord {
 		$this->_lastQueriedColumns = array();
 
 		foreach($column as $k => $v) {
-			if(!array_key_exists($v, $this->_columns)) throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $v, 'table' => $this->Table));
+			if(!(is_object($v) && $v instanceof DatabaseFunction) && !array_key_exists($v, $this->_columns)) throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $v, 'table' => $this->Table));
 
-			$column[$k] = $this->quote($v);
+			if(is_object($v)) {
+				$v .= '';
+				$column[$k] = $v;
+			} else {
+				$column[$k] = $this->quote($v);
+			}
 
 			if(isset($this->_column_aliases[$v])) {
 				$column[$k] .= ' AS ' . $this->quote($this->_column_aliases[$v], false);
