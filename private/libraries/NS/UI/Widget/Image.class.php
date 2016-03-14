@@ -29,7 +29,7 @@ use NS\UI\UI;
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
 class Image extends UI {	
-	function __construct($name = null, $uri, $args = array()) {
+	function __construct($name = null, $uri = null, $args = array()) {
 		$this->_attr['class'] = 'NS-Image';
 
 		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
@@ -38,6 +38,8 @@ class Image extends UI {
 		if($name != null) {
 			$this->_attr['id'] = $name;
 			$this->_attr['name'] = $name;
+			
+			if(!isset($this->_attr['alt'])) $this->_attr['alt'] = $name;
 		}
 
 		$this->_attr['src'] = $uri;
