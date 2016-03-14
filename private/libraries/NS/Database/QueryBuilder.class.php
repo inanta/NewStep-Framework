@@ -20,6 +20,8 @@
 */
 namespace NS\Database;
 
+use NS\Object;
+
 /**
  *Handle SQL command creation with object style
  *
@@ -28,13 +30,18 @@ namespace NS\Database;
 class QueryBuilder extends Object {
 	private $_fields, $_tables, $_conditions;
 
+	/**
+	 *@var string Last generated command   
+	 */
+	public $LastQuery;
+
 	function select($fields = '*') {
 		$this->_fields = !is_array($fields) ? array($fields) : $fields;
 		return $this;
 	}
 
 	function from($tables) {
-		$this->_tables = $tables;
+		$this->_tables = !is_array($tables) ? array($tables) : $tables;
 		return $this;
 	}
 
@@ -45,10 +52,28 @@ class QueryBuilder extends Object {
 
 	function execute() {
 		$db = DatabaseFactory::getInstance();
+		$this->_compile();
 
-		$sql = "SELECT " . implode(", ", $this->_fields) . " FROM " . implode(", ", $this->_tables);
-		if(count($this->_conditions)) foreach($this->_conditions as $condition) { $s;}
-		$db->query("SELECT " . implode(", ", $this->_fields) . " FROM " . implode(", ", $this->_tables));
+		$db->query($this->LastQuery);
+	}
+	
+	function getSQL() {
+		$this->_compile();
+		return $this->LastQuery;
+	}
+
+	private function _compile() {
+		$this->LastQuery = "SELECT " . implode(", ", $this->_fields) . " FROM " . implode(", ", $this->_tables);
+
+		if(count($this->_conditions)) {
+			$where = array();
+
+			foreach($this->_conditions as $column => $value) { 
+				$where[] = $column . " = " . $value; 
+			}
+
+			$this->LastQuery .= " WHERE " . implode(' AND ', $where);
+		}
 	}
 }
 ?>
