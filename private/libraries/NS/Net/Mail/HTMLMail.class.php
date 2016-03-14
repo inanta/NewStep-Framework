@@ -39,7 +39,7 @@ class HTMLMail extends Mail {
 			($this->BCC != '' ? 'Bcc: ' . $this->BCC . "\r\n" : '') .
 			'X-Mailer: NewStepFramework/' . NS_VERSION . ' - ' . 'PHP/' . phpversion();
 
-		mail($this->To, $this->Subject, $this->Message, $header);
+		return mail($this->To, $this->Subject, $this->Message, $header);
 	}
 }
 ?>
