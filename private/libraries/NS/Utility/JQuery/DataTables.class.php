@@ -122,7 +122,7 @@ class DataTables extends Object {
 	 * @param array $additional_condition Additional database query condition
 	 * @return array Database records result
 	 */
-	function getResult($additional_condition = array(), $with_relation = false) {
+	function getResult($additional_condition = array(), $method = 'getAll', $with_relation = false) {
 		$result = array();
 
 		$criteria = $this->_ar->createFilterCriteria();
@@ -167,7 +167,14 @@ class DataTables extends Object {
 		$result['recordsFiltered'] = $this->_ar->count($additional_condition);
 		if($this->Debug) $result['rf_query'] = $this->_ar->LastQuery;
 
-		$result['data'] = $this->_ar->getAll(null, $additional_condition, $orders, $this->_start, $this->_length);
+		$items = $this->_ar->{$method}(null, $additional_condition, $orders, $this->_start, $this->_length);
+		$data = array();
+
+		foreach($items as $item) {
+			$data[] = $item;
+		}
+		
+		$result['data'] = $data;
 		if($this->Debug) $result['data_query'] = $this->_ar->LastQuery;
 
 		return $result;

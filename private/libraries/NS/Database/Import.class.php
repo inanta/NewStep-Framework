@@ -36,15 +36,20 @@ class Import extends SingletonObject {
 	}
 
 	function import($file) {
-		
+		$executed = 0;
+
 		$this->File = $file;
 		$this->_process();
-		
+
 		$db = Database::getInstance($this->_conn);
-		
+
 		foreach($this->_quries as $query) {
-			$db->query($query);
+			if($db->query($query)) {
+				++$executed;
+			}
 		}
+
+		return $executed;
 	}
 	
 	private function _getFileContents() {

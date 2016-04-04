@@ -56,6 +56,7 @@ class NS {
 			$cf->bind($System);
 			$cf->load('Application');
 
+			error_reporting(E_ALL);
 			ini_set('display_errors', $cf->Application->DebugMode);
 			date_default_timezone_set($cf->Application->Timezone);
 			if($cf->Application->SendInfoHeader) header('X-Powered-By: NewStep Framework - PHP/' . PHP_VERSION);
