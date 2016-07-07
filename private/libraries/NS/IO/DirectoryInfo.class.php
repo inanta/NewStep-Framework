@@ -21,6 +21,8 @@
 
 namespace NS\IO;
 
+use NS\Object;
+
 class DirectoryInfo extends Object {
 	private $_entries = array();
 
@@ -63,7 +65,7 @@ class DirectoryInfo extends Object {
 		return $dirinfo;
 	}
 	
-	function getDirectoriesArray($showhidden = false) {
+	function getDirectoriesAsArray($showhidden = false) {
 		$dirinfo = array();
 	
 		foreach($this->_entries as $entry) {

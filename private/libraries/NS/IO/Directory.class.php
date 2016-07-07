@@ -33,9 +33,9 @@ use NS\Exception\IOException;
  */
 class Directory extends Iterable {
 	function __construct($path) {
-		self::check($path);
+		self::validate($path);
 
-		$this->createProperties(array('Path' => (substr($path, -1, 1) == '/' ? $path : $path . '/'), $path, 'FileName' => null, 'IsDirectory' => null));
+		$this->createProperties(array('Path' => (substr($path, -1, 1) == '/' ? $path : $path . '/'), $path, 'FileName' => null, 'IsDirectory' => null, 'IsHidden' => null));
 
 		$dh = opendir($path);
 		while(($file = readdir($dh)) !== false) {
@@ -52,9 +52,46 @@ class Directory extends Iterable {
 		if($this->hasNext()) {
 			$this->FileName = $this->_collection[$this->_iterator];
 			$this->IsDirectory = is_dir($this->Path . $this->_collection[$this->_iterator]);
+			$this->IsHidden = (substr($this->FileName, 0, 1) == '.' ? true : false);
 		}
 	}
 
+	// Based on http://www.aidanlister.com/2004/04/recursively-copying-directories-in-php/
+	static function copy($source, $dest, $permissions = 0755) {
+		// Check for symlinks
+		if(is_link($source)) {
+			return symlink(readlink($source), $dest);
+		}
+
+		// Simple copy for a file
+		if(is_file($source)) {
+			return copy($source, $dest);
+		}
+
+		// Make destination directory
+		if (!is_dir($dest)) {
+			mkdir($dest, $permissions);
+		}
+
+		// Loop through the folder
+		$dir = dir($source);
+
+		while (false !== $entry = $dir->read()) {
+		    // Skip pointers
+		    if ($entry == '.' || $entry == '..') {
+			    continue;
+		    }
+
+		    // Deep copy directories
+		    self::copy($source . '/' . $entry, $dest . '/' . $entry, $permissions);
+		}
+	    
+		// Clean up
+		$dir->close();
+
+		return true;
+	}
+	
 	static function create($path, $recursive = true, $permission = 0777) {
 		if($recursive) {
 			$folders = explode('/', $path);
@@ -77,7 +114,7 @@ class Directory extends Iterable {
 	}
 
 	static function delete($path, $recursive = false) {
-		self::check($path);
+		self::validate($path);
 
 		if(!$recursive) {
 			if(!self::isEmpty()) throw new IOException(array('code' => IOException::DIRECTORY_NOT_EMPTY, 'directory' => $path));
@@ -87,7 +124,7 @@ class Directory extends Iterable {
 	}
 
 	static function isEmpty($path) {
-		self::check($path);
+		self::validate($path);
 
 		$file = true;
 		$dh = opendir($path);
@@ -101,7 +138,7 @@ class Directory extends Iterable {
 		return (!$file ? true : false);
 	}
 
-	static function check($path) {
+	static function validate($path) {
 		if(!is_dir($path)) throw new IOException(array('code' => IOException::DIRECTORY_NOT_FOUND, 'directory' => $path));
 		if(!is_readable($path)) throw new IOException(array('code' => IOException::DIRECTORY_NOT_WRITEABLE, 'directory' => $path));
 	}
