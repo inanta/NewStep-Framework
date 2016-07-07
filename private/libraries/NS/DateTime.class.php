@@ -134,12 +134,12 @@ class DateTime extends Object {
 					if($i != 0) $this->Year += 1;
 				case 3: case 5: case 7:
 				case 8: case 10: case 0:
-					$timestamp += 2678400; break;
+					$timestamp += (31 * self::ONE_DAY); break;
 				case 4: case 6: case 9: case 11:
-					$timestamp += 2592000; break;
+					$timestamp += (30 * self::ONE_DAY); break;
 				case 2:
-					if(self::isLeapYear($this->Year)) $timestamp += 2505600;
-					else $timestamp += 2419200;
+					if(self::isLeapYear($this->Year)) $timestamp += (29 * self::ONE_DAY);
+					else $timestamp += (28 * self::ONE_DAY);
 			}
 		}
 
@@ -210,12 +210,12 @@ class DateTime extends Object {
 					if($i != 0) $this->Year -= 1;
 				case 3: case 5: case 7:
 				case 8: case 10: case 0:
-					$timestamp -= 2678400; break;
+					$timestamp -= (31 * self::ONE_DAY); break;
 				case 4: case 6: case 9: case 11:
-					$timestamp -= 2592000; break;
+					$timestamp -= (30 * self::ONE_DAY); break;
 				case 2:
-					if(self::isLeapYear($this->Year)) $timestamp -= 2505600;
-					else $timestamp -= 2419200;
+					if(self::isLeapYear($this->Year)) $timestamp -= (29 * self::ONE_DAY);
+					else $timestamp -= (28 * self::ONE_DAY);
 			}
 		}
 
