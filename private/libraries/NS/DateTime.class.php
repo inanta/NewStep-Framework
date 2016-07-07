@@ -267,10 +267,30 @@ class DateTime extends Object {
 	 * @return DateTime
 	 */
 	static function fromString($date) {
-		$part = explode('/', $date);
-		if(count($part) < 3) $part = explode('/', date('d/m/Y'));
+		$date_time = explode(' ', $date);
 
-		return new DateTime($part[0], $part[1], $part[2]);
+		$date = explode('/', $date_time[0]);
+		$time = array();
+
+		if(isset($date_time[1])) {
+			$time = explode(':', $date_time[1]);
+		}
+
+		if(count($date) < 3) $date = explode('/', date('d/m/Y'));
+
+		switch(count($time)) {
+			case 0:
+				$time = explode(':', date('H:i:s'));
+				break;
+			case 1:
+				$time = array_merge($time, explode(':', date('i:s')));
+				break;
+			case 2:
+				$time = array_merge($time, array(date('s')));
+				break;
+		}
+
+		return new DateTime($date[0], $date[1], $date[2], $time[0], $time[1], $time[2]);
 	}
 
 	/**
