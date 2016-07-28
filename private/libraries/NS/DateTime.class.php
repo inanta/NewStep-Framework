@@ -261,6 +261,10 @@ class DateTime extends Object {
 		$this->IsLeapYear = self::isLeapYear($this->Year);
 	}
 
+	static function assignLocale($locale) {
+		self::$_locale = $locale;
+	}
+
 	/**
 	 * 
 	 * @param string $date Date string in dd/mm/yyyy format
@@ -303,6 +307,11 @@ class DateTime extends Object {
 		$dt->Timestamp = $timestamp;
 
 		return $dt; 
+	}
+
+	static function getMonthNames() {
+		self::loadLocale();
+		return self::$_locale['MonthNames'];
 	}
 
 	/**
