@@ -78,7 +78,7 @@ class DateTime extends Object {
 			case 'MonthStartTime':
 				return mktime(0, 0, 0, $this->Month, 1, $this->Year);
 			case 'MonthEndTime':
-				return (in_array($this->Month, array(1, 3, 5, 7, 8, 10)) ? mktime(23, 59, 59, $this->Month, 31, $this->Year) : (in_array($this->Month, array(4, 6, 9, 11) ? mktime(23, 59, 59, $this->Month, 30, $this->Year) : (self::isLeapYear($this->Year) ? mktime(23, 59, 59, $this->Month, 29, $this->Year) : mktime(23, 59, 59, $this->Month, 28, $this->Year)))));
+				return (in_array($this->Month, array(1, 3, 5, 7, 8, 10)) ? mktime(23, 59, 59, $this->Month, 31, $this->Year) : (in_array($this->Month, array(4, 6, 9, 11)) ? mktime(23, 59, 59, $this->Month, 30, $this->Year) : (self::isLeapYear($this->Year) ? mktime(23, 59, 59, $this->Month, 29, $this->Year) : mktime(23, 59, 59, $this->Month, 28, $this->Year)))) ;
 			case 'YearStartTime':
 				return mktime(0, 0, 0, 1, 1, $this->Year);
 			case 'YearEndTime':
