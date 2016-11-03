@@ -211,7 +211,7 @@ class ActiveRecord {
 						}
 					}
 				}
-				
+
 				$this->next();
 			}
 
@@ -306,6 +306,23 @@ class ActiveRecord {
 		}
 
 		return $columns;
+	}
+
+	/**
+	 *Get all tables name for current active record (relation tables included)
+	 *
+	 *@return array
+	 */
+	function getAllTables() {
+		$tables[] = $this->Table;
+
+		if(count($this->_hasOne) > 0) {
+			foreach($this->_hasOne as $relation) {
+				$tables[] = $relation['ar']->Table;
+			}
+		}
+
+		return $tables;
 	}
 
 	/**
@@ -722,7 +739,23 @@ class ActiveRecord {
 
 					if($condition[$k] === '') unset ($condition[$k]);
 				} else {
-					$condition[$k] = $this->quote($k) . " = '" . $this->Database->escape($v) . "'";
+					$is_found = false;
+
+					if($this->hasColumn($k)) {
+						$condition[$k] = $this->quote($k) . " = '" . $this->Database->escape($v) . "'";
+						$is_found = true;
+					} else {
+						foreach($this->_hasOne as $relation) {
+							if($relation['ar']->hasColumn($k)) {
+								$condition[$k] = $relation['ar']->quote($k) . " = '" . $relation['ar']->Database->escape($v) . "'";
+								$is_found = true;
+
+								break;
+							}
+						}
+					}
+
+					if(!$is_found) throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $k, 'table' => implode(', ', $this->getAllTables())));
 				}
 			}
 
