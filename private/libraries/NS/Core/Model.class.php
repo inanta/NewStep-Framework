@@ -119,8 +119,7 @@ abstract class Model extends ActiveRecord {
 			if(self::$_modelsInstance[$model]['0']->_isUsedInRelation == null) {
 				return self::$_modelsInstance[$model]['0'];
 			} else {
-				self::$_modelsInstance[$model][self::$_modelsInstance[$model]['0']->_isUsedInRelation] = self::$_modelsInstance[$model]['0'];
-				self::$_modelsInstance[$model]['0']->_isUsedInRelation = null;
+				self::$_modelsInstance[$model][self::$_modelsInstance[$model]['0']->_isUsedInRelation] = clone self::$_modelsInstance[$model]['0'];
 			}
 		}
 

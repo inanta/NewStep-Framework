@@ -41,6 +41,8 @@ class DatabaseSessionHandler extends SingletonObject {
 			array(&$this, 'gc')
 		);
 
+		if(!isset($_SERVER['HTTP_USER_AGENT'])) $_SERVER['HTTP_USER_AGENT'] = 'NS';
+
 		$this->_db = Database::getInstance(Config::getInstance()->Application->SessionBasedDatabaseConenction);
 		register_shutdown_function('session_write_close');
 	}

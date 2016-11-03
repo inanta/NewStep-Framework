@@ -165,10 +165,14 @@ class Exception extends \Exception {
 			'trace' => $error['Trace']
 		);
 
+		if(!NS_DEBUG_MODE) {
+			unset($error['exception'], $error['file'], $error['line'], $error['last_output'], $error['trace']);
+		}
+
 		header('Content-type: application/json');
 		echo @json_encode($error);
 	}
-	
+
 	private function _showMessageXML($error) {
 		$error = array(
 			'Code' => $error['ErrorCode'],
@@ -179,6 +183,10 @@ class Exception extends \Exception {
 			'LastOutput' => $error['LastOutput'],
 			'Trace' => $error['Trace']
 		);
+
+		if(!NS_DEBUG_MODE) {
+			unset($error['Exception'], $error['File'], $error['Line'], $error['Last_output'], $error['Trace']);
+		}
 
 		header('Content-type: application/xml');
 		echo XML::fromArray($error, 'Error');
