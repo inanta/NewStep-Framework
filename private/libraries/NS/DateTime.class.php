@@ -45,6 +45,7 @@ class DateTime extends Object {
 	const ONE_LEAP_YEAR = 31622400;
 
 	private $_timestamp;
+	private static $_locale = null;
 
 	/**
 	 * 
@@ -309,6 +310,10 @@ class DateTime extends Object {
 		return $dt; 
 	}
 
+	public static function assignLocale($locale) {
+		self::$_locale = $locale;
+	}
+
 	static function getMonthNames() {
 		self::loadLocale();
 		return self::$_locale['MonthNames'];
@@ -321,6 +326,13 @@ class DateTime extends Object {
 	 */
 	static function isLeapYear($year) {
 		return ($year % 400 == 0 ? true : ($year % 100 == 0 ? true : ($year % 4 == 0 ? true : false)));	
+	}
+
+	private static function loadLocale() {
+		if(self::$_locale == null) {
+			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
+			self::$_locale = $Locale;
+		}
 	}
 }
 ?>
