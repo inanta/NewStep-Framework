@@ -21,6 +21,8 @@
 
 namespace NS;
 
+use NS\Core\Config;
+
 /**
  *Handle date and time manipulation
  *
@@ -308,10 +310,6 @@ class DateTime extends Object {
 		$dt->Timestamp = $timestamp;
 
 		return $dt; 
-	}
-
-	public static function assignLocale($locale) {
-		self::$_locale = $locale;
 	}
 
 	static function getMonthNames() {
