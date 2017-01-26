@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2008 - 2014 Inanta Martsanto
+	Copyright (C) 2008 - 2016 Inanta Martsanto
 	Inanta Martsanto (inanta@inationsoft.com)
 
 	This file is part of NewStep Framework.
@@ -50,10 +50,52 @@ class Autocomplete extends UI {
 		$count = $this->getUICount(__CLASS__);
 		$args['class'] = (isset($args['class']) ? $args['class'] . ' ' : '') . 'NS-Autocomplete NS-Autocomplete-' . $count;
 
-		$options['source'] = (is_array($source) ? json_encode($source) : $source);
+		if(is_array($source)) {
+			$organized_source = array();
 
-		parent::__construct(new Text($id, $value, $placeholder, $validators, $args));
-		$scm->addScript('jQuery(function(){ jQuery(".NS-Autocomplete-' . $count . '").autocomplete(' . json_encode($options) . '); });');
+			foreach($source as $source_value => $label) {
+				$organized_source[] = array('value' => $source_value, 'label' => $label);
+			}
+			
+			$options['source'] = $organized_source;
+			$options['minLength'] = 0;
+		} else {
+			$options['source'] = $source;
+		}
+
+		if(is_array($value) && isset($value['label']) && isset($value['value'])) {
+			$value_label = $value['label'];
+			$value_value = $value['value'];
+
+			parent::__construct(new Text($id . '_label', $value_label, $placeholder, $validators, $args) . new Hidden($id, $value_value));
+
+			$scm->addScript('
+				jQuery(function(){
+					jQuery(".NS-Autocomplete-' . $count . '").autocomplete(' . json_encode($options) . ');
+
+					jQuery(".NS-Autocomplete-' . $count . '").autocomplete("option", "select", function(event, ui) {
+						jQuery(".NS-Autocomplete-' . $count . '").val(ui.item.label);
+						jQuery("#' . $id . '").val(ui.item.value);
+						return false;
+					});
+	
+					jQuery(".NS-Autocomplete-' . $count . '").autocomplete("option", "focus", function(event, ui) {
+						jQuery(".NS-Autocomplete-' . $count . '").val(ui.item.label);
+						return false;
+					});
+				});'
+			);
+		} else {
+			parent::__construct(new Text($id, $value, $placeholder, $validators, $args));
+
+			$scm->addScript('
+				jQuery(function(){
+					jQuery(".NS-Autocomplete-' . $count . '").autocomplete(' . json_encode($options) . ');
+				});'
+			);
+		}
+
+		
 	}
 }
 ?>
