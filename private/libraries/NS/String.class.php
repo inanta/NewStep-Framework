@@ -262,7 +262,7 @@ class String extends Object {
 	}
 	
 	/**
-	*Checking if number included
+	*Checking if number 
 	*
 	*/
 	static function isContainNumber($str){
