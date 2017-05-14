@@ -260,5 +260,33 @@ class String extends Object {
 	static function toUpperCase($str) {
 		return @strtoupper($str);
 	}
+	
+	/**
+	*Checking if number included
+	*
+	*/
+	static function isContainNumber($str){
+		if(!is_array($str)) $str = array($str);
+		$limit = false;
+				
+		foreach($str as $key => $value){
+			$arr[$key] = str_split($value);
+			foreach($arr[$key] as $chunk_value){
+				if(is_numeric($chunk_value)){
+					$limit = true;
+					break;
+				}
+			}
+			if($limit == true) break;
+		}
+		if($limit == true){
+			return true;
+		}
+		else{
+		 	return false;
+		}
+
+	}
+	
 }
 ?>
