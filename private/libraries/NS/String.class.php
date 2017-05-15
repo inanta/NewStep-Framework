@@ -1,7 +1,8 @@
 <?php
 /*
-	Copyright (C) 2008 - 2012 Inanta Martsanto
+	Copyright (C) 2008 - 2017 Inanta Martsanto
 	Inanta Martsanto (inanta@inationsoft.com)
+	Donny Trijatmiko (donny@inationsoft.com)
 
 	This file is part of NewStep Framework.
 
@@ -262,7 +263,7 @@ class String extends Object {
 	}
 	
 	/**
-	*Checking if number 
+	*Checking if number included
 	*
 	*/
 	static function isContainNumber($str){
