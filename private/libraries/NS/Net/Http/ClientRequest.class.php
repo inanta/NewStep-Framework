@@ -63,12 +63,15 @@ class ClientRequest extends SingletonObject {
 	function value($keys = null) {
 		if(is_array($keys)) {
 			foreach($keys as $key => $value) {
+				$value = trim($value);
+
 				$keys[$value] = $this->_input[$value];
 				unset($keys[$key]);
 			}
 		} else if($keys == null) {
 			$keys = $this->_input;
 		} else {
+			$keys = trim($keys);
 			$keys = (isset($this->_input[$keys]) ? $this->_input[$keys] : false);
 		}
 
