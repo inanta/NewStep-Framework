@@ -133,6 +133,14 @@ class MySQLDriver extends Database implements IDatabaseDriver {
 	}
 
 	/**
+	*Get columns name that selected in last query
+	*
+	*/
+	function fieldFlags($result, $offset) {
+		return @mysql_field_flags($result, $offset);
+	}
+
+	/**
 	*Get all tables from current database
 	*
 	*/

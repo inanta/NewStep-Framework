@@ -35,6 +35,8 @@ interface IDatabaseDriver {
 	function fetchArray($result);
 	function fetchAssoc($result);
 	function fetchRow($result);
+	function fieldName($result, $offset);
+	function fieldFlags($result, $offset)
 	function lastInsertID();
 	function numRows($result);
 	function query($query);
