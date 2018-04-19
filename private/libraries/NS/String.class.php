@@ -207,7 +207,7 @@ class String extends Object {
 	*@return string Return input string that replaced first character in every word to upper case
 	*/
 	static function toProperCase($str) {
-		return @ucwords($str);
+		return @ucwords(self::toLowerCase($str));
 	}
 
 	/**
@@ -248,7 +248,7 @@ class String extends Object {
 	*@return string Return input string that replaced first character in every word to upper case
 	*/
 	static function toTitleCase($str) {
-		return @ucwords($str);
+		return self::toProperCase();
 	}
 
 	/**
