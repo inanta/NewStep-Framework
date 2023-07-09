@@ -21,7 +21,7 @@
 
 namespace NS\UI;
 
-use NS\Object;
+use NS\BaseObject;
 
 /**
  *User interface base class for widget and panel
@@ -29,7 +29,7 @@ use NS\Object;
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
 
-abstract class UI extends Object {
+abstract class UI extends BaseObject {
 	protected static $_count;
 	protected $_attr = array(), $_tag, $_isTagClosed, $_content;
 	public $UI;

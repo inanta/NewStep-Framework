@@ -43,6 +43,8 @@ class DatePicker extends UI {
 	function __construct($id, $value = null, $placeholder = null, $validators = null, $args = array(), $options = array()) {
 		StyleManager::getInstance()->addExternalSource(NS_JQUERY_UI_STYLE_URL);
 		$scm = ScriptManager::getInstance();
+		
+//die(NS_JQUERY_PATH);
 		$scm->addSource(NS_JQUERY_PATH);
 		$scm->addSource(NS_JQUERY_UI_PATH);
 
@@ -52,6 +54,7 @@ class DatePicker extends UI {
 
 		$count = $this->getUICount(__CLASS__);
 		$args['class'] = (isset($args['class']) ? $args['class'] . ' ' : '') . 'NS-Datepicker NS-DatePicker-' . $count;
+		$args['autocomplete'] = 'off';
 
 		parent::__construct(new Text($id, $value, $placeholder, $validators, $args));
 		$scm->addScript('jQuery(function(){ jQuery(".NS-DatePicker-' . $count . '").datepicker(' . json_encode($options) . '); });');

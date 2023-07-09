@@ -43,10 +43,10 @@ class Alert extends UI {
 		$count = $this->getUICount(__CLASS__);
 		$args['class'] = isset($args['class']) ? $args['class'] . ' NS-Bootstrap-Alert ' . 'NS-Bootstrap-Alert-' . $count .  ' alert alert-' . $type : 'NS-Bootstrap-Alert ' . 'NS-Bootstrap-Alert-' . $count .  ' alert alert-' . $type;
 
-		StyleManager::getInstance()->addSource(NS_PUBLIC_PATH . '/ns/asset/3rdparty/bootstrap/css/bootstrap.min.css');
-		$scm = ScriptManager::getInstance();
-		$scm->addSource(NS_JQUERY_PATH);
-		$scm->addSource(NS_BOOTSTRAP_PATH);
+		// StyleManager::getInstance()->addSource(NS_PUBLIC_PATH . '/ns/asset/3rdparty/bootstrap/css/bootstrap.min.css');
+		// $scm = ScriptManager::getInstance();
+		// $scm->addSource(NS_JQUERY_PATH);
+		// $scm->addSource(NS_BOOTSTRAP_PATH);
 
 		if($name != null) $args['id'] = $name;
 		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);

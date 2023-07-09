@@ -23,7 +23,7 @@ namespace NS\UI\Widget\Bootstrap;
 
 use NS\UI\UI;
 use NS\UI\StyleManager;
-use NS\UI\ScriptManager;
+use NS\UI\ScriptManager; 
 use NS\UI\Widget\CheckBox;
 
 /**
@@ -32,19 +32,20 @@ use NS\UI\Widget\CheckBox;
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
 class SwitchButton extends UI {
-	function __construct($name, $value = '', $checked = false, $args = array()) {
+	function __construct($name, $value = '', $checked = false, $label = '', $args = array()) {
 		$count = $this->getUICount(__CLASS__);
-		$this->_attr['class'] = 'NS-Bootstrap-SwitchButton-Wrapper NS-Bootstrap-SwitchButton-Wrapper-' . $count .  ' switch';
+		$this->_attr['class'] = 'NS-Bootstrap-SwitchButton-Wrapper NS-Bootstrap-SwitchButton-Wrapper-' . $count .  ' custom-control custom-switch';
 
-		StyleManager::getInstance()->addSource(NS_PUBLIC_PATH . '/ns/asset/3rdparty/bootstrap-switch/static/stylesheets/bootstrapSwitch.css');
-		$scm = ScriptManager::getInstance();
-		$scm->addSource(NS_JQUERY_PATH);
-		$scm->addSource(NS_BOOTSTRAP_PATH);
-		$scm->addSource(NS_PUBLIC_PATH . '/ns/asset/3rdparty/bootstrap-switch/static/js/bootstrapSwitch.js');
+		//$scm = ScriptManager::getInstance();
+		//$scm->addSource(NS_JQUERY_PATH);
+		//$scm->addSource(NS_BOOTSTRAP_PATH);
 
 		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
 
-		parent::__construct($this->constructUI('div', true, new CheckBox($name, $value, $checked, '', array('class' => 'NS-Bootstrap-SwitchButton'))));
+		parent::__construct($this->constructUI('div', true, '
+			' . new CheckBox($name, $value, $checked, '', array('class' => 'custom-control-input')) . '
+			<label class="custom-control-label" for="' . $name . '">' . $label . '</label>
+		'));
 	}
 }
 ?>

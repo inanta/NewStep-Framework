@@ -1,6 +1,6 @@
 <?php
 /*
-	Copyright (C) 2008 - 2016 Inanta Martsanto
+	Copyright (C) 2008 - 2014 Inanta Martsanto
 	Inanta Martsanto (inanta@inationsoft.com)
 
 	This file is part of NewStep Framework.
@@ -63,39 +63,10 @@ class Autocomplete extends UI {
 			$options['source'] = $source;
 		}
 
-		if(is_array($value) && isset($value['label']) && isset($value['value'])) {
-			$value_label = $value['label'];
-			$value_value = $value['value'];
+		// $options['source'] = (is_array($source) ? $source : $source);
 
-			parent::__construct(new Text($id . '_label', $value_label, $placeholder, $validators, $args) . new Hidden($id, $value_value));
-
-			$scm->addScript('
-				jQuery(function(){
-					jQuery(".NS-Autocomplete-' . $count . '").autocomplete(' . json_encode($options) . ');
-
-					jQuery(".NS-Autocomplete-' . $count . '").autocomplete("option", "select", function(event, ui) {
-						jQuery(".NS-Autocomplete-' . $count . '").val(ui.item.label);
-						jQuery("#' . $id . '").val(ui.item.value);
-						return false;
-					});
-	
-					jQuery(".NS-Autocomplete-' . $count . '").autocomplete("option", "focus", function(event, ui) {
-						jQuery(".NS-Autocomplete-' . $count . '").val(ui.item.label);
-						return false;
-					});
-				});'
-			);
-		} else {
-			parent::__construct(new Text($id, $value, $placeholder, $validators, $args));
-
-			$scm->addScript('
-				jQuery(function(){
-					jQuery(".NS-Autocomplete-' . $count . '").autocomplete(' . json_encode($options) . ');
-				});'
-			);
-		}
-
-		
+		parent::__construct(new Text($id, $value, $placeholder, $validators, $args));
+		$scm->addScript('jQuery(function(){ jQuery(".NS-Autocomplete-' . $count . '").autocomplete(' . json_encode($options) . '); });');
 	}
 }
 ?>

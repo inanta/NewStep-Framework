@@ -21,7 +21,7 @@
 
 namespace NS\Utility\JQuery;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Database\DatabaseFilterCriteria;
 use NS\Database\ActiveRecord;
 
@@ -32,7 +32,7 @@ use NS\Database\ActiveRecord;
  * @property boolean $Debug Return debug information
  * @property-read integer $Draw Number of draw request
  */
-class DataTables extends Object {
+class DataTables extends BaseObject {
 	const REQUEST_POST = 0;
 	const REQUEST_GET = 1;
 
