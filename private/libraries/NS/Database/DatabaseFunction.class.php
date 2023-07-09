@@ -26,6 +26,14 @@ class DatabaseFunction {
 
 	function __construct(&$ar) { $this->_ar =& $ar; }
 
+	function count($column, $as) {
+		$this->_render = 'COUNT(' . $this->_quote($column) . ')';
+		
+		if($as !== null) $this->_ar->addColumnAlias($this->_render, $as);
+
+		return clone $this;
+	}
+
 	function concat($args, $as = null) {
 		$columns = array();
 		
