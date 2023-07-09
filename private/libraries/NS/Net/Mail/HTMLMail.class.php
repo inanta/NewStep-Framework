@@ -28,8 +28,10 @@ use NS\Object;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class HTMLMail extends Mail {
-	function send() {
+class HTMLMail extends Mail
+{
+	function send()
+	{
 		$header =
 			'From: ' . $this->From . "\r\n" .
 			'Reply-To: ' . ($this->ReplyTo == '' ? $this->From : $this->ReplyTo) . "\r\n" .
