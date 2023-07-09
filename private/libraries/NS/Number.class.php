@@ -28,7 +28,7 @@ use NS\Core\Config;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Number extends Object {
+class Number extends BaseObject {
 	const FORMAT_MONEY = 1;
 	const FORMAT_MONEY_WITH_CODE = 2;
 	const FORMAT_MONEY_WITH_SYMBOL = 3;
