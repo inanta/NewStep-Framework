@@ -21,14 +21,14 @@
 
 namespace NS\IO\Validator;
 
-use NS\Object;
+use NS\BaseObject;
 
 /**
  *Validator base class
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-abstract class Validator extends Object {
+abstract class Validator extends BaseObject {
 	private $_validator = '';
 
 	function __construct($validator, $message) {
