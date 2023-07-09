@@ -21,9 +21,10 @@
 
 namespace NS\Core;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Template\Template;
 use NS\Net\Http\ClientRequest;
+use NS\Net\Http\Response;
 use NS\IO\CacheManager;
 use NS\UI\ScriptManager;
 use NS\UI\StyleManager;
@@ -36,18 +37,18 @@ use NS\UI\StyleManager;
  *@property Template $View Template object that will be used for rendering in view file
  *@property Session $Session Session object that will handle session manipulation
  */
-abstract class Controller extends Object {
+abstract class Controller extends BaseObject {
 	/**
 	 *
 	 * @var ClientRequest Client request get value or validate $_POST, $_GET and $_REQUEST
 	 */
 	public $Request;
 
-	public $Path, $ControllerPath, $URL, $Action, $Params = array(), $Content;
+	public $Action, $ControllerPath, $DefaultAction, $Path, $URL, $Content, $Params = array(), $Response;
 	protected $_actionCache = null;
 	private $_isConstructorCalled = false;
 
-	function __construct() {
+	function _initialize() {
 		ob_start();
 		$this->createProperties(array('View' => Template::getInstance(), 'Session' => Session::getInstance()));
 		$this->setReadOnlyProperties(array('View', 'Session'));
@@ -61,6 +62,8 @@ abstract class Controller extends Object {
 	 *
 	 */
 	function _run() {
+		$this->_initialize();
+
 		if(method_exists($this, '_main')) {
 			$this->_main();
 		}
@@ -100,7 +103,9 @@ abstract class Controller extends Object {
 			}
 		}
 
-		call_user_func_array(array($this, $this->Action), $this->Params);
+		$this->Response = call_user_func_array(array($this, $this->Action), $this->Params);
+
+		// var_dump($this->Return);
 	}
 
 	/**
@@ -108,11 +113,15 @@ abstract class Controller extends Object {
 	 *
 	 */
 	protected function _finalize() {
-		if($this->View->File != null) {
-			$this->View->display(($this->View->Path == '' ? $this->Path . '/views/' : $this->View->Path . '/') . $this->View->File);
-		}
+		// if($this->View->File != null) {
+		// 	$this->View->display(($this->View->Path == '' ? $this->Path . '/views/' : $this->View->Path . '/') . $this->View->File);
+		// }
 
 		$this->Content = ob_get_clean();
+
+		if ($this->Response === null || !$this->Response instanceof Response) {
+			$this->Response = new Response($this->Content);
+		}
 
 		if(isset($this->_actionCache[$this->Action])) {
 			$cm = CacheManager::getInstance();

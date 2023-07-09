@@ -42,7 +42,7 @@ class Router extends SingletonObject {
 			throw new SecurityException(array('code' => SecurityException::INVALID_URL));
 		}
 
-		$segments = null; $dir = ''; $idx = 0; $class = null;
+		$segments = array(); $dir = ''; $idx = 0; $class = null;
 
 		if($pos = strpos($_SERVER['PHP_SELF'], 'index.php/')) $segments = explode('/', (substr($_SERVER['PHP_SELF'] . '/', $pos + 10)), -1);
 		$count = count($segments);
@@ -85,12 +85,51 @@ class Router extends SingletonObject {
 			$this->App->ControllerPath = $matches[1];
 		}
 
+		// if ($this->App->DefaultAction !== null) {
+		// 	$cf->Application->DefaultControllerAction = $this->App->DefaultAction;
+		// }
+
 		if(!isset($segments[++$idx]) || $segments[$idx] == '') $segments[$idx] = $cf->Application->DefaultControllerAction;
 
-		if(!method_exists($this->App, $segments[$idx]) || $segments[$idx][0] == '_') throw new PageNotFoundException();
-		else $this->App->Action = $segments[$idx]; ++$idx;
+		if (method_exists($this->App, $segments[$idx]) && $segments[$idx][0] != '_') {
+			// die($segments[$idx]);
 
-		for($idx; $idx < $count; ++$idx) { if($segments[$idx] == '') break; $this->App->Params[] = $segments[$idx]; }
+			$this->App->Action = $segments[$idx]; ++$idx;
+			
+			for($idx; $idx < $count; ++$idx) { 
+				if($segments[$idx] == '') break; 
+				
+				$this->App->Params[] = $segments[$idx];
+			}
+
+			// print_r($this->App->Params);
+			// die();
+
+			$this->App->URL = NS_BASE_URL . '/' . implode('/', $segments);
+		} else if ($this->App->DefaultAction != null && method_exists($this->App, $this->App->DefaultAction)) {
+			$this->App->Action = $this->App->DefaultAction;
+
+			for($idx; $idx < $count; ++$idx) { 
+				if($segments[$idx] == '') break; 
+				
+				$this->App->Params[] = $segments[$idx];
+			}
+			// die('sssssxx');
+		} else {
+			throw new PageNotFoundException();
+		}
+
+		// if(!isset($segments[++$idx]) || $segments[$idx] == '') $segments[$idx] = $cf->Application->DefaultControllerAction;
+
+		// if(!method_exists($this->App, $segments[$idx]) || $segments[$idx][0] == '_') {
+		// 	throw new PageNotFoundException();
+		// } else {
+		// 	$this->App->Action = $segments[$idx]; ++$idx;
+		// }
+
+		// for($idx; $idx < $count; ++$idx) { if($segments[$idx] == '') break; $this->App->Params[] = $segments[$idx]; }
+
+		// $this->App->URL = NS_BASE_URL . '/' . implode('/', $segments);
 	}
 
 	/**
