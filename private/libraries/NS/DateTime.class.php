@@ -38,7 +38,8 @@ use NS\Core\Config;
  *@property int $IsLeapYear Represent whenever current year is leap year
  */
 
-class DateTime extends Object {
+class DateTime extends BaseObject
+{
 	const ONE_MINUTE = 60;
 	const ONE_HOUR = 3600;
 	const ONE_DAY = 86400;
@@ -58,22 +59,33 @@ class DateTime extends Object {
 	 * @param integer $minute
 	 * @param integer $second
 	 */
-	function __construct($date = null, $month = null, $year = null, $hour = null, $minute = null, $second = null) {
-		if($date != null && $month != null && $year != null) {
+	function __construct($date = null, $month = null, $year = null, $hour = null, $minute = null, $second = null)
+	{
+		if ($date != null && $month != null && $year != null) {
 			$this->_timestamp = mktime($hour, $minute, $second, $month, $date, $year);
 		} else {
-			$this->_timestamp = time();	
+			$this->_timestamp = time();
 		}
 
-		$this->createProperties(array('Date' => @date('j', $this->_timestamp), 'Month' => @date('n', $this->_timestamp), 'Year' => @date('Y', $this->_timestamp), 'TwoDigitYear' => @date('y', $this->_timestamp),
-			'Hour' => @date('h', $this->_timestamp), 'Minute' => @date('i', $this->_timestamp), 'Second' => @date('s', $this->_timestamp),
-			'Timestamp' => $this->_timestamp));
+		$this->createProperties(
+			array(
+				'Date' => @date('j', $this->_timestamp),
+				'Month' => @date('n', $this->_timestamp),
+				'Year' => @date('Y', $this->_timestamp),
+				'TwoDigitYear' => @date('y', $this->_timestamp),
+				'Hour' => @date('h', $this->_timestamp),
+				'Minute' => @date('i', $this->_timestamp),
+				'Second' => @date('s', $this->_timestamp),
+				'Timestamp' => $this->_timestamp
+			)
+		);
 
 		$this->createProperties(array('IsLeapYear' => self::isLeapYear($this->Year)));
 	}
 
-	function __get($property) {
-		switch($property) {
+	function __get($property)
+	{
+		switch ($property) {
 			case 'DayStartTime':
 				return mktime(0, 0, 0, $this->Month, $this->Date, $this->Year);
 			case 'DayEndTime':
@@ -81,7 +93,15 @@ class DateTime extends Object {
 			case 'MonthStartTime':
 				return mktime(0, 0, 0, $this->Month, 1, $this->Year);
 			case 'MonthEndTime':
-				return (in_array($this->Month, array(1, 3, 5, 7, 8, 10, 12)) ? mktime(23, 59, 59, $this->Month, 31, $this->Year) : (in_array($this->Month, array(4, 6, 9, 11)) ? mktime(23, 59, 59, $this->Month, 30, $this->Year) : (self::isLeapYear($this->Year) ? mktime(23, 59, 59, $this->Month, 29, $this->Year) : mktime(23, 59, 59, $this->Month, 28, $this->Year)))) ;
+				if (in_array($this->Month, array(1, 3, 5, 7, 8, 10))) {
+					return mktime(23, 59, 59, $this->Month, 31, $this->Year);
+				} else if (in_array($this->Month, array(4, 6, 9, 11))) {
+					return mktime(23, 59, 59, $this->Month, 30, $this->Year);
+				} else if (self::isLeapYear($this->Year)) {
+					return mktime(23, 59, 59, $this->Month, 29, $this->Year);
+				} else {
+					return mktime(23, 59, 59, $this->Month, 28, $this->Year);
+				}
 			case 'YearStartTime':
 				return mktime(0, 0, 0, 1, 1, $this->Year);
 			case 'YearEndTime':
@@ -91,13 +111,18 @@ class DateTime extends Object {
 		}
 	}
 
-	function __set($property, $value) {
-		if($property == 'Timestamp') { $this->_timestamp = $value; $this->assignDateTimeValue(); }
+	function __set($property, $value)
+	{
+		if ($property == 'Timestamp') {
+			$this->_timestamp = $value;
+			$this->assignDateTimeValue();
+		}
 
 		parent::__set($property, $value);
 	}
 
-	 function __toString() {
+	function __toString()
+	{
 		return @date('d/n/Y', $this->_timestamp);
 	}
 
@@ -105,73 +130,106 @@ class DateTime extends Object {
 	 * 
 	 * @param integer $day Number of days that will be added
 	 */
-	function addDays($day) { $this->Timestamp += ($day * self::ONE_DAY); }
+	function addDays($day)
+	{
+		$this->Timestamp += ($day * self::ONE_DAY);
+	}
 
 	/**
 	 * 
 	 * @param integer $hour Number of hours that will be added
 	 */
-	function addHours($hour) { $this->Timestamp += ($hour * self::ONE_HOUR); }
+	function addHours($hour)
+	{
+		$this->Timestamp += ($hour * self::ONE_HOUR);
+	}
 
 	/**
 	 * 
 	 * @param integer $minute Number of minutes that will be added
 	 */
-	function addMinutes($minute) { $this->Timestamp += ($minute * self::ONE_MINUTE); }
+	function addMinutes($minute)
+	{
+		$this->Timestamp += ($minute * self::ONE_MINUTE);
+	}
 
 	/**
 	 * 
 	 * @param integer $month Number of months that will be added
 	 */
-	function addMonths($month) {
-		while($month >= 12) {
+	function addMonths($month)
+	{
+		while ($month >= 12) {
 			$this->addYears(1);
 			$month -= 12;
 		}
 
 		$timestamp = 0;
 
-		for($i = 0; $i < $month; ++$i) {
-			switch(($this->Month + $i) % 12) {
+		for ($i = 0; $i < $month; ++$i) {
+			switch (($this->Month + $i) % 12) {
 				case 1:
-					if($i != 0) $this->Year += 1;
-				case 3: case 5: case 7:
-				case 8: case 10: case 0:
-					$timestamp += (31 * self::ONE_DAY); break;
-				case 4: case 6: case 9: case 11:
-					$timestamp += (30 * self::ONE_DAY); break;
+					if ($i != 0)
+						$this->Year += 1;
+				case 3:
+				case 5:
+				case 7:
+				case 8:
+				case 10:
+				case 0:
+					$timestamp += (31 * self::ONE_DAY);
+					break;
+				case 4:
+				case 6:
+				case 9:
+				case 11:
+					$timestamp += (30 * self::ONE_DAY);
+					break;
 				case 2:
-					if(self::isLeapYear($this->Year)) $timestamp += (29 * self::ONE_DAY);
-					else $timestamp += (28 * self::ONE_DAY);
+					if (self::isLeapYear($this->Year))
+						$timestamp += (29 * self::ONE_DAY);
+					else
+						$timestamp += (28 * self::ONE_DAY);
 			}
 		}
 
-		if($timestamp != 0) $this->Timestamp += $timestamp;
+		if ($timestamp != 0)
+			$this->Timestamp += $timestamp;
 	}
 
 	/**
 	 * 
 	 * @param integer $sec Number of seconds that will be added
 	 */
-	function addSeconds($sec) { $this->Timestamp += $sec; }
+	function addSeconds($sec)
+	{
+		$this->Timestamp += $sec;
+	}
 
 	/**
 	 * 
 	 * @param integer $week Number of weeks that will be added
 	 */
-	function addWeeks($week) { $this->Timestamp += ($week * self::ONE_WEEK); }
+	function addWeeks($week)
+	{
+		$this->Timestamp += ($week * self::ONE_WEEK);
+	}
 
 	/**
 	 * 
 	 * @param integer $year Number of years that will be added
 	 */
-	function addYears($year) {
+	function addYears($year)
+	{
 		$i = 0;
 		$timestamp = 0;
 
-		if($this->Month > 2) { ++$i; $year += 1; }
+		if ($this->Month > 2) {
+			++$i;
+			$year += 1;
+		}
 
-		for($i; $i < $year; ++$i) {
+		for ($i; $i < $year; ++$i) {
 			$timestamp += (!self::isLeapYear($this->Year + $i) ? self::ONE_YEAR : self::ONE_LEAP_YEAR);
 		}
 		$this->Timestamp += $timestamp;
@@ -181,80 +239,114 @@ class DateTime extends Object {
 	 * 
 	 * @param integer $day Number of days that will be subtracted
 	 */
-	function subtractDays($day) { $this->Timestamp -= ($day * self::ONE_DAY); }
+	function subtractDays($day)
+	{
+		$this->Timestamp -= ($day * self::ONE_DAY);
+	}
 
 	/**
 	 * 
 	 * @param integer $hour Number of hours that will be added
 	 */
-	function subtractHours($hour) { $this->Timestamp -= ($hour * self::ONE_HOUR); }
+	function subtractHours($hour)
+	{
+		$this->Timestamp -= ($hour * self::ONE_HOUR);
+	}
 
 	/**
 	 * 
 	 * @param integer $minute Number of minutes that will be added
 	 */
-	function subtractMinutes($minute) { $this->Timestamp -= ($minute * self::ONE_MINUTE); }
+	function subtractMinutes($minute)
+	{
+		$this->Timestamp -= ($minute * self::ONE_MINUTE);
+	}
 
 	/**
 	 * 
 	 * @param integer $month Number of months that will be added
 	 */
-	function subtractMonths($month) {
-		while($month >= 12) {
+	function subtractMonths($month)
+	{
+		while ($month >= 12) {
 			$this->subtractYears(1);
 			$month -= 12;
 		}
 
 		$timestamp = 0;
 
-		for($i = 0; $i < $month; ++$i) {
-			switch(($this->Month + $i) % 12) {
+		for ($i = 0; $i < $month; ++$i) {
+			switch (($this->Month + $i) % 12) {
 				case 1:
-					if($i != 0) $this->Year -= 1;
-				case 3: case 5: case 7:
-				case 8: case 10: case 0:
-					$timestamp -= (31 * self::ONE_DAY); break;
-				case 4: case 6: case 9: case 11:
-					$timestamp -= (30 * self::ONE_DAY); break;
+					if ($i != 0)
+						$this->Year -= 1;
+				case 3:
+				case 5:
+				case 7:
+				case 8:
+				case 10:
+				case 0:
+					$timestamp -= (31 * self::ONE_DAY);
+					break;
+				case 4:
+				case 6:
+				case 9:
+				case 11:
+					$timestamp -= (30 * self::ONE_DAY);
+					break;
 				case 2:
-					if(self::isLeapYear($this->Year)) $timestamp -= (29 * self::ONE_DAY);
-					else $timestamp -= (28 * self::ONE_DAY);
+					if (self::isLeapYear($this->Year))
+						$timestamp -= (29 * self::ONE_DAY);
+					else
+						$timestamp -= (28 * self::ONE_DAY);
 			}
 		}
 
-		if($timestamp != 0) $this->Timestamp += $timestamp;
+		if ($timestamp != 0)
+			$this->Timestamp += $timestamp;
 	}
 
 	/**
 	 * 
 	 * @param integer $sec Number of seconds that will be added
 	 */
-	function subtractSeconds($sec) { $this->Timestamp -= $sec; }
+	function subtractSeconds($sec)
+	{
+		$this->Timestamp -= $sec;
+	}
 
 	/**
 	 * 
 	 * @param integer $week Number of weeks that will be added
 	 */
-	function subtractWeeks($week) { $this->Timestamp -= ($week * self::ONE_WEEK); }
+	function subtractWeeks($week)
+	{
+		$this->Timestamp -= ($week * self::ONE_WEEK);
+	}
 
 	/**
 	 * 
 	 * @param integer $year Number of years that will be added
 	 */
-	function subtractYears($year) {
+	function subtractYears($year)
+	{
 		$i = 0;
 		$timestamp = 0;
 
-		if($this->Month < 2) { ++$i; $year += 1; }
+		if ($this->Month < 2) {
+			++$i;
+			$year += 1;
+		}
 
-		for($i; $i < $year; ++$i) {
+		for ($i; $i < $year; ++$i) {
 			$timestamp -= (!self::isLeapYear($this->Year - $i) ? self::ONE_YEAR : self::ONE_LEAP_YEAR);
 		}
 
 		$this->Timestamp += $timestamp;
 	}
-	
-	private function assignDateTimeValue() {
+
+	private function assignDateTimeValue()
+	{
 		$this->Date = @date('j', $this->_timestamp);
 		$this->Month = @date('n', $this->_timestamp);
 		$this->Year = @date('Y', $this->_timestamp);
@@ -264,7 +356,8 @@ class DateTime extends Object {
 		$this->IsLeapYear = self::isLeapYear($this->Year);
 	}
 
-	static function assignLocale($locale) {
+	static function assignLocale($locale)
+	{
 		self::$_locale = $locale;
 	}
 
@@ -273,19 +366,21 @@ class DateTime extends Object {
 	 * @param string $date Date string in dd/mm/yyyy format
 	 * @return DateTime
 	 */
-	static function fromString($date) {
+	static function fromString($date)
+	{
 		$date_time = explode(' ', $date);
 
 		$date = explode('/', $date_time[0]);
 		$time = array();
 
-		if(isset($date_time[1])) {
+		if (isset($date_time[1])) {
 			$time = explode(':', $date_time[1]);
 		}
 
-		if(count($date) < 3) $date = explode('/', date('d/m/Y'));
+		if (count($date) < 3)
+			$date = explode('/', date('d/m/Y'));
 
-		switch(count($time)) {
+		switch (count($time)) {
 			case 0:
 				$time = explode(':', date('H:i:s'));
 				break;
@@ -305,14 +400,16 @@ class DateTime extends Object {
 	 * @param integer $timestamp Unix timestamp
 	 * @return DateTime
 	 */
-	static function fromTimestamp($timestamp) {
+	static function fromTimestamp($timestamp)
+	{
 		$dt = new DateTime();
 		$dt->Timestamp = $timestamp;
 
-		return $dt; 
+		return $dt;
 	}
 
-	static function getMonthNames() {
+	static function getMonthNames()
+	{
 		self::loadLocale();
 		return self::$_locale['MonthNames'];
 	}
@@ -322,12 +419,14 @@ class DateTime extends Object {
 	 * @param integer $year Year that will be checked if it is a leap year
 	 * @return boolean
 	 */
-	static function isLeapYear($year) {
-		return ($year % 400 == 0 ? true : ($year % 100 == 0 ? true : ($year % 4 == 0 ? true : false)));	
+	static function isLeapYear($year)
+	{
+		return ($year % 400 == 0 ? true : ($year % 100 == 0 ? true : ($year % 4 == 0 ? true : false)));
 	}
 
-	private static function loadLocale() {
-		if(self::$_locale == null) {
+	private static function loadLocale()
+	{
+		if (self::$_locale == null) {
 			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
 			self::$_locale = $Locale;
 		}
