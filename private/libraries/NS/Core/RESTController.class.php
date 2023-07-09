@@ -21,7 +21,7 @@
 
 namespace NS\Core;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Exception\Exception;
 use NS\Template\Template;
 use NS\Net\Http\ClientRequest;
@@ -39,7 +39,7 @@ define('NS_CSS_RENDERED', true);
  *@author Inanta Martsanto <inanta@inationsoft.com>
  *@property string $Content Content generated from current controller
  */
-abstract class RESTController extends Object {
+abstract class RESTController extends BaseObject {
 	/**
 	 * Response type JSON
 	 */

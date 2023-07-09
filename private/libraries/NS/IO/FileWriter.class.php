@@ -21,7 +21,7 @@
 
 namespace NS\IO;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Exception\IOException;
 
 /**
@@ -29,7 +29,7 @@ use NS\Exception\IOException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class FileWriter extends Object {
+class FileWriter extends BaseObject {
 	const MODE_WRITE = 'w';
 	const MODE_APPEND = 'a';
 

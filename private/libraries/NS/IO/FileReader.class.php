@@ -21,7 +21,7 @@
 
 namespace NS\IO;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Exception\IOException;
 
 /**
@@ -29,7 +29,7 @@ use NS\Exception\IOException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class FileReader extends Object {
+class FileReader extends BaseObject {
 	private $_pos = 0, $_fp, $_length;
 
 	function __construct($filename){

@@ -21,7 +21,7 @@
 
 namespace NS\Net\Http;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Exception\UploadException;
 use NS\Exception\IOException;
 
@@ -36,7 +36,7 @@ use NS\Exception\IOException;
  *@property string $TemporaryFileName Temporary file name of uploaded file
  *@property string $Type MIME file type of uploaded file
  */
-class Upload extends Object {
+class Upload extends BaseObject {
 	private $_postName, $_fileIterator, $_fileNumber;
 
 	function __construct($name, $strict = true) {

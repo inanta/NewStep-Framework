@@ -26,8 +26,7 @@ namespace NS\Database;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-interface IDatabaseDriver
-{
+interface IDatabaseDriver {
 	function __construct($args = array());
 	function affectedRows();
 	function close();
@@ -36,8 +35,6 @@ interface IDatabaseDriver
 	function fetchArray($result);
 	function fetchAssoc($result);
 	function fetchRow($result);
-	function fieldName($result, $offset);
-	function fieldFlags($result, $offset);
 	function lastInsertID();
 	function numRows($result);
 	function query($query);

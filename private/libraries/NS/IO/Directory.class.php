@@ -21,7 +21,7 @@
 
 namespace NS\IO;
 
-use NS\Iterable;
+use NS\BaseIterable;
 use NS\Exception\IOException;
 
 /**
@@ -31,7 +31,7 @@ use NS\Exception\IOException;
  *@property string $FileName Filename
  *@property bool $IsDirectory Determine if file is directory or folder
  */
-class Directory extends Iterable {
+class Directory extends BaseIterable {
 	function __construct($path) {
 		self::validate($path);
 

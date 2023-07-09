@@ -21,7 +21,7 @@
 
 namespace NS\Utility;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Core\Config;
 use NS\Exception\Exception;
 use NS\Exception\IOException;
@@ -33,7 +33,7 @@ use NS\Exception\IOException;
  *@property int $Width Image width
  *@property int $Height Image height
  */
-class Image extends Object {
+class Image extends BaseObject {
 	const ORIENTATION_PORTRAIT = 1;
 	const ORIENTATION_LANDSCAPE = 2;
 

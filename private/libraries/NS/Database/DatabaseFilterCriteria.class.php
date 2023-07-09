@@ -21,7 +21,7 @@
 
 namespace NS\Database;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Exception\ActiveRecordException;
 
 /**
@@ -29,7 +29,7 @@ use NS\Exception\ActiveRecordException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class DatabaseFilterCriteria extends Object {
+class DatabaseFilterCriteria extends BaseObject {
 	const EXP_AND = 1;
 	const EXP_OR = 2;
 

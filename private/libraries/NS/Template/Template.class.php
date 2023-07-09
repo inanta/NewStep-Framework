@@ -21,7 +21,7 @@
 
 namespace NS\Template;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Core\Config;
 
 define('NS_TPL_PHP', 'php');
@@ -33,7 +33,7 @@ define('NS_TPL_SMARTY', 'smarty');
  *@author Inanta Martsanto <inanta@inationsoft.com>
  *@property string $File Template file name and path that will be used
  */
-abstract class Template extends Object {
+abstract class Template extends BaseObject {
 	protected $_vars = array();
 
 	static private $_lastInstance = array();

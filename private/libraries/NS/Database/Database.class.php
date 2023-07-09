@@ -21,8 +21,7 @@
 
 namespace NS\Database;
 
-use NS\ClassMapper;
-use NS\Object;
+use NS\BaseObject;
 use NS\Core\Config;
 use NS\Exception\DatabaseException;
 
@@ -31,7 +30,7 @@ use NS\Exception\DatabaseException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-abstract class Database extends Object {
+abstract class Database extends BaseObject {
 	const DRIVER_MYSQL = 'mysql';
 	const DRIVER_SQLITE2 = 'sqlite2';
 	const DRIVER_SQLITE = 'sqlite';
@@ -68,7 +67,7 @@ abstract class Database extends Object {
 	*@return self
 	*/
 	static function getInstance($conn = null) {
-		$Database;
+		$Database = null;
 
 		if(is_string($conn) || $conn == null) {
 			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Database.inc.php');
@@ -87,13 +86,10 @@ abstract class Database extends Object {
 		switch($Database[$conn]['Driver']) {
 			case self::DRIVER_POSTGRESQL:
 				return (self::$_driversInstance[$conn] = new Driver\PostgreSQLDriver($Database[$conn]));
-				break;
 			case self::DRIVER_SQLITE2:
 				return (self::$_driversInstance[$conn] = new Driver\SQLite2Driver($Database[$conn]));
-				break;
 			case self::DRIVER_SQLITE:
 				return (self::$_driversInstance[$conn] = new Driver\SQLiteDriver($Database[$conn]));
-				break;
 			case self::DRIVER_MYSQL:
 			default:
 				return (self::$_driversInstance[$conn] = new Driver\MySQLDriver($Database[$conn]));
