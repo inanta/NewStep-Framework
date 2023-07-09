@@ -108,13 +108,16 @@ class Exception extends \Exception {
 
 		$error = array(
 			'ErrorHeader' => _('The page cannot be displayed due to internal error'), 'NSErrorMessageCaption' => _('NS Error Message'), 'ExceptionCaption' => _('Exception'), 'FileCaption' => _('File'), 'LastOutputCaption' => _('Last Output From Buffer'), 'TraceCaption' => _('Trace'),
+			'HTTPHeaderCode' => $this->_httpHeader['code'],
+			'HTTPHeaderMessage' => $this->_httpHeader['message'],
 			'LastOutput' => htmlentities(ob_get_contents()), 'Message' => $this->Message, 'Source' => $this->Source, 'File' => $this->File, 'Line' => $this->Line, 'Trace' => (NS_DEBUG_MODE ? $this->getTrace() : array()),
 			'ErrorCode' => $this->ErrorCode
 		);
 
 		if(ob_get_contents()) ob_end_clean();
 
-		if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+		if((!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || 
+		(!empty($_SERVER['HTTP_ACCEPT']) && strtolower($_SERVER['HTTP_ACCEPT']) == 'application/json')) {
 			self::$DisplayFormat = self::DISPLAY_FORMAT_REST_JSON;
 		}
 
