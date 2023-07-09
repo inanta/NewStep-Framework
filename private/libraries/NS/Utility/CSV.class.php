@@ -30,38 +30,44 @@ use NS\IO\FileWriter;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class CSV extends Iterable {
+class CSV extends Iterable
+{
 	private $_columns;
 
-	function addColumn($column_name) {
+	function addColumn($column_name)
+	{
 		$this->addColumns($column_name);
 	}
 
-	function addColumns($columns) {
-		if(!is_array($columns)) $columns = array($columns);
-		
+	function addColumns($columns)
+	{
+		if (!is_array($columns))
+			$columns = array($columns);
+
 		$column_index = count($this->_columns);
-		
-		foreach($columns as $column) {
+
+		foreach ($columns as $column) {
 			$this->_columns[$column] = $column_index;
 			++$column_index;
 		}
 	}
 
-	function addData($data) {
-		foreach($data as $datum) {
-			if(!is_array($datum)) {
+	function addData($data)
+	{
+		foreach ($data as $datum) {
+			if (!is_array($datum)) {
 				$this->_addSingleData($data);
 				break;
 			}
 
-			$this->_addSingleData($datum);	
+			$this->_addSingleData($datum);
 		}
-		
+
 		parent::__construct();
 	}
-	
-	function download($filename = 'CSV.csv') {
+
+	function download($filename = 'CSV.csv')
+	{
 		$csv = $this->_getContent();
 
 		header('Content-Description: File Transfer');
@@ -78,29 +84,32 @@ class CSV extends Iterable {
 
 		exit;
 	}
-		
-	function getColumns() {
+
+	function getColumns()
+	{
 		$columns = array();
 
 		// $value is unused
-		foreach($this->_columns as $key => $value) {
+		foreach ($this->_columns as $key => $value) {
 			$columns[] = $key;
 		}
 
 		return $columns;
 	}
 
-	function readFile($filename, $separator = ',') {
-		if(!is_readable($filename)) {
-			if(!is_file($filename)) throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
+	function readFile($filename, $separator = ',')
+	{
+		if (!is_readable($filename)) {
+			if (!is_file($filename))
+				throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
 
 			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $filename));
 		}
 
-		$rows = explode("\n", str_replace(array("\n\r", "\r\n", "\r") , "\n", file_get_contents($filename)));
+		$rows = explode("\n", str_replace(array("\n\r", "\r\n", "\r"), "\n", file_get_contents($filename)));
 		$column_row = 0;
-		
-		if(($sep_pos = strpos($rows[$column_row], 'sep=')) !== false) {
+
+		if (($sep_pos = strpos($rows[$column_row], 'sep=')) !== false) {
 			$separator = substr($rows[$column_row], $sep_pos + 4, 1);
 
 			unset($rows[$column_row]);
@@ -111,10 +120,10 @@ class CSV extends Iterable {
 		$columns = $columns[2];
 		unset($rows[$column_row]);
 
-		foreach($columns as $index => $column) {
+		foreach ($columns as $index => $column) {
 			$column_name = trim(preg_replace("/[^A-Za-z0-9]/", '', $column));
 
-			if(!isset($this->_columns[$column_name])) {
+			if (!isset($this->_columns[$column_name])) {
 				$this->_columns[$column_name] = $index;
 			} else {
 				$counter = 1;
@@ -125,20 +134,20 @@ class CSV extends Iterable {
 
 				$this->_columns[$column_name . '_' . $counter] = $index;
 			}
-			
+
 		}
 
 		$iterator = 0;
 
-		foreach($rows as $row) {
+		foreach ($rows as $row) {
 			preg_match_all('/(?:^|,)(?=[^"]|(")?)"?((?(1)[^"]*|[^,"]*))"?(?=,|$)/', $row, $columns);
 			$columns = $columns[2];
 
-			if(count($columns) != count($this->_columns)) {
+			if (count($columns) != count($this->_columns)) {
 				continue;
 			}
 
-			foreach($this->_columns as $column => $index) {
+			foreach ($this->_columns as $column => $index) {
 				$this->_collection[$iterator][$column] = $columns[$index];
 			}
 
@@ -148,52 +157,58 @@ class CSV extends Iterable {
 		parent::__construct();
 	}
 
-	function saveFile($filename) {
+	function saveFile($filename)
+	{
 		$fw = new FileWriter($filename);
 		$fw->write($this->_getContent());
 	}
 
-	private function _addSingleData($columns) {
-		if(count($columns) != count($this->_columns)) return;
+	private function _addSingleData($columns)
+	{
+		if (count($columns) != count($this->_columns))
+			return;
 
 		$data = array();
-		
-		foreach($this->_columns as $column => $index) {
+
+		foreach ($this->_columns as $column => $index) {
 			$data[$column] = $columns[$index];
-		    
+
 		}
 
 		$this->_collection[] = $data;
 	}
 
-	private function _getContent() {
+	private function _getContent()
+	{
 		$csv = 'sep=;';
 		$csv .= "\r\n";
 
-		foreach($this->_columns as $column => $index) {
+		foreach ($this->_columns as $column => $index) {
 			$csv .= $column . ';';
 		}
 
 		$csv .= "\r\n";
 
-		foreach($this->_collection as $collection) {
+		foreach ($this->_collection as $collection) {
 			$csv .= implode(';', $collection);
 			$csv .= "\r\n";
 		}
-		
+
 		return $csv;
 	}
 
-	function __get($k) {
-		if(isset($this->_columns[$k])) {
+	function __get($k)
+	{
+		if (isset($this->_columns[$k])) {
 			return ($this->_collection[$this->_iterator][$k]);
 		}
 
 		return parent::__get($k);
 	}
 
-	function __set($k, $v) {
-		if(isset($this->_columns[$k])) {
+	function __set($k, $v)
+	{
+		if (isset($this->_columns[$k])) {
 			$this->_collection[$this->_iterator][$this->_columns[$k]] = $v;
 		} else {
 			parent::__set($k, $v);
