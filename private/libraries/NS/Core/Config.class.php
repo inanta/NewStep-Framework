@@ -31,6 +31,24 @@ use NS\Database\ActiveRecord;
  */
 class Config extends SingletonObject {
 	/**
+	 *Add new configuration on run time
+	 *
+	 *@param string $value Value that will be added to configuration object
+	 */
+	function add($value) {
+		$this->createProperties($value, true);
+	}
+
+	/**
+	 *Bind value to class property on run time
+	 *
+	 *@param string $value Value that will be binded to configuration object
+	 */
+	function bind(&$value) {
+		$this->bindProperties($value);
+	}
+
+	/**
 	 *Load configuration file by name in configuration folder
 	 *
 	 *@param string $name Configuration name that will be loaded 
@@ -60,24 +78,6 @@ class Config extends SingletonObject {
 		}
 
 		$this->createProperties(array($name => $mapper_config), true);
-	}
-
-	/**
-	 *Bind value to class property on run time
-	 *
-	 *@param string $value Value that will be binded to configuration object
-	 */
-	function bind(&$value) {
-		$this->bindProperties($value);
-	}
-
-	/**
-	 *Add new configuration on run time
-	 *
-	 *@param string $value Value that will be added to configuration object
-	 */
-	function add($value) {
-		$this->createProperties($value, true);
 	}
 
 	/**
