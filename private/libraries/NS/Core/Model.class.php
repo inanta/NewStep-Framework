@@ -30,7 +30,8 @@ use NS\Exception\ClassException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-abstract class Model extends ActiveRecord {
+abstract class Model extends ActiveRecord
+{
 	static private $_modelsInstance = array();
 
 	/**
@@ -41,7 +42,8 @@ abstract class Model extends ActiveRecord {
 	 *@param boolean $with_relation Determine if query will be including related table
 	 *@return array
 	 */
-	function get($columns = null, $condition = null, $with_relation = true) {
+	function get($columns = null, $condition = null, $with_relation = true)
+	{
 		$this->find($columns, $condition, $with_relation);
 		return $this->toArray(1);
 	}
@@ -57,7 +59,8 @@ abstract class Model extends ActiveRecord {
 	 *@param boolean $with_relation Determine if query will be including related table
 	 *@return array
 	 */
-	function getAll($columns = null, $condition = null, $order = null, $offset = null, $limit = null, $with_relation = true) {
+	function getAll($columns = null, $condition = null, $order = null, $offset = null, $limit = null, $with_relation = true)
+	{
 		$this->findAll($columns, $condition, $order, $offset, $limit, $with_relation);
 		return $this->toArray();
 	}
@@ -69,7 +72,8 @@ abstract class Model extends ActiveRecord {
 	 *@throws ActiveRecordException If primary key is not defined in this object 
 	 *@return array
 	 */
-	function getByPK($id, $with_relation = true) {
+	function getByPK($id, $with_relation = true)
+	{
 		$this->findByPK($id, $with_relation);
 		return $this->toArray(1);
 	}
@@ -82,7 +86,8 @@ abstract class Model extends ActiveRecord {
 	 *@throws ActiveRecordException If primary key is not defined in this object 
 	 *@return array
 	 */
-	function getFirst($columns = null, $condition = null, $with_relation = true) {
+	function getFirst($columns = null, $condition = null, $with_relation = true)
+	{
 		$this->findFirst($columns, $with_relation);
 		return $this->toArray(1);
 	}
@@ -95,7 +100,8 @@ abstract class Model extends ActiveRecord {
 	 *@throws ActiveRecordException If primary key is not defined in this object 
 	 *@return array
 	 */
-	function getLast($columns = null, $with_relation = true) {
+	function getLast($columns = null, $with_relation = true)
+	{
 		$this->findLast($columns, $with_relation);
 		return $this->toArray(1);
 	}
@@ -105,7 +111,8 @@ abstract class Model extends ActiveRecord {
 	 *
 	 *@param string $model Model class name
 	 */
-	static function deleteInstance($model) {
+	static function deleteInstance($model)
+	{
 		unset(self::$_modelsInstance[$model]);
 	}
 
@@ -114,25 +121,37 @@ abstract class Model extends ActiveRecord {
 	 *
 	 *@return self
 	 */
-	static function getInstance($model, $path = '') {
-		if(isset(self::$_modelsInstance[$model]['0'])) {
-			if(self::$_modelsInstance[$model]['0']->_isUsedInRelation == null) {
+	static function getInstance($model, $path = '', $app_folder = '')
+	{
+		if (isset(self::$_modelsInstance[$model]['0'])) {
+			if (self::$_modelsInstance[$model]['0']->_isUsedInRelation == null) {
 				return self::$_modelsInstance[$model]['0'];
 			} else {
-				self::$_modelsInstance[$model][self::$_modelsInstance[$model]['0']->_isUsedInRelation] = clone self::$_modelsInstance[$model]['0'];
+				self::$_modelsInstance[$model][self::$_modelsInstance[$model]['0']->_isUsedInRelation] = self::$_modelsInstance[$model]['0'];
+				self::$_modelsInstance[$model]['0']->_isUsedInRelation = null;
 			}
 		}
 
 		$class = explode('\\', $model);
 
-		if($path != '') $path .= '/';
-		$path = NS_SYSTEM_PATH . '/' . Config::getInstance()->ApplicationFolder . '/models/' . $path . end($class) . '.php';
+		if ($path != '')
+			$path .= '/';
 
-		if(!is_file($path)) throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $path));
-		if(!is_readable($path)) throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $path));
+		if ($app_folder === '')
+			$app_folder = Config::getInstance()->ApplicationFolder;
+		else
+			$app_folder = 'application/' . $app_folder;
+
+		$path = NS_SYSTEM_PATH . '/' . $app_folder . '/models/' . $path . end($class) . '.php';
+
+		if (!is_file($path))
+			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $path));
+		if (!is_readable($path))
+			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $path));
 		require_once($path);
 
-		if(!class_exists($model)) throw new ClassException(array('code' => ClassException::CLASS_NOT_FOUND, 'class' => $model));
+		if (!class_exists($model))
+			throw new ClassException(array('code' => ClassException::CLASS_NOT_FOUND, 'class' => $model));
 
 		return (self::$_modelsInstance[$model]['0'] = new $model);
 	}
