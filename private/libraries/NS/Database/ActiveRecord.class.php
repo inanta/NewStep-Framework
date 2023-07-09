@@ -274,7 +274,7 @@ class ActiveRecord
 		return $this->_findAll($column, $condition, null, $order, $offset, $limit, $with_relation, $distinct);
 	}
 
-	function findAllAndGroupBy($column = '*', $condition = null, $group = null, $oder = null, $offset = null, $limit = null)
+	function findAllAndGroupBy($column = '*', $condition = null, $group = null, $order = null, $offset = null, $limit = null)
 	{
 		$columns = is_array($column) ? $column : [$column];
 
@@ -285,7 +285,7 @@ class ActiveRecord
 		}
 
 
-		return $this->_findAll($columns, $condition, $group, $order, $offset, $limit, $with_relation, $distinct);
+		return $this->_findAll($columns, $condition, $group, $order, $offset, $limit);
 	}
 
 	/**
