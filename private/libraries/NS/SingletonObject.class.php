@@ -26,27 +26,33 @@ namespace NS;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-abstract class SingletonObject extends Object {
+abstract class SingletonObject extends BaseObject
+{
 	private static $_instances = array();
 
 	/**
-	*Create or retrieve object instance, must be overidden in child class
-	*
-	*/
-	static function getInstance() {
+	 *Create or retrieve object instance, must be overidden in child class
+	 *
+	 */
+	static function getInstance()
+	{
 		throw new OverrideMethodException(__FUNCTION__);
 	}
 
 	/**
-	*Create new object instance
-	*
-	*@param string $class Class name, use __CLASS__
-	*@param array $args Class arguments that will be passed to constructor
-	*@param mixed $id Identifier for newly created instance
-	*/
-	protected static function createInstance($class = null, $args = array(), $id = 0) {
-		if($class == null) throw new MissingArgumentException(__FUNCTION__, 'class');
-		if(!isset(self::$_instances[$class][$id])) self::$_instances[$class][$id] = new $class($args); 
+	 *Create new object instance
+	 *
+	 *@param string $class Class name, use __CLASS__
+	 *@param array $args Class arguments that will be passed to constructor
+	 *@param mixed $id Identifier for newly created instance
+	 */
+	protected static function createInstance($class = null, $args = array(), $id = 0)
+	{
+		if ($class == null)
+			throw new MissingArgumentException(__FUNCTION__, 'class');
+
+		if (!isset(self::$_instances[$class][$id]))
+			self::$_instances[$class][$id] = new $class($args);
 
 		return self::$_instances[$class][$id];
 	}
