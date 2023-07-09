@@ -26,18 +26,21 @@ namespace NS\Utility;
  *
  * @author Inanta Martsanto <inanta@inationsoft.com>
  */
-class XML {
-	static function fromArray($data, $parent_tag = 'xml') {
+class XML
+{
+	static function fromArray($data, $parent_tag = 'xml')
+	{
 		$xml = new \SimpleXMLElement('<' . $parent_tag . '/>');
 		self::_fromArray($data, $xml);
 
 		return $xml->asXML();
 	}
 
-	private static function _fromArray($data, $xml = null) {
-		foreach($data as $key => $value) {
-			if(is_array($value)) {
-				if(!is_numeric($key)) {
+	private static function _fromArray($data, $xml = null)
+	{
+		foreach ($data as $key => $value) {
+			if (is_array($value)) {
+				if (!is_numeric($key)) {
 					$subnode = $xml->addChild($key);
 					XML::_fromArray($value, $subnode);
 				} else {
@@ -45,7 +48,7 @@ class XML {
 					XML::_fromArray($value, $subnode);
 				}
 			} else {
-				if(is_numeric($key)) {
+				if (is_numeric($key)) {
 					$key = 'item' . $key;
 				}
 
