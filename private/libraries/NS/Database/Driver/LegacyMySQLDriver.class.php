@@ -42,7 +42,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function __construct($args = array())
 	{
-		if (!function_exists('mysqli_connect'))
+		if (!function_exists('mysql_connect'))
 			throw new LibraryException(array('code' => NS_EX_LIB_NOT_INSTALLED, 'class' => __CLASS__, 'library' => 'MySQL'));
 
 		parent::__construct($args);
@@ -63,7 +63,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function affectedRows()
 	{
-		return @mysqli_affected_rows($this->Connection);
+		return @mysql_affected_rows($this->Connection);
 	}
 
 	/**
@@ -73,7 +73,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	function close()
 	{
 		if (!$this->Persistent)
-			@mysqli_close($this->Connection);
+			@mysql_close($this->Connection);
 	}
 
 	/**
@@ -83,13 +83,10 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function connect()
 	{
-		$this->Connection = ($this->Persistent ? @mysqli_pconnect($this->Host, $this->Username, $this->Password) : @mysqli_connect($this->Host, $this->Username, $this->Password));
+		$this->Connection = ($this->Persistent ? @mysql_pconnect($this->Host, $this->Username, $this->Password) : @mysql_connect($this->Host, $this->Username, $this->Password));
 
-
-		//var_dump($this->Connection);die();
-
-		if (!$this->Connection != 0) {
-			switch (mysqli_connect_errno()) {
+		if (!is_resource($this->Connection)) {
+			switch (mysql_errno()) {
 				case 1045:
 					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_ACCESS, 'user' => $this->Username, 'database' => $this->Database));
 					break;
@@ -99,10 +96,11 @@ class MySQLDriver extends Database implements IDatabaseDriver
 			}
 		}
 
-		if (!@mysqli_select_db($this->Connection, $this->Database)) {
-			switch (mysqli_errno()) {
+		if (!@mysql_selectdb($this->Database, $this->Connection)) {
+			switch (mysql_errno()) {
 				case 1044:
 					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_ACCESS, 'user' => $this->Username, 'database' => $this->Database));
+					break;
 				case 1049:
 				default:
 					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_USE, 'database' => $this->Database));
@@ -116,7 +114,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function escape($param)
 	{
-		return @mysqli_real_escape_string($this->Connection, $param);
+		return @mysql_real_escape_string($param, $this->Connection);
 	}
 
 	/**
@@ -125,7 +123,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function fetchArray($result)
 	{
-		return @mysqli_fetch_array($result);
+		return @mysql_fetch_array($result);
 	}
 
 	/**
@@ -134,7 +132,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function fetchAssoc($result)
 	{
-		return @mysqli_fetch_assoc($result);
+		return @mysql_fetch_assoc($result);
 	}
 
 	/**
@@ -143,7 +141,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function fetchRow($result)
 	{
-		return @mysqli_fetch_row($result);
+		return @mysql_fetch_row($result);
 	}
 
 	/**
@@ -152,7 +150,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function fieldName($result, $offset)
 	{
-		return @mysqli_fetch_field_direct($result, $offset)->name;
+		return @mysql_field_name($result, $offset);
 	}
 
 	/**
@@ -161,19 +159,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function fieldFlags($result, $offset)
 	{
-		return @mysqli_field_flags($result, $offset);
-	}
-
-	function getColumns($tables)
-	{
-		$result = $this->query('SHOW COLUMNS FROM `' . $tables . '`');
-		$columns = array();
-
-		while ($row = $this->fetchRow($result)) {
-			$columns[] = $row[0];
-		}
-
-		return $columns;
+		return @mysql_field_flags($result, $offset);
 	}
 
 	/**
@@ -198,7 +184,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function lastInsertID()
 	{
-		return @mysqli_insert_id($this->Connection);
+		return @mysql_insert_id($this->Connection);
 	}
 
 	/**
@@ -207,7 +193,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function numFields($result)
 	{
-		return @mysqli_num_fields($result);
+		return @mysql_num_fields($result);
 	}
 
 	/**
@@ -216,7 +202,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function numRows($result)
 	{
-		return @mysqli_num_rows($result);
+		return @mysql_num_rows($result);
 	}
 
 	/**
@@ -227,18 +213,21 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function query($query)
 	{
-		if ($result = @mysqli_query($this->Connection, $query))
+		if ($result = @mysql_query($query, $this->Connection))
 			return $result;
 
-		switch (@mysqli_errno($this->Connection)) {
+		switch (@mysql_errno($this->Connection)) {
 			case 1054:
 				throw new DatabaseException(array('code' => DatabaseException::QUERY_COLUMN_NOT_EXIST, 'query' => $query));
+				break;
 			case 1064:
 				throw new DatabaseException(array('code' => DatabaseException::QUERY_ERROR, 'query' => $query));
+				break;
 			case 1146:
 				throw new DatabaseException(array('code' => DatabaseException::QUERY_TABLE_NOT_EXIST, 'query' => $query));
+				break;
 			default:
-				throw new DatabaseException(array('code' => @mysqli_errno($this->Connection), 'message' => @mysqli_error($this->Connection), 'query' => $query));
+				throw new DatabaseException(array('code' => @mysql_errno($this->Connection), 'message' => @mysql_error($this->Connection), 'query' => $query));
 		}
 
 		return false;
