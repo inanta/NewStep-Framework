@@ -26,40 +26,45 @@ namespace NS\Security\Cryptography;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class SimpleXor {
+class SimpleXor
+{
 	private $_key = 'NS';
-	
-	function __construct($key = null) {
-		if(!empty($key)) 
+
+	function __construct($key = null)
+	{
+		if (!empty($key))
 			$this->_key = $key;
 	}
 
-	function encrypt($string) {
+	function encrypt($string)
+	{
 		return base64_encode($this->_simpleXor($string, $this->_key));
 	}
 
-	function decrypt($string) {
+	function decrypt($string)
+	{
 		return $this->_simpleXor(base64_decode($string), $this->_key);
 	}
 
-	private function _simpleXor($string, $key) {
-		$key_list = array();	// Initialise key array
-		$output = '';	// Initialise out variable
+	private function _simpleXor($string, $key)
+	{
+		$key_list = array(); // Initialise key array
+		$output = ""; // Initialise out variable
 
-		// Convert $key into array of ASCII values
-		for($i = 0; $i < strlen ($key); $i++) {
-			$key_list[$i] = ord (substr ($key, $i, 1));
+		## Convert $Key into array of ASCII values
+		for ($i = 0; $i < strlen($key); $i++) {
+			$key_list[$i] = ord(substr($key, $i, 1));
 		}
 
-		// Step through string a character at a time
-		for($i = 0; $i < strlen ($string); $i++) {
+		## Step through string a character at a time
+		for ($i = 0; $i < strlen($string); $i++) {
 			// Get ASCII code from string, get ASCII code from key (loop through with MOD), XOR the two, get the character from the result
 			// % is MOD (modulus), ^ is XOR
-			$output .= chr(ord(substr($string, $i, 1)) ^ ($key_list[$i % strlen ($key)]));
+			$output .= chr(ord(substr($string, $i, 1)) ^ ($key_list[$i % strlen($key)]));
 		}
 
-		// Return the result
+		## Return the result
 		return $output;
-	}	
+	}
 }
 ?>
