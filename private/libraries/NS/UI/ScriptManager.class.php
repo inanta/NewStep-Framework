@@ -70,8 +70,8 @@ class ScriptManager extends SingletonObject {
 		if(!defined('NS_JS_RENDERED')) define('NS_JS_RENDERED', true);
 
 		$contents = '';
-		foreach($this->_sources as $k => $source) { $contents .= file_get_contents($source); unset($this->_sources[$k]); }
-		foreach($this->_scripts as $k => $script) { $contents .= $script; unset($this->_scripts[$k]); }
+		foreach($this->_sources as $k => $source) { $contents .= file_get_contents($source) . "\n"; unset($this->_sources[$k]); }
+		foreach($this->_scripts as $k => $script) { $contents .= $script  . "\n"; unset($this->_scripts[$k]); }
 
 		return $contents;
 	}
