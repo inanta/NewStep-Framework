@@ -32,23 +32,32 @@ use NS\Core\Session;
  *@property ClientRequest $Get Get value from $_GET variable
  *@property ClientRequest $QueryString Get value from $_GET variable
  */
-class ClientRequest extends SingletonObject {
+class ClientRequest extends SingletonObject
+{
 	private $_input;
 
 	/**
-	*Initialize client request
-	*
-	*/
-	function __construct() {
+	 *Initialize client request
+	 *
+	 */
+	function __construct()
+	{
 		$this->_input =& $_REQUEST;
 	}
 
-	function __get($k) {
-		if($k == 'Post') {
+	function __get($k)
+	{
+		if ($k == 'Post') {
 			$this->_input =& $_POST;
 			return $this;
-		} else if($k == 'Get' || $k == 'QueryString') {
+		} else if ($k == 'Get' || $k == 'QueryString') {
 			$this->_input =& $_GET;
+			return $this;
+		} else if ($k == 'JSON') {
+			$input = file_get_contents('php://input');
+			$input = json_decode($input, true);
+
+			$this->_input = $input;
 			return $this;
 		}
 
@@ -56,19 +65,20 @@ class ClientRequest extends SingletonObject {
 	}
 
 	/**
-	*Retrieve user request data from $_GET, $_POST or $_REQUEST
-	*
-	*@param mixed $keys Value key that that will be retrieved, it can be string or associative array to get multiple data
-	*/
-	function value($keys = null) {
-		if(is_array($keys)) {
-			foreach($keys as $key => $value) {
+	 *Retrieve user request data from $_GET, $_POST or $_REQUEST
+	 *
+	 *@param mixed $keys Value key that that will be retrieved, it can be string or associative array to get multiple data
+	 */
+	function value($keys = null)
+	{
+		if (is_array($keys)) {
+			foreach ($keys as $key => $value) {
 				$value = trim($value);
 
 				$keys[$value] = $this->_input[$value];
 				unset($keys[$key]);
 			}
-		} else if($keys == null) {
+		} else if ($keys == null) {
 			$keys = $this->_input;
 		} else {
 			$keys = trim($keys);
@@ -79,23 +89,30 @@ class ClientRequest extends SingletonObject {
 	}
 
 	/**
-	*Validate  user request data from $_GET, $_POST or $_REQUEST
-	*
-	*@param mixed $keys Value key that that will be validated, it can be string or associative array to get multiple data
-	*@param array $validators Array of valid Validator object
-	*@param boolean $is_returned Determine if validated data is returned or not  
-	*/
-	function validate($keys, $validators, $is_returned = false) {
+	 *Validate  user request data from $_GET, $_POST or $_REQUEST
+	 *
+	 *@param mixed $keys Value key that that will be validated, it can be string or associative array to get multiple data
+	 *@param array $validators Array of valid Validator object
+	 *@param boolean $is_returned Determine if validated data is returned or not  
+	 */
+	function validate($keys, $validators, $is_returned = false)
+	{
 		$single = false;
-		if(!is_array($keys)) { $keys = array($keys); $single = true; }
-		if(!is_array($validators)) $validators = array($validators);
+		if (!is_array($keys)) {
+			$keys = array($keys);
+			$single = true;
+		}
+		if (!is_array($validators))
+			$validators = array($validators);
 
 		$return;
-		foreach($keys as $key) {
-			foreach($validators as $validator) {
-				if(!$validator->validate($this->_input[$key])) return false;
+		foreach ($keys as $key) {
+			foreach ($validators as $validator) {
+				if (!$validator->validate($this->_input[$key]))
+					return false;
 
-				if($is_returned) $return[$key] = $this->_input[$key];
+				if ($is_returned)
+					$return[$key] = $this->_input[$key];
 			}
 		}
 
@@ -103,22 +120,26 @@ class ClientRequest extends SingletonObject {
 	}
 
 	/**
-	*Clone data from $_GET, $_POST or $_REQUEST to session ($_SESSION)
-	*
-	*/
-	function saveToSession() {
+	 *Clone data from $_GET, $_POST or $_REQUEST to session ($_SESSION)
+	 *
+	 */
+	function saveToSession()
+	{
 		$session = Session::getInstance();
 
-		foreach($this->_input as $key => $param) { 
+		foreach ($this->_input as $key => $param) {
 			$session->set($key, $param);
 		}
 	}
 
 	/**
-	*Create or retrieve object instance
-	*
-	*@return ClientRequest
-	*/
-	static function getInstance() { return self::createInstance(__CLASS__); }
+	 *Create or retrieve object instance
+	 *
+	 *@return ClientRequest
+	 */
+	static function getInstance()
+	{
+		return self::createInstance(__CLASS__);
+	}
 }
 ?>
