@@ -64,6 +64,10 @@ class ClientRequest extends SingletonObject
 		return parent::__get($k);
 	}
 
+	function method() {
+		return $_SERVER['REQUEST_METHOD'];
+	}
+
 	/**
 	 *Retrieve user request data from $_GET, $_POST or $_REQUEST
 	 *
