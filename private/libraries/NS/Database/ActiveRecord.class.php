@@ -63,6 +63,8 @@ class ActiveRecord
 	 */
 	public $Function;
 
+	public $TableAlias = '';
+
 	protected $_isUsedInRelation = null;
 	private $_multiRowResult = null, $_columns, $_originalColumns, $_lastQueriedColumns,
 	$_numRows = 0, $_rowIterator, $_isDataInitialized = false, $_hasRelation = false, $_dataShadow,
@@ -146,9 +148,9 @@ class ActiveRecord
 		}
 
 		if (isset($constructed['join']) && count($constructed['join']) > 0) {
-			$this->LastQuery = 'SELECT COUNT(' . $this->quote(key($this->_columns)) . ') FROM ' . $this->Table . ' ' . implode(' ', $constructed['join']);
+			$this->LastQuery = 'SELECT COUNT(' . $this->quote(key($this->_columns)) . ') FROM `' . $this->Table . '` ' . ($this->TableAlias != '' ? '`' . $this->TableAlias . '` ' : ' ') . implode(' ', $constructed['join']);
 		} else {
-			$this->LastQuery = 'SELECT COUNT(' . $this->quote(key($this->_columns)) . ') FROM ' . $this->Table;
+			$this->LastQuery = 'SELECT COUNT(' . $this->quote(key($this->_columns)) . ') FROM `' . $this->Table . '`' . ($this->TableAlias != '' ? ' `' . $this->TableAlias . '`' : '');
 		}
 
 		if ($condition != null || $this->_hasRelation) {
@@ -495,7 +497,7 @@ class ActiveRecord
 						$this->_columns[$column] = null;
 				}
 
-				if ($this->PrimaryKey != null)
+				if ($this->PrimaryKey != null && isset($this->_columns[$this->PrimaryKey]))
 					$this->_columns[$this->PrimaryKey] = $data[$this->PrimaryKey];
 				else
 					$this->_dataShadow = $this->_columns;
@@ -609,7 +611,7 @@ class ActiveRecord
 	 */
 	function quote($column, $with_table = true)
 	{
-		return (($with_table ? $this->Database->FieldQuote . $this->Table . $this->Database->FieldQuote . '.' : '') . $this->Database->FieldQuote . $column . $this->Database->FieldQuote);
+		return (($with_table ? $this->Database->FieldQuote . ($this->TableAlias != '' ? $this->TableAlias : $this->Table) . $this->Database->FieldQuote . '.' : '') . $this->Database->FieldQuote . $column . $this->Database->FieldQuote);
 	}
 
 	/**
@@ -647,7 +649,7 @@ class ActiveRecord
 			$single = (count($this->_lastQueriedColumns) == 1);
 
 			for ($i = ($this->_rowIterator - 1); $i < $limit; ++$i) {
-				$key = ($this->PrimaryKey != null ? $this->_columns[$this->PrimaryKey] : $i);
+				$key = ($this->PrimaryKey != null && isset($this->_columns[$this->PrimaryKey]) ? $this->_columns[$this->PrimaryKey] : $i);
 
 				if ($single) {
 					$array[$key] = (is_string($this->_columns[end($this->_lastQueriedColumns)]) ? $this->_columns[end($this->_lastQueriedColumns)] : ($this->_columns[end($this->_lastQueriedColumns)] instanceof ActiveRecord ? $this->_columns[end($this->_lastQueriedColumns)]->toArray() : null));
@@ -772,6 +774,11 @@ class ActiveRecord
 	{
 		if ($fk == null)
 			$fk = $pk;
+
+		if ($this->Table == $ar->Table && $ar->TableAlias == '') {
+			$this->TableAlias = $this->Table . '_1';
+			$ar->TableAlias = $ar->Table . '_2';
+		}
 
 		// $this->_addRelation('_hasOne', $ar, $pk, $fk, $join_type);
 		$this->_addRelationInitialization($ar, $pk, $fk);
@@ -933,7 +940,7 @@ class ActiveRecord
 				if ($with_relation === false || (is_array($with_relation) && !in_array($relation['ar']->Table, $with_relation)))
 					continue;
 
-				$return['join'][] = $this->_getJoinType($relation['join_type']) . ' ' . $relation['ar']->quote($relation['ar']->Table, false) . ' ON ' . $relation['ar']->quote($relation['fk']) . ' = ' . $parent_relation->quote($relation['pk']);
+				$return['join'][] = $this->_getJoinType($relation['join_type']) . ' ' . $relation['ar']->quote($relation['ar']->Table, false) . ($relation['ar']->TableAlias != '' ? ' ' . $relation['ar']->quote($relation['ar']->TableAlias, false) : '') . ' ON ' . $relation['ar']->quote($relation['fk']) . ' = ' . $parent_relation->quote($relation['pk']);
 
 				if ($construct_column) {
 					$return['column'] .= $this->_constructColumn($relation);
@@ -966,19 +973,34 @@ class ActiveRecord
 				$column = array($column);
 		}
 
-		if ($this->PrimaryKey != null)
+		if ($this->PrimaryKey != null && $group == null)
 			$column = array_merge(array($this->PrimaryKey), $column);
+
 		$this->_lastQueriedColumns = array();
 
 		foreach ($column as $k => $v) {
-			if (!(is_object($v) && $v instanceof DatabaseFunction) && !array_key_exists($v, $this->_columns))
-				throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $v, 'table' => $this->Table));
-
 			if (is_object($v)) {
 				$v .= '';
 				$column[$k] = $v;
 			} else {
-				$column[$k] = $this->quote($v);
+				if ($this->hasColumn($v)) {
+					$column[$k] = $this->quote($v);
+				} else {
+					$is_column_found = false;
+
+					foreach ($this->_hasOne as $has_one) {
+						if ($has_one['ar']->hasColumn($v)) {
+							$column[$k] = $has_one['ar']->quote($v);
+
+							$is_column_found = true;
+							break;
+						}
+					}
+
+					if (!$is_column_found) {
+						throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $v, 'table' => $this->Table));
+					}
+				}
 			}
 
 			if (isset($this->_column_aliases[$v]) && $k != 0) {
@@ -997,13 +1019,15 @@ class ActiveRecord
 			$constructed = array('column' => '');
 			$this->_constructJoin($this, $with_relation, true, $constructed);
 
-			$column .= $constructed['column'];
+			if ($group == null) {
+				$column .= $constructed['column'];
+			}
 		}
 
 		if (isset($constructed['join'])) {
-			$this->LastQuery = 'SELECT ' . ($distinct ? 'DISTINCT ' : '') . $column . ' FROM ' . $this->Table . ' ' . implode(' ', $constructed['join']);
+			$this->LastQuery = 'SELECT ' . ($distinct ? 'DISTINCT ' : '') . $column . ' FROM `' . $this->Table . '` ' . ($this->TableAlias != '' ? '`' . $this->TableAlias . '` ' : ' ') . implode(' ', $constructed['join']);
 		} else {
-			$this->LastQuery = 'SELECT ' . ($distinct ? 'DISTINCT ' : '') . $column . ' FROM ' . $this->Table;
+			$this->LastQuery = 'SELECT ' . ($distinct ? 'DISTINCT ' : '') . $column . ' FROM `' . $this->Table . '`' . ($this->TableAlias != '' ? ' `' . $this->TableAlias . '`' : '');
 		}
 
 		if ($condition != null || $this->_hasRelation) {
@@ -1012,8 +1036,18 @@ class ActiveRecord
 
 		if (is_array($group)) {
 			foreach ($group as $group_key => $group_column) {
-				if (!$this->hasColumn($group_column)) {
+				if (!$this->hasColumn($group_column, true)) {
 					unset($group[$group_key]);
+				} else {
+					if ($this->hasColumn($group_column)) {
+						$group[$group_key] = $this->quote($group_column);
+					} else {
+						foreach ($this->_hasOne as $has_one) {
+							if ($has_one['ar']->hasColumn($v)) {
+								$column[$k] = $has_one['ar']->quote($v);
+							}
+						}
+					}
 				}
 			}
 
