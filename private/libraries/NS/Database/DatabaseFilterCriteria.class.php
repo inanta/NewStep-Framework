@@ -29,144 +29,167 @@ use NS\Exception\ActiveRecordException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class DatabaseFilterCriteria extends BaseObject {
+class DatabaseFilterCriteria extends BaseObject
+{
 	const EXP_AND = 1;
 	const EXP_OR = 2;
 
-	private $_conditions, $_ar, $_exp = ' AND ';
+	private $_conditions = [], $_ar, $_exp = ' AND ';
 
 	/**
-	*Initialize filter criteria
-	*
-	*/
-	function __construct(&$ar) { $this->_ar =& $ar; }
+	 *Initialize filter criteria
+	 *
+	 */
+	function __construct(&$ar)
+	{
+		$this->_ar =& $ar;
+	}
 
 	/**
-	*Filter query result that have equal value
-	*
-	*/
-	function equals($column, $value) {
+	 *Filter query result that have equal value
+	 *
+	 */
+	function equals($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " = '" . $this->_ar->Database->escape($value) . "'");
 	}
 
 	/**
-	*Filter query result that not have equal value
-	*
-	*/
-	function notEquals($column, $value) {
+	 *Filter query result that not have equal value
+	 *
+	 */
+	function notEquals($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " != '" . $this->_ar->Database->escape($value) . "'");
 	}
 
 	/**
-	*Filter query result that contain selected text
-	*
-	*/
-	function contains($column, $value) {
+	 *Filter query result that contain selected text
+	 *
+	 */
+	function contains($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " LIKE '%" . $this->_ar->Database->escape($value) . "%'");
 	}
 
 	/**
-	*Filter query result that start with selected text
-	*
-	*/
-	function startsWith($column, $value) {
+	 *Filter query result that start with selected text
+	 *
+	 */
+	function startsWith($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " LIKE '" . $this->_ar->Database->escape($value) . "%'");
 	}
 
 	/**
-	*Filter query result that end with selected text
-	*
-	*/
-	function endsWith($column, $value) {
+	 *Filter query result that end with selected text
+	 *
+	 */
+	function endsWith($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " LIKE '%" . $this->_ar->Database->escape($value) . "'");
 	}
 
 	/**
-	*Filter query result that in selected array
-	*
-	*/
-	function in($column, $value) {
-		if(is_array($value)) {
-			foreach($value as $k => $v) {
+	 *Filter query result that in selected array
+	 *
+	 */
+	function in($column, $value)
+	{
+		if (is_array($value)) {
+			foreach ($value as $k => $v) {
 				$value[$k] = $this->_ar->Database->escape($v);
 			}
 
-			if(($in = @implode("', '", $value)) != '') $this->addCondition($column, $this->_ar->quote($column) . " IN ('" . $in . "')");
+			if (($in = @implode("', '", $value)) != '')
+				$this->addCondition($column, $this->_ar->quote($column) . " IN ('" . $in . "')");
 		}
 	}
 
 	/**
-	*Filter query result that not in selected array
-	*
-	*/
-	function notIn($column, $value) {
-		foreach($value as $k => $v) {
+	 *Filter query result that not in selected array
+	 *
+	 */
+	function notIn($column, $value)
+	{
+		foreach ($value as $k => $v) {
 			$value[$k] = $this->_ar->Database->escape($v);
 		}
 
-		if(($not_in = @implode("', '", $value)) != '') $this->addCondition($column, $this->_ar->quote($column) . " NOT IN ('" . $not_in . "')");
+		if (($not_in = @implode("', '", $value)) != '')
+			$this->addCondition($column, $this->_ar->quote($column) . " NOT IN ('" . $not_in . "')");
 	}
 
 	/**
-	*Filter query result that greater than selected value
-	*
-	*/
-	function greaterThan($column, $value) {
+	 *Filter query result that greater than selected value
+	 *
+	 */
+	function greaterThan($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " > '" . $this->_ar->Database->escape($value) . "'");
 	}
 
 	/**
-	*Filter query result that less that selected value
-	*
-	*/
-	function lessThan($column, $value) {
+	 *Filter query result that less that selected value
+	 *
+	 */
+	function lessThan($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " < '" . $this->_ar->Database->escape($value) . "'");
 	}
 
 	/**
-	*Filter query result that greater than selected value
-	*
-	*/
-	function greaterThanOrEquals($column, $value) {
+	 *Filter query result that greater than selected value
+	 *
+	 */
+	function greaterThanOrEquals($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " >= '" . $this->_ar->Database->escape($value) . "'");
 	}
 
 	/**
-	*Filter query result that less that selected value
-	*
-	*/
-	function lessThanOrEquals($column, $value) {
+	 *Filter query result that less that selected value
+	 *
+	 */
+	function lessThanOrEquals($column, $value)
+	{
 		$this->addCondition($column, $this->_ar->quote($column) . " <= '" . $this->_ar->Database->escape($value) . "'");
 	}
 
 	/**
-	*Add custom filter
-	*
-	*/
-	function addCondition($column, $condition) {
+	 *Add custom filter
+	 *
+	 */
+	function addCondition($column, $condition)
+	{
 		// if(!array_key_exists($column, $this->_ar->getAllColumns())) throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $column, 'table' => $this->_ar->Table));
-		if(!in_array($column, $this->_ar->getAllColumns())) throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $column, 'table' => $this->_ar->Table));
+		if (!in_array($column, $this->_ar->getAllColumns()))
+			throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $column, 'table' => $this->_ar->Table));
 
 		$this->_conditions[md5($condition)] = $condition;
 	}
 
 	/**
-	*Change expression to OR or AND
-	*
-	*/
-	function setExpression($exp) { $this->_exp =  ($exp == self::EXP_OR ? ' OR ' : ' AND '); }
+	 *Change expression to OR or AND
+	 *
+	 */
+	function setExpression($exp)
+	{
+		$this->_exp = ($exp == self::EXP_OR ? ' OR ' : ' AND ');
+	}
 
 	/**
-	*Merge another filter criteria to this object
-	*
-	*/
-	function merge($fc) {
-		if(!$fc instanceof DatabaseFilterCriteria) {
+	 *Merge another filter criteria to this object
+	 *
+	 */
+	function merge($fc)
+	{
+		if (!$fc instanceof DatabaseFilterCriteria) {
 			// TODO: Add error message or create new exception class
 			throw new Exception();
 		}
 
-		if($this->_ar->Table != $fc->_ar->Table) {
+		if ($this->_ar->Table != $fc->_ar->Table) {
 			// TODO: Add error message or create new exception class
 			throw new Exception();
 		}
@@ -174,8 +197,10 @@ class DatabaseFilterCriteria extends BaseObject {
 		$this->_conditions = array_merge($this->_conditions, $fc->_conditions);
 	}
 
-	function __toString() {
-		if(count($this->_conditions) == 0) return '';
+	function __toString()
+	{
+		if (count($this->_conditions) == 0)
+			return '';
 
 		return ('(' . implode($this->_exp, $this->_conditions) . ')');
 	}
