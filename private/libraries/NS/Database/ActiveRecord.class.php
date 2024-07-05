@@ -864,8 +864,6 @@ class ActiveRecord
 
 		$this->_hasRelation = true;
 		$ar->_isUsedInRelation = $this->Table;
-
-		// if($fk == null) $fk = $pk;
 	}
 
 	function _constructColumn($relation)
@@ -986,20 +984,12 @@ class ActiveRecord
 				if ($this->hasColumn($v)) {
 					$column[$k] = $this->quote($v);
 				} else {
-					$is_column_found = false;
-
 					foreach ($this->_hasOne as $has_one) {
 						if ($has_one['ar']->hasColumn($v)) {
 							$column[$k] = $has_one['ar']->quote($v);
-
-							$is_column_found = true;
-							break;
 						}
 					}
 
-					if (!$is_column_found) {
-						throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $v, 'table' => $this->Table));
-					}
 				}
 			}
 
