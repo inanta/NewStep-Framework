@@ -29,33 +29,40 @@ use NS\Exception\IOException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class FileReader extends BaseObject {
+class FileReader extends BaseObject
+{
 	private $_pos = 0, $_fp, $_length;
 
-	function __construct($filename){
-		if(!is_file($filename)) throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
+	function __construct($filename)
+	{
+		if (!is_file($filename))
+			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
 
 		$this->createProperty('Length', @filesize($filename));
 		$this->bindProperty('CurrentPosition', $this->_pos);
 		$this->setReadOnlyProperties(array('Length', 'CurrentPosition'));
 
 		$this->_fp = fopen($filename, 'rb');
-		if(!$this->_fp) throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $filename));
+		if (!$this->_fp)
+			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $filename));
 	}
 
-	function __destruct() {
+	function __destruct()
+	{
 		fclose($this->_fp);
 	}
 
-	function read($bytes = null) {
-		if(!isset($bytes)) $bytes = $this->Length;
+	function read($bytes = null)
+	{
+		if (!isset($bytes))
+			$bytes = $this->Length;
 
 		fseek($this->_fp, $this->_pos);
 
 		$data = '';
 		while ($bytes > 0) {
-			$chunk  = fread($this->_fp, $bytes);
-			$data  .= $chunk;
+			$chunk = fread($this->_fp, $bytes);
+			$data .= $chunk;
 			$bytes -= strlen($chunk);
 		}
 		$this->_pos = ftell($this->_fp);
@@ -63,9 +70,9 @@ class FileReader extends BaseObject {
 		return $data;
 	}
 
-	function seek($pos) {
+	function seek($pos)
+	{
 		fseek($this->_fp, $pos);
 		return ($this->_pos = ftell($this->_fp));
 	}
 }
-?>

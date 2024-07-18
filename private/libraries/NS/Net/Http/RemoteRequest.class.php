@@ -70,4 +70,3 @@ class RemoteRequest extends BaseObject
 		curl_close($this->_ch);
 	}
 }
-?>

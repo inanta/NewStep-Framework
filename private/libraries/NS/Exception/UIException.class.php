@@ -21,11 +21,13 @@
 
 namespace NS\Exception;
 
-class UIException extends Exception {
+class UIException extends Exception
+{
 	const JS_NOT_RENDERED = 1;
 	const CSS_NOT_RENDERED = 2;
 
-	function __construct($args) {
+	function __construct($args)
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
 
@@ -37,11 +39,11 @@ class UIException extends Exception {
 				$message = $this->_('Style manager is not rendered');
 				break;
 			default:
-				if(!isset($args['code'])) $args['code'] = 'NO ERROR CODE RETURNED';
+				if (!isset($args['code']))
+					$args['code'] = 'NO ERROR CODE RETURNED';
 				$message = sprintf($this->_('Unknown NewStep UI error with code[%s]'), $args['code']);
 		}
-    
+
 		parent::__construct($message);
 	}
 }
-?>

@@ -54,4 +54,3 @@ class LDAP extends BaseObject
 			$this->close();
 	}
 }
-?>

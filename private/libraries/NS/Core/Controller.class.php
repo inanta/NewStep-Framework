@@ -37,18 +37,20 @@ use NS\UI\StyleManager;
  *@property Template $View Template object that will be used for rendering in view file
  *@property Session $Session Session object that will handle session manipulation
  */
-abstract class Controller extends BaseObject {
+abstract class Controller extends BaseObject
+{
 	/**
 	 *
 	 * @var ClientRequest Client request get value or validate $_POST, $_GET and $_REQUEST
 	 */
 	public $Request;
 
-	public $Action, $ControllerPath, $DefaultAction, $Path, $URL, $Content, $Params = array(), $Response;
+	public $Action, $ControllerPath, $DefaultAction, $Path, $URL, $Content, $Params = [], $Response;
 	protected $_actionCache = null;
 	private $_isConstructorCalled = false;
 
-	function _initialize() {
+	function _initialize()
+	{
 		ob_start();
 		$this->createProperties(array('View' => Template::getInstance(), 'Session' => Session::getInstance()));
 		$this->setReadOnlyProperties(array('View', 'Session'));
@@ -61,10 +63,11 @@ abstract class Controller extends BaseObject {
 	 *Run controller
 	 *
 	 */
-	function _run() {
+	function _run()
+	{
 		$this->_initialize();
 
-		if(method_exists($this, '_main')) {
+		if (method_exists($this, '_main')) {
 			$this->_main();
 		}
 
@@ -76,7 +79,8 @@ abstract class Controller extends BaseObject {
 	 *Create object property
 	 *
 	 */
-	function _createProperty($k, $v = null) {
+	function _createProperty($k, $v = null)
+	{
 		$this->createProperty($k, $v);
 	}
 
@@ -84,7 +88,8 @@ abstract class Controller extends BaseObject {
 	 *Create object properties
 	 *
 	 */
-	function _createProperties($p) {
+	function _createProperties($p)
+	{
 		$this->createProperties($p);
 	}
 
@@ -92,14 +97,17 @@ abstract class Controller extends BaseObject {
 	 *Call another method by user request
 	 *
 	 */
-	protected function _dispatch() {
-		if(!$this->_isConstructorCalled) throw new \NS\Exception\Exception('Parent constructor is not called');
-		if(isset($this->_actionCache[$this->Action])) {
-			if(($this->Content = CacheManager::getInstance()->read(str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params))))) {
-				StyleManager::getInstance()->addSource(NS_CACHE_PATH . '/' . str_replace('\\', '.',get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.css');
-				ScriptManager::getInstance()->addSource(NS_CACHE_PATH . '/' . str_replace('\\', '.',get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.js');
+	protected function _dispatch()
+	{
+		if (!$this->_isConstructorCalled)
+			throw new \NS\Exception\Exception('Parent constructor is not called');
+		if (isset($this->_actionCache[$this->Action])) {
+			if (($this->Content = CacheManager::getInstance()->read(str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params))))) {
+				StyleManager::getInstance()->addSource(NS_CACHE_PATH . '/' . str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.css');
+				ScriptManager::getInstance()->addSource(NS_CACHE_PATH . '/' . str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.js');
 
-				echo $this->Content; return;
+				echo $this->Content;
+				return;
 			}
 		}
 
@@ -112,7 +120,8 @@ abstract class Controller extends BaseObject {
 	 *Finalize controller
 	 *
 	 */
-	protected function _finalize() {
+	protected function _finalize()
+	{
 		// if($this->View->File != null) {
 		// 	$this->View->display(($this->View->Path == '' ? $this->Path . '/views/' : $this->View->Path . '/') . $this->View->File);
 		// }
@@ -123,11 +132,11 @@ abstract class Controller extends BaseObject {
 			$this->Response = new Response($this->Content);
 		}
 
-		if(isset($this->_actionCache[$this->Action])) {
+		if (isset($this->_actionCache[$this->Action])) {
 			$cm = CacheManager::getInstance();
-			if($cm->write(str_replace('\\', '.',get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)), $this->Content)) {
-				$cm->write(str_replace('\\', '.',get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.css', StyleManager::getInstance()->get());
-				$cm->write(str_replace('\\', '.',get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.js', ScriptManager::getInstance()->get());
+			if ($cm->write(str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)), $this->Content)) {
+				$cm->write(str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.css', StyleManager::getInstance()->get());
+				$cm->write(str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.js', ScriptManager::getInstance()->get());
 			}
 		}
 	}
@@ -136,7 +145,8 @@ abstract class Controller extends BaseObject {
 	 *Redirect to another controller or action
 	 *
 	 */
-	protected function redirect($url, $message = null, $header = null, $time = 4) {
+	protected function redirect($url, $message = null, $header = null, $time = 4)
+	{
 		$this->redirectURL(NS_BASE_URL . '/' . $url, $message, $header, $time);
 	}
 
@@ -144,17 +154,21 @@ abstract class Controller extends BaseObject {
 	 *Redirect full URL
 	 *
 	 */
-	protected function redirectURL($url, $message = null, $header = null, $time = 4) {
+	protected function redirectURL($url, $message = null, $header = null, $time = 4)
+	{
 		ns_gettext_init('NS');
 
-		if($message == null) header('Location: ' . $url);
+		if ($message == null)
+			header('Location: ' . $url);
 		else {
-			if(ob_get_contents()) ob_end_clean();
-			if($header == null) $header = _('Redirecting...');
-			
-			if(is_file($ex_path = NS_SYSTEM_PATH . '/asset/template/redirect.php')) {
+			if (ob_get_contents())
+				ob_end_clean();
+			if ($header == null)
+				$header = _('Redirecting...');
+
+			if (is_file($ex_path = NS_SYSTEM_PATH . '/asset/template/redirect.php')) {
 				extract(array('Header' => $header, 'Message' => $message, 'Time' => $time, 'URL' => $url, 'IfNotReload' => _('If the page does not automatically reload, please click here')));
-				include($ex_path);
+				include ($ex_path);
 			} else {
 				echo '<html><head><title>' . $header . '</title><meta charset="utf-8"><meta http-equiv="Refresh" content="' . $time . '; url=' . $url . '" /></head><body><h2>' . $message . '</h2><h3><a href="' . $url . '">' . _('If the page does not automatically reload, please click here') . '</a></h3></body></html>';
 			}
@@ -167,8 +181,8 @@ abstract class Controller extends BaseObject {
 	 *Initialize cache for selected method
 	 *
 	 */
-	protected function actionCache($actions) {
+	protected function actionCache($actions)
+	{
 		$this->_actionCache = array_fill_keys($actions, true);
 	}
 }
-?>

@@ -30,31 +30,35 @@ use NS\Exception\DatabaseException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-abstract class Database extends BaseObject {
+abstract class Database extends BaseObject
+{
 	const DRIVER_MYSQL = 'mysql';
 	const DRIVER_SQLITE2 = 'sqlite2';
 	const DRIVER_SQLITE = 'sqlite';
 	const DRIVER_POSTGRESQL = 'postgresql';
 
-	static private $_driversInstance = array();
+	static private $_driversInstance = [];
 	public $FieldQuote = '', $Connection;
 
 	/**
-	*Initialize database connection parameter and open database connection to server
-	*
-	*/
-	function __construct(&$args) {
+	 *Initialize database connection parameter and open database connection to server
+	 *
+	 */
+	function __construct(&$args)
+	{
 		$this->createProperties($args);
 		$this->connect();
 	}
 
 	/**
-	*Handle if database table has prefix
-	*
-	*/
-	function prefix($table_name = '') {
-		if($table_name != '') {
-			if($this->Prefix != '') $table_name = '_' . $table_name;
+	 *Handle if database table has prefix
+	 *
+	 */
+	function prefix($table_name = '')
+	{
+		if ($table_name != '') {
+			if ($this->Prefix != '')
+				$table_name = '_' . $table_name;
 			return $this->Prefix . $table_name;
 		}
 
@@ -62,28 +66,32 @@ abstract class Database extends BaseObject {
 	}
 
 	/**
-	*Create or retrieve object instance
-	*
-	*@return self
-	*/
-	static function getInstance($conn = null) {
+	 *Create or retrieve object instance
+	 *
+	 *@return self
+	 */
+	static function getInstance($conn = null)
+	{
 		$Database = null;
 
-		if(is_string($conn) || $conn == null) {
-			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Database.inc.php');
+		if (is_string($conn) || $conn == null) {
+			require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Database.inc.php');
 
-			if($conn == null) $conn = key($Database);
+			if ($conn == null)
+				$conn = key($Database);
 			else {
-				if(!isset($Database[$conn])) throw new DatabaseException(array('code' => DatabaseException::UNDEFINED_CONNECTION_NAME, 'connection' => $conn));
+				if (!isset($Database[$conn]))
+					throw new DatabaseException(array('code' => DatabaseException::UNDEFINED_CONNECTION_NAME, 'connection' => $conn));
 			}
-		} else if(is_array($conn)) {
+		} else if (is_array($conn)) {
 			$Database['Temp'] = $conn;
 			$conn = 'Temp';
 		}
 
-		if(isset(self::$_driversInstance[$conn])) return self::$_driversInstance[$conn];
+		if (isset(self::$_driversInstance[$conn]))
+			return self::$_driversInstance[$conn];
 
-		switch($Database[$conn]['Driver']) {
+		switch ($Database[$conn]['Driver']) {
 			case self::DRIVER_POSTGRESQL:
 				return (self::$_driversInstance[$conn] = new Driver\PostgreSQLDriver($Database[$conn]));
 			case self::DRIVER_SQLITE2:
@@ -96,4 +104,3 @@ abstract class Database extends BaseObject {
 		}
 	}
 }
-?>

@@ -26,8 +26,9 @@ namespace NS\Database;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-interface IDatabaseDriver {
-	function __construct($args = array());
+interface IDatabaseDriver
+{
+	function __construct($args = []);
 	function affectedRows();
 	function close();
 	function connect();
@@ -39,4 +40,3 @@ interface IDatabaseDriver {
 	function numRows($result);
 	function query($query);
 }
-?>

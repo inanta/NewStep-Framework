@@ -26,13 +26,15 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class URI extends Validator {	
-	function __construct($message = 'Please enter a valid URL') {
+class URI extends Validator
+{
+	function __construct($message = 'Please enter a valid URL')
+	{
 		parent::__construct('url', $message);
 	}
 
-	function validate(&$data) {
+	function validate(&$data)
+	{
 		return (preg_match("'(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;:/~\+#]*[\w\-\@?^=%&amp;/~\+#])?'", $data));
 	}
 }
-?>

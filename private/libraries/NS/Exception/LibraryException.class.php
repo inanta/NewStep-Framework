@@ -27,15 +27,13 @@ final class LibraryException extends Exception
 {
 	function __construct($args)
 	{
-		switch ($args['code'])
-		{
+		switch ($args['code']) {
 			case NS_EX_LIB_NOT_INSTALLED:
 			default:
 				$message = sprintf('Cannot use [%s] class because [%s] library is not installed.', $args['class'], $args['library']);
 				break;
 		}
-		
+
 		parent::__construct($message);
 	}
 }
-?>

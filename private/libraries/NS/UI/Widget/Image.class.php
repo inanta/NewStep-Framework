@@ -28,18 +28,25 @@ use NS\UI\UI;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Image extends UI {	
-	function __construct($name = null, $uri = null, $args = array()) {
+class Image extends UI
+{
+	function __construct($name = null, $uri = null, $args = [])
+	{
 		$this->_attr['class'] = 'NS-Image';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
-		if($name != null) {
+		if ($name != null) {
 			$this->_attr['id'] = $name;
 			$this->_attr['name'] = $name;
-			
-			if(!isset($this->_attr['alt'])) $this->_attr['alt'] = $name;
+
+			if (!isset($this->_attr['alt']))
+				$this->_attr['alt'] = $name;
 		}
 
 		$this->_attr['src'] = $uri;
@@ -47,4 +54,3 @@ class Image extends UI {
 		parent::__construct($this->constructUI('img'));
 	}
 }
-?>

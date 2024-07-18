@@ -28,7 +28,7 @@ namespace NS;
  */
 abstract class SingletonObject extends BaseObject
 {
-	private static $_instances = array();
+	private static $_instances = [];
 
 	/**
 	 *Create or retrieve object instance, must be overidden in child class
@@ -46,7 +46,7 @@ abstract class SingletonObject extends BaseObject
 	 *@param array $args Class arguments that will be passed to constructor
 	 *@param mixed $id Identifier for newly created instance
 	 */
-	protected static function createInstance($class = null, $args = array(), $id = 0)
+	protected static function createInstance($class = null, $args = [], $id = 0)
 	{
 		if ($class == null)
 			throw new MissingArgumentException(__FUNCTION__, 'class');
@@ -57,4 +57,3 @@ abstract class SingletonObject extends BaseObject
 		return self::$_instances[$class][$id];
 	}
 }
-?>

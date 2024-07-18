@@ -28,20 +28,25 @@ use NS\BaseObject;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-abstract class Validator extends BaseObject {
+abstract class Validator extends BaseObject
+{
 	private $_validator = '';
 
-	function __construct($validator, $message) {
-		$this->createProperties(array(
-						'Message' => $message,
-						'Param' => true));
+	function __construct($validator, $message)
+	{
+		$this->createProperties(
+			array(
+				'Message' => $message,
+				'Param' => true
+			)
+		);
 		$this->_validator = $validator;
 	}
 
 	abstract function validate(&$data);
 
-	function __toString() {
+	function __toString()
+	{
 		return $this->_validator;
 	}
 }
-?>

@@ -21,12 +21,13 @@
 
 namespace NS\Exception;
 
-class NetException extends Exception {
+class NetException extends Exception
+{
 	/**
 	 *Connection cannot be initialized
 	 */
 	const NOT_CONNECTED = 1;
-	
+
 	/**
 	 *Unable to login to network resource
 	 */
@@ -37,21 +38,24 @@ class NetException extends Exception {
 	 *
 	 *@param array $args Exception parameter to show appropriate message
 	 */
-	function __construct($args = array()) {
+	function __construct($args = [])
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
 
 		switch ($args['code']) {
 			case self::NOT_CONNECTED:
-				$message = sprintf($this->_('Cannot connect to server [%s]'), $args['server']); break;
+				$message = sprintf($this->_('Cannot connect to server [%s]'), $args['server']);
+				break;
 			case self::UNABLE_TO_LOGIN:
-				$message = sprintf($this->_('Unable to login  with user name [%s]'), $args['username']); break;
+				$message = sprintf($this->_('Unable to login  with user name [%s]'), $args['username']);
+				break;
 			default:
-				if(!isset($args['code'])) $args['code'] = 'NO ERROR CODE RETURNED';
+				if (!isset($args['code']))
+					$args['code'] = 'NO ERROR CODE RETURNED';
 				$message = sprintf($this->_('Unknown network error with code [%s]'), $args['code']);
 		}
 
 		parent::__construct($message);
 	}
 }
-?>

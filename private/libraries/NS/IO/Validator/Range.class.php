@@ -26,14 +26,16 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Range extends Validator {	
-	function __construct($min, $max, $message = 'This field is required') {
+class Range extends Validator
+{
+	function __construct($min, $max, $message = 'This field is required')
+	{
 		parent::__construct('range', $message);
 		$this->Param = array($min, $max);
 	}
 
-	function validate(&$data) {
+	function validate(&$data)
+	{
 		return ($data >= $this->Param[0] && $data <= $this->Param[1]);
 	}
 }
-?>

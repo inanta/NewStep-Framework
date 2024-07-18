@@ -29,35 +29,40 @@ use NS\UI\ScriptManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Sortable extends UI {	
-	function __construct($name, $list = array(), $args = array()) {
+class Sortable extends UI
+{
+	function __construct($name, $list = [], $args = [])
+	{
 		$this->_attr['id'] = $name;
 		$this->_attr['name'] = $name;
 
 		$name = 'NS-Sortable-' . $this->getUICount(__CLASS__);
 		$this->_attr['class'] = 'NS-Sortable ' . $name;
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$content = '';
-		foreach($list as $value) {
+		foreach ($list as $value) {
 			$content .= '<li>' . $value . '</li>';
 		}
 
 		$sm = ScriptManager::getInstance();
-		    $sm->addSource(NS_JQUERY_PATH);
-		    $sm->addSource(NS_JQUERY_UI_PATH);
-		    $sm->addExternalSource(NS_JQUERY_UI_STYLE_URL);
-		    $sm->addScript(
-			    "jQuery(document).ready(function() {
+		$sm->addSource(NS_JQUERY_PATH);
+		$sm->addSource(NS_JQUERY_UI_PATH);
+		$sm->addExternalSource(NS_JQUERY_UI_STYLE_URL);
+		$sm->addScript(
+			"jQuery(document).ready(function() {
 				    jQuery(function() {
 					    jQuery('." . $name . "').sortable();
 				    });
 			    });"
-		    );
+		);
 
 		parent::__construct($this->constructUI('ul', true, $content));
 	}
 }
-?>

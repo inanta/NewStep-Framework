@@ -26,48 +26,55 @@ namespace NS;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Debugger extends Object {
+class Debugger extends Object
+{
 	private $_headerPrinted = false;
-	
-	function __construct($params = null) {
-		$this->createProperties(array(
-			'Buffer' => (isset($params['buffer']) ? $params['buffer'] : true),
-			'DebugHeader' => (isset($params['header']) ? $params['header'] : T_('Unknown')),
-			'DebugInfo' => ''
-		));
+
+	function __construct($params = null)
+	{
+		$this->createProperties(
+			array(
+				'Buffer' => (isset($params['buffer']) ? $params['buffer'] : true),
+				'DebugHeader' => (isset($params['header']) ? $params['header'] : T_('Unknown')),
+				'DebugInfo' => ''
+			)
+		);
 	}
-	
-	function debug($message) {
-		$out = '<span class="debugger">'.$message.'</span>';
-		
-		if($this->Buffer) {
+
+	function debug($message)
+	{
+		$out = '<span class="debugger">' . $message . '</span>';
+
+		if ($this->Buffer) {
 			$this->DebugInfo .= $out;
 		} else {
 			echo $out;
 		}
 	}
-	
-	function header() {
-		if(!$this->_headerPrinted) {
-			$out = '<span class="debugger">'.strtoupper(sprintf(T_('Debugger Started For %s')), $this->DebugHeader).'</span>';
-			
-			if($this->Buffer) {
+
+	function header()
+	{
+		if (!$this->_headerPrinted) {
+			$out = '<span class="debugger">' . strtoupper(sprintf(T_('Debugger Started For %s')), $this->DebugHeader) . '</span>';
+
+			if ($this->Buffer) {
 				$this->DebugInfo .= $out;
 			} else {
 				echo $out;
 			}
 		}
-		
+
 	}
-	
-	function resetBuffer() {
+
+	function resetBuffer()
+	{
 		$this->Buffer = false;
 		$this->DebugInfo = '';
 	}
-	
-	function flush() {
+
+	function flush()
+	{
 		echo $this->DebugInfo;
 		$this->DebugInfo = '';
 	}
 }
-?>

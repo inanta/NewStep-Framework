@@ -21,7 +21,8 @@
 
 namespace NS\Exception;
 
-final class IOException extends Exception {
+final class IOException extends Exception
+{
 	/**
 	 *File not found error code
 	 */
@@ -68,10 +69,11 @@ final class IOException extends Exception {
 	 *
 	 *@param array $args Exception parameter to show appropriate message
 	 */
-	function __construct($args) {
+	function __construct($args)
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
-		
+
 		switch ($args['code']) {
 			case self::FILE_NOT_FOUND:
 				$message = sprintf($this->_('File [%s] is not exist'), $args['filename']);
@@ -112,8 +114,7 @@ final class IOException extends Exception {
 			default:
 				$message = $this->_('Unknown NewStep IO error');
 		}
-		
+
 		parent::__construct($message);
 	}
 }
-?>

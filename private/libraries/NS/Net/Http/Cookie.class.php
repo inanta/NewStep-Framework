@@ -28,32 +28,41 @@ use NS\SingletonObject;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Cookie extends SingletonObject {
+class Cookie extends SingletonObject
+{
 	const EXPIRE_ONE_HOUR = 3600;
 	const EXPIRE_ONE_DAY = 86400;
 	const EXPIRE_ONE_WEEK = 604800;
-	
-	function __construct() {
+
+	function __construct()
+	{
 		$this->createProperties(array('Expire' => time() + self::EXPIRE_ONE_HOUR, 'Path' => '/', 'Domain' => '', 'Secure' => false, 'HTTPOnly' => false));
 	}
-	
-	function get($name) {
+
+	function get($name)
+	{
 		return isset($_COOKIE[$name]) ? $_COOKIE[$name] : false;
 	}
-	
-	function set($name, $value = '') {
+
+	function set($name, $value = '')
+	{
 		setcookie($name, $value, $this->Expire, $this->Path, $this->Domain, $this->Secure, $this->HTTPOnly);
 	}
-	
-	function flush($name) {
-		setcookie($name, $value, time() - self::EXPIRE_ONE_HOUR);
+
+	function flush($name)
+	{
+		setcookie($name, "", time() - self::EXPIRE_ONE_HOUR);
 		return $this->get($name);
 	}
- 
-	function delete($name) {
-		if(isset($_COOKIE[$name])) setcookie($name, '', time() - self::EXPIRE_ONE_HOUR, $this->Path, $this->Domain, $this->Secure, $this->HTTPOnly);
+
+	function delete($name)
+	{
+		if (isset($_COOKIE[$name]))
+			setcookie($name, '', time() - self::EXPIRE_ONE_HOUR, $this->Path, $this->Domain, $this->Secure, $this->HTTPOnly);
 	}
- 
-	static function getInstance() { return self::createInstance(__CLASS__); }
+
+	static function getInstance()
+	{
+		return self::createInstance(__CLASS__);
+	}
 }
-?>

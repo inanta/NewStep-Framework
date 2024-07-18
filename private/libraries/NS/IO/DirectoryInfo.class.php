@@ -23,64 +23,76 @@ namespace NS\IO;
 
 use NS\Object;
 
-class DirectoryInfo extends Object {
-	private $_entries = array();
+class DirectoryInfo extends Object
+{
+	private $_entries = [];
 
-	function __construct($path) {
+	function __construct($path)
+	{
 		$this->createProperties(array('Path' => ''));
 		$this->Path = $path;
 
 	}
 
-	function __set($property, $value) {
+	function __set($property, $value)
+	{
 		parent::__set($property, $this->correctPath($value));
-		if($property == 'Path') $this->initializeEntries();
+		if ($property == 'Path')
+			$this->initializeEntries();
 	}
-	
-	function getFiles($showhidden = false) {
-		$fileinfo = array();
 
-		foreach($this->_entries as $entry) {
-			if(!$showhidden && $entry[0] == '.') continue;
+	function getFiles($showhidden = false)
+	{
+		$fileinfo = [];
 
-			if(is_file($this->Path.$entry)) {
-				$fileinfo[$entry] = new FileInfo($this->Path.$entry);
+		foreach ($this->_entries as $entry) {
+			if (!$showhidden && $entry[0] == '.')
+				continue;
+
+			if (is_file($this->Path . $entry)) {
+				$fileinfo[$entry] = new FileInfo($this->Path . $entry);
 			}
 		}
-		
+
 		return $fileinfo;
 	}
 
-	function getDirectories($showhidden = false) {
-		$dirinfo = array();
-	
-		foreach($this->_entries as $entry) {
-			if(!$showhidden && $entry[0] == '.') continue;
+	function getDirectories($showhidden = false)
+	{
+		$dirinfo = [];
 
-			if(is_dir($this->Path.$entry)) {
-				$dirinfo[$entry] = new DirectoryInfo($this->Path.$entry);
+		foreach ($this->_entries as $entry) {
+			if (!$showhidden && $entry[0] == '.')
+				continue;
+
+			if (is_dir($this->Path . $entry)) {
+				$dirinfo[$entry] = new DirectoryInfo($this->Path . $entry);
 			}
 		}
-		
+
 		return $dirinfo;
 	}
-	
-	function getDirectoriesAsArray($showhidden = false) {
-		$dirinfo = array();
-	
-		foreach($this->_entries as $entry) {
-			if(!$showhidden && $entry[0] == '.') continue;
 
-			if(is_dir($this->Path.$entry)) {
+	function getDirectoriesAsArray($showhidden = false)
+	{
+		$dirinfo = [];
+
+		foreach ($this->_entries as $entry) {
+			if (!$showhidden && $entry[0] == '.')
+				continue;
+
+			if (is_dir($this->Path . $entry)) {
 				$dirinfo[$entry] = $entry;
 			}
 		}
-		
+
 		return $dirinfo;
 	}
 
-	private function initializeEntries() {
-		if(!is_dir($this->Path)) throw new IOException(array('code' => DIRECTORY_NOT_FOUND, 'dirname' => $this->Path));
+	private function initializeEntries()
+	{
+		if (!is_dir($this->Path))
+			throw new IOException(array('code' => DIRECTORY_NOT_FOUND, 'dirname' => $this->Path));
 
 		$dir = dir($this->Path);
 		while (false !== ($entry = $dir->read())) {
@@ -88,6 +100,11 @@ class DirectoryInfo extends Object {
 		}
 	}
 
-	private function correctPath($path) { $path = str_replace('\\', '/', $path); if(substr($path, -1, 1) != '/') $path .= '/'; return $path; }
+	private function correctPath($path)
+	{
+		$path = str_replace('\\', '/', $path);
+		if (substr($path, -1, 1) != '/')
+			$path .= '/';
+		return $path;
+	}
 }
-?>

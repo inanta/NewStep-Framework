@@ -26,15 +26,18 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Number extends Validator {	
-	function __construct($message = 'Please enter a valid number') {
+class Number extends Validator
+{
+	function __construct($message = 'Please enter a valid number')
+	{
 		parent::__construct('number', $message);
 	}
 
-	function validate(&$data) {
-		if($data == '') return true;
-		
+	function validate(&$data)
+	{
+		if ($data == '')
+			return true;
+
 		return (is_numeric($data));
 	}
 }
-?>

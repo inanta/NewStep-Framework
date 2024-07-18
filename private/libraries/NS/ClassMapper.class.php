@@ -26,17 +26,19 @@ namespace NS;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class ClassMapper {
+class ClassMapper
+{
 	public static $ClassPath;
 
 	/**
-	*Return class location from class name
-	*
-	*/
-	static function getClassPath($classname) {
-		if(file_exists($file = self::$ClassPath . str_replace('\\', '/', $classname) . '.class.php')) return $file;
+	 *Return class location from class name
+	 *
+	 */
+	static function getClassPath($classname)
+	{
+		if (file_exists($file = self::$ClassPath . str_replace('\\', '/', $classname) . '.class.php'))
+			return $file;
 
 		return false;
 	}
 }
-?>

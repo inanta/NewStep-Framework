@@ -21,14 +21,16 @@
 
 namespace NS\Exception;
 
-class SecurityException extends Exception {
+class SecurityException extends Exception
+{
 	const INVALID_URL = 1;
 	const INVALID_ENCRYPTION = 2;
 
-	function __construct($args) {
+	function __construct($args)
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
-		
+
 		switch ($args['code']) {
 			case self::INVALID_URL:
 				$message = sprintf($this->_('Invalid URL format [%s], please make sure URL only contains allowed characters'), (strlen(NS_CURRENT_URL) > 20 ? substr(NS_CURRENT_URL, 0, 15) . ' ... ' . substr(NS_CURRENT_URL, -5) : NS_CURRENT_URL));
@@ -39,8 +41,7 @@ class SecurityException extends Exception {
 			default:
 				$message = $this->_('Unknown security exception');
 		}
-    
+
 		parent::__construct($message);
 	}
 }
-?>

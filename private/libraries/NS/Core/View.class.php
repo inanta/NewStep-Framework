@@ -29,10 +29,12 @@ use NS\Template\Template;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class View {
+class View
+{
 	private $_template = null;
 
-	function __construct($file, $assign, $paths = null) {
+	function __construct($file, $assign, $paths = null)
+	{
 		$config = Config::getInstance();
 
 		$this->_template = Template::getInstance();
@@ -51,7 +53,7 @@ class View {
 
 		foreach ($paths as $path) {
 			// echo $path . '/' . $file . '<br>';
-			if(is_readable($path . '/' . $file)) {
+			if (is_readable($path . '/' . $file)) {
 				$this->_template->Path = $path;
 
 				break;
@@ -63,4 +65,3 @@ class View {
 		$this->_template->display($this->_template->Path . '/' . $this->_template->File);
 	}
 }
-?>

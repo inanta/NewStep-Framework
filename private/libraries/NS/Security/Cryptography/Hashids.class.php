@@ -28,17 +28,20 @@ use NS\Exception\SecurityException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Hashids extends \Hashids\Hashids {
-	public function __construct($key) {
+class Hashids extends \Hashids\Hashids
+{
+	public function __construct($key)
+	{
 		parent::__construct($key, 10);
 	}
 
-	public function encrypt($number) {
+	public function encrypt($number)
+	{
 		return $this->encode($number);
 	}
 
-	public function decrypt($hash) {
+	public function decrypt($hash)
+	{
 		return $this->decode($hash)[0];
 	}
 }
-?>

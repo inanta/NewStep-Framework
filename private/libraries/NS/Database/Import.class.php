@@ -24,18 +24,23 @@ namespace NS\Database;
 use NS\SingletonObject;
 use NS\Exception\IOException;
 
-class Import extends SingletonObject {
-	private $_conn = array(), $_quries = array();
+class Import extends SingletonObject
+{
+	private $_conn = [], $_quries = [];
 
-	function __construct($conn = null) {
+	function __construct($conn = null)
+	{
 		$this->_conn = $conn;
 
-		$this->createProperties(array(
-			'File' => null
-		));
+		$this->createProperties(
+			array(
+				'File' => null
+			)
+		);
 	}
 
-	function import($file) {
+	function import($file)
+	{
 		$executed = 0;
 
 		$this->File = $file;
@@ -43,43 +48,48 @@ class Import extends SingletonObject {
 
 		$db = Database::getInstance($this->_conn);
 
-		foreach($this->_quries as $query) {
-			if($db->query($query)) {
+		foreach ($this->_quries as $query) {
+			if ($db->query($query)) {
 				++$executed;
 			}
 		}
 
 		return $executed;
 	}
-	
-	private function _getFileContents() {
-		if(!is_file($this->File)) throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $this->File));
-		if(!is_readable($this->File)) throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $this->File));
+
+	private function _getFileContents()
+	{
+		if (!is_file($this->File))
+			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $this->File));
+		if (!is_readable($this->File))
+			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $this->File));
 
 		return file_get_contents($this->File);
 	}
 
-	private function _process() {
+	private function _process()
+	{
 		$lines = explode("\n", $this->_getFileContents());
 		$query_counter = 0;
 
-		foreach($lines as $line) {
-			if(trim($line) == '' || strpos($line, '--') !== false) {
+		foreach ($lines as $line) {
+			if (trim($line) == '' || strpos($line, '--') !== false) {
 				continue;
 			}
 
-			if(!isset($this->_quries[$query_counter])) $this->_quries[$query_counter] = '';
+			if (!isset($this->_quries[$query_counter]))
+				$this->_quries[$query_counter] = '';
 
 			$this->_quries[$query_counter] .= $line;
 
-			if(preg_match("/(.*);/", $line)) {
+			if (preg_match("/(.*);/", $line)) {
 				++$query_counter;
 			}
 		}
 	}
 
-	static function getInstance() {
+	static function getInstance()
+	{
 		return self::createInstance(__CLASS__);
 	}
 }
-?>

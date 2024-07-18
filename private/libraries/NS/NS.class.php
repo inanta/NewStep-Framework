@@ -39,19 +39,19 @@ define('INATIONSOFT_SITE', 'http://www.inationsoft.com');
  */
 class NS
 {
-	private $_eventCallback = array();
+	private $_eventCallback = [];
 
 	function __construct(&$System)
 	{
 		try {
 			register_shutdown_function(array($this, 'shutdown'));
 
-			require(NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/NS/ClassMapper.class.php');
+			require (NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/NS/ClassMapper.class.php');
 			ClassMapper::$ClassPath = NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/';
 			spl_autoload_register(array($this, 'autoload'));
 
-			require(NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Event.inc.php');
-			require(NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Constant.inc.php');
+			require (NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Event.inc.php');
+			require (NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Constant.inc.php');
 			foreach ($Constant as $k => $v)
 				define($k, $v);
 
@@ -69,7 +69,7 @@ class NS
 				header('X-Powered-By: NewStep Framework' . (NS_DEBUG_MODE ? ' - PHP/' . PHP_VERSION : ''));
 			$_SERVER['PHP_SELF'] .= (preg_match('/index.php$/', $_SERVER['PHP_SELF'])) ? (!empty($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : (!empty($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : '')) : '';
 
-			require(NS_GETTEXT_PATH);
+			require (NS_GETTEXT_PATH);
 			if (isset($_GET['locale']))
 				$cf->Application->Locale = $_GET['locale'];
 			T_setlocale(LC_ALL, $cf->Application->Locale);
@@ -167,7 +167,7 @@ class NS
 				echo @json_encode(array('error' => true, 'message' => $error['message'], 'file' => $error['file'], 'line' => $error['line']));
 			} else if (file_exists($er_file = NS_SYSTEM_PATH . '/asset/template/error/PHPFatalError.php')) {
 				extract(array('Message' => $error['message'], 'File' => $error['file'], 'Line' => $error['line']));
-				require($er_file);
+				require ($er_file);
 			} else
 				echo sprintf('PHP Fatal Error<br />NS Error Message: %s<br/>File: %s line %s', $error['message'], $error['file'], $error['line']);
 
@@ -193,7 +193,7 @@ class NS
 	function autoload($classname)
 	{
 		if ($file = ClassMapper::getClassPath($classname))
-			require($file);
+			require ($file);
 	}
 
 	function triggerEvent(&$callback)
@@ -209,4 +209,3 @@ class NS
 		}
 	}
 }
-?>

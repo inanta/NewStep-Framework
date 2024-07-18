@@ -23,15 +23,18 @@ namespace NS\Exception;
 
 use NS\Core\Config;
 
-class HttpRequestException extends Exception {
-	function __construct($code, $message = null) {
-		@include(NS_SYSTEM_PATH . '/' .  Config::getInstance()->ConfigFolder . '/HttpCode.inc.php');
+class HttpRequestException extends Exception
+{
+	function __construct($code, $message = null)
+	{
+		@include (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/HttpCode.inc.php');
 
-		if(isset($HttpCode[$code])) {
+		if (isset($HttpCode[$code])) {
 			$this->_httpHeader['code'] = $code;
 			$this->_httpHeader['message'] = $HttpCode[$code];
 
-			if($message == null) $message = $HttpCode[$code] . ' [%s]';
+			if ($message == null)
+				$message = $HttpCode[$code] . ' [%s]';
 			$this->ErrorCode = $code;
 		} else {
 			$message = '500 Internal server error [%s]';
@@ -41,4 +44,3 @@ class HttpRequestException extends Exception {
 		parent::__construct(sprintf($message, NS_CURRENT_URL));
 	}
 }
-?>

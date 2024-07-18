@@ -28,7 +28,8 @@ use NS\Core\Config;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Number extends BaseObject {
+class Number extends BaseObject
+{
 	const FORMAT_MONEY = 1;
 	const FORMAT_MONEY_WITH_CODE = 2;
 	const FORMAT_MONEY_WITH_SYMBOL = 3;
@@ -41,10 +42,11 @@ class Number extends BaseObject {
 
 	private static $_locale = null;
 
-	static function format($value, $format) {
+	static function format($value, $format)
+	{
 		self::loadLocale();
 
-		switch($format) {
+		switch ($format) {
 			case self::FORMAT_MONEY:
 			case self::FORMAT_MONEY_WITH_CODE:
 			case self::FORMAT_MONEY_WITH_SYMBOL:
@@ -54,7 +56,7 @@ class Number extends BaseObject {
 			case self::FORMAT_SHORTENED_NOTATION:
 				$negative = false;
 
-				if($value < 0) {
+				if ($value < 0) {
 					$value = abs($value);
 					$negative = true;
 				}
@@ -71,8 +73,9 @@ class Number extends BaseObject {
 		}
 	}
 
-	static function convert($value, $convert) {
-		switch($convert) {
+	static function convert($value, $convert)
+	{
+		switch ($convert) {
 			case self::CONVERT_FROM_ROMAN:
 				return self::fromRoman($value);
 			case self::CONVERT_TO_ROMAN:
@@ -83,97 +86,126 @@ class Number extends BaseObject {
 	}
 
 	/**
-	*Convert number from Roman numerals
-	*
-	*/
-	static function fromRoman($number) {
+	 *Convert number from Roman numerals
+	 *
+	 */
+	static function fromRoman($number)
+	{
 		$result = 0;
-		$romans = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90,
-			'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1,
+		$romans = array(
+			'M' => 1000,
+			'CM' => 900,
+			'D' => 500,
+			'CD' => 400,
+			'C' => 100,
+			'XC' => 90,
+			'L' => 50,
+			'XL' => 40,
+			'X' => 10,
+			'IX' => 9,
+			'V' => 5,
+			'IV' => 4,
+			'I' => 1,
 		);
 
-		if(!preg_match('/^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/', $number)) return $result;
+		if (!preg_match('/^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/', $number))
+			return $result;
 
 		foreach ($romans as $key => $value) {
-		    while (strpos($number, $key) === 0) {
-			    $result += $value;
-			    $number = substr($number, strlen($key));
-		    }
+			while (strpos($number, $key) === 0) {
+				$result += $value;
+				$number = substr($number, strlen($key));
+			}
 		}
 
 		return $result;
 	}
 
 	/**
-	*Convert number to Roman numerals
-	*
-	*/
-	static function toRoman($number) {
+	 *Convert number to Roman numerals
+	 *
+	 */
+	static function toRoman($number)
+	{
 		$n = $number;
 		$result = '';
-		$romans = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90,
-			'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1,
+		$romans = array(
+			'M' => 1000,
+			'CM' => 900,
+			'D' => 500,
+			'CD' => 400,
+			'C' => 100,
+			'XC' => 90,
+			'L' => 50,
+			'XL' => 40,
+			'X' => 10,
+			'IX' => 9,
+			'V' => 5,
+			'IV' => 4,
+			'I' => 1,
 		);
 
 		foreach ($romans as $roman => $number) {
-		    $matches = $n / $number;
-		    $result .= str_repeat($roman, $matches);
-		    $n = $n % $number;
+			$matches = $n / $number;
+			$result .= str_repeat($roman, $matches);
+			$n = $n % $number;
 		}
-	    
+
 		return $result;
 	}
 
 	/**
-	*Convert number to words
-	*
-	*/
-	static function toWords($value) {
-		if(!is_numeric($value)) return '';
+	 *Convert number to words
+	 *
+	 */
+	static function toWords($value)
+	{
+		if (!is_numeric($value))
+			return '';
 
 		self::loadLocale();
 
 		// Based on: http://www.karlrixon.co.uk/writing/convert-numbers-to-words-with-php/
 
-		$dictionary  = self::$_locale['NumberDictionary'];
-    
+		$dictionary = self::$_locale['NumberDictionary'];
+
 		if (!is_numeric($value)) {
 			return false;
 		}
-    
+
 		if (($value >= 0 && (int) $value < 0) || (int) $value < 0 - PHP_INT_MAX) {
 			throw new Exception('Error');
 			return false;
 		}
-    
+
 		if ($value < 0) {
 			return $dictionary['negative'] . self::toWords(abs($value));
 		}
-    
+
 		$string = $fraction = null;
-    
+
 		if (strpos($value, '.') !== false) {
 			list($value, $fraction) = explode('.', $value);
 		}
-    
+
 		switch (true) {
 			case $value < 21:
 				$string = $dictionary[$value];
 				break;
 			case $value < 100:
-				$tens   = ((int) ($value / 10)) * 10;
-				$units  = $value % 10;
+				$tens = ((int) ($value / 10)) * 10;
+				$units = $value % 10;
 				$string = $dictionary[$tens];
 				if ($units) {
-				    $string .= $dictionary['hypen'] . $dictionary[$units];
+					$string .= $dictionary['hypen'] . $dictionary[$units];
 				}
 				break;
 			case $value < 1000:
-				$hundreds  = $value / 100;
+				$hundreds = $value / 100;
 				$remainder = $value % 100;
 				$string = $dictionary[$hundreds] . ' ' . $dictionary[100];
 				if ($remainder) {
-				    $string .= $dictionary['conjunction'] . self::toWords($remainder);
+					$string .= $dictionary['conjunction'] . self::toWords($remainder);
 				}
 				break;
 			default:
@@ -182,33 +214,34 @@ class Number extends BaseObject {
 				$remainder = $value % $baseUnit;
 				$string = self::toWords($numBaseUnits) . ' ' . $dictionary[$baseUnit];
 				if ($remainder) {
-				    $string .= $remainder < 100 ? $dictionary['conjunction'] : $dictionary['separator'];
-				    $string .= self::toWords($remainder);
+					$string .= $remainder < 100 ? $dictionary['conjunction'] : $dictionary['separator'];
+					$string .= self::toWords($remainder);
 				}
 				break;
 		}
-    
+
 		if (null !== $fraction && is_numeric($fraction)) {
 			$string .= $dictionary['decimal'];
-			$words = array();
+			$words = [];
 			foreach (str_split((string) $fraction) as $value) {
-			    $words[] = $dictionary[$value];
+				$words[] = $dictionary[$value];
 			}
 			$string .= implode(' ', $words);
 		}
-    
+
 		return $string;
 	}
 
-	public static function assignLocale($locale) {
+	public static function assignLocale($locale)
+	{
 		self::$_locale = $locale;
 	}
-	
-	private static function loadLocale() {
-		if(self::$_locale == null) {
-			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
+
+	private static function loadLocale()
+	{
+		if (self::$_locale == null) {
+			require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
 			self::$_locale = $Locale;
 		}
 	}
 }
-?>

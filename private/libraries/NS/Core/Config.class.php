@@ -29,13 +29,15 @@ use NS\Database\ActiveRecord;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Config extends SingletonObject {
+class Config extends SingletonObject
+{
 	/**
 	 *Add new configuration on run time
 	 *
 	 *@param string $value Value that will be added to configuration object
 	 */
-	function add($value) {
+	function add($value)
+	{
 		$this->createProperties($value, true);
 	}
 
@@ -44,7 +46,8 @@ class Config extends SingletonObject {
 	 *
 	 *@param string $value Value that will be binded to configuration object
 	 */
-	function bind(&$value) {
+	function bind(&$value)
+	{
 		$this->bindProperties($value);
 	}
 
@@ -53,8 +56,9 @@ class Config extends SingletonObject {
 	 *
 	 *@param string $name Configuration name that will be loaded 
 	 */
-	function load($name) {
-		require(NS_SYSTEM_PATH . '/' . $this->ConfigFolder . '/' . $name . '.inc.php');
+	function load($name)
+	{
+		require (NS_SYSTEM_PATH . '/' . $this->ConfigFolder . '/' . $name . '.inc.php');
 		$this->createProperties(array($name => ${$name}), true);
 	}
 
@@ -67,12 +71,13 @@ class Config extends SingletonObject {
 	 *@param array|NS\Database\DatabaseFilterCriteria $condition Filter result for configuration
 	 *@param string $name Mapping name to configuration object
 	 */
-	function loadFromDB($table, $column_key, $column_value, $condition, $name) {
-		$mapper_config = array();
+	function loadFromDB($table, $column_key, $column_value, $condition, $name)
+	{
+		$mapper_config = [];
 		$ar = new ActiveRecord($table);
-		
+
 		$ar->findAll(array($column_key, $column_value), $condition);
-		while($ar->hasNext()) {
+		while ($ar->hasNext()) {
 			$mapper_config[$ar->{$column_key}] = $ar->{$column_value};
 			$ar->next();
 		}
@@ -85,6 +90,8 @@ class Config extends SingletonObject {
 	 *
 	 *@return self
 	 */
-	static function getInstance() { return self::createInstance(__CLASS__); }
+	static function getInstance()
+	{
+		return self::createInstance(__CLASS__);
+	}
 }
-?>

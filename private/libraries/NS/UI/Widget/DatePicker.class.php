@@ -30,7 +30,8 @@ use NS\UI\StyleManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class DatePicker extends UI {
+class DatePicker extends UI
+{
 	/**
 	 * 
 	 * @param string $id Widget ID and name
@@ -40,17 +41,21 @@ class DatePicker extends UI {
 	 * @param array $args Optional widget HTML attribute
 	 * @param array $options Optional widget option
 	 */
-	function __construct($id, $value = null, $placeholder = null, $validators = null, $args = array(), $options = array()) {
+	function __construct($id, $value = null, $placeholder = null, $validators = null, $args = [], $options = [])
+	{
 		StyleManager::getInstance()->addExternalSource(NS_JQUERY_UI_STYLE_URL);
 		$scm = ScriptManager::getInstance();
-		
-//die(NS_JQUERY_PATH);
+
+		//die(NS_JQUERY_PATH);
 		$scm->addSource(NS_JQUERY_PATH);
 		$scm->addSource(NS_JQUERY_UI_PATH);
 
-		if(!isset($options['changeYear'])) $options['changeYear'] = true;
-		if(!isset($options['changeMonth'])) $options['changeMonth'] = true;
-		if(!isset($options['dateFormat'])) $options['dateFormat'] = 'dd/mm/yy';
+		if (!isset($options['changeYear']))
+			$options['changeYear'] = true;
+		if (!isset($options['changeMonth']))
+			$options['changeMonth'] = true;
+		if (!isset($options['dateFormat']))
+			$options['dateFormat'] = 'dd/mm/yy';
 
 		$count = $this->getUICount(__CLASS__);
 		$args['class'] = (isset($args['class']) ? $args['class'] . ' ' : '') . 'NS-Datepicker NS-DatePicker-' . $count;
@@ -60,4 +65,3 @@ class DatePicker extends UI {
 		$scm->addScript('jQuery(function(){ jQuery(".NS-DatePicker-' . $count . '").datepicker(' . json_encode($options) . '); });');
 	}
 }
-?>

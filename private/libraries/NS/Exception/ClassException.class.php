@@ -21,7 +21,8 @@
 
 namespace NS\Exception;
 
-final class ClassException extends Exception {
+final class ClassException extends Exception
+{
 	/**
 	 *Class not found error code
 	 */
@@ -32,10 +33,11 @@ final class ClassException extends Exception {
 	 *
 	 *@param array $args Exception parameter to show appropriate message
 	 */
-	function __construct($args) {
+	function __construct($args)
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
-		
+
 		switch ($args['code']) {
 			case self::CLASS_NOT_FOUND:
 				$message = sprintf($this->_('Class [%s] is not exist'), $args['class']);
@@ -43,8 +45,7 @@ final class ClassException extends Exception {
 			default:
 				$message = $this->_('Unknown NewStep class error');
 		}
-		
+
 		parent::__construct($message);
 	}
 }
-?>

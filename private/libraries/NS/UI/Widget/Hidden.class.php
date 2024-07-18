@@ -28,10 +28,16 @@ use NS\UI\UI;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Hidden extends UI {
-	function __construct($name, $value = '', $args = array()) {
-		if(isset($args['class'])) { $this->_attr['class'] = ($args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+class Hidden extends UI
+{
+	function __construct($name, $value = '', $args = [])
+	{
+		if (isset($args['class'])) {
+			$this->_attr['class'] = ($args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['type'] = 'hidden';
@@ -41,4 +47,3 @@ class Hidden extends UI {
 		parent::__construct($this->constructUI('input'));
 	}
 }
-?>

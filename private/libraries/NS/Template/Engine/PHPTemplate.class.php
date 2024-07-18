@@ -29,27 +29,32 @@ use NS\Exception\IOException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-final class PHPTemplate extends Template {
-	function __construct($args = array()) {
+final class PHPTemplate extends Template
+{
+	function __construct($args = [])
+	{
 		parent::__construct($args);
 	}
 
-	function fetch($resource_name) {
-		if(!is_file($resource_name)) throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $resource_name));
-		if(!is_readable($resource_name)) throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $resource_name));
+	function fetch($resource_name)
+	{
+		if (!is_file($resource_name))
+			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $resource_name));
+		if (!is_readable($resource_name))
+			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $resource_name));
 
 		ob_start();
 		extract($this->_vars, EXTR_REFS);
 
-		include($resource_name);
+		include ($resource_name);
 		$contents = ob_get_contents();
 		ob_end_clean();
 
 		return $contents;
 	}
 
-	function append($tpl_var, $value = null) {
+	function append($tpl_var, $value = null)
+	{
 		$this->_vars[$tpl_var][] = $value;
 	}
 }
-?>

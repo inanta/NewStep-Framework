@@ -34,42 +34,53 @@ use NS\Core\Config;
  *@property string $OS Client operating systen
  *@property string $Version Client browser version
  */
-class ClientBrowser extends SingletonObject {	
-	function __construct() {
-		$this->createProperties(array(
-			'BrowserName' => 'Unknown',
-			'Device' => 'Unknown',
-			'IsMobile' => false,
-			'OS' => 'Unknown',
-			'Version' => 'Unknown',
-		));
+class ClientBrowser extends SingletonObject
+{
+	function __construct()
+	{
+		$this->createProperties(
+			array(
+				'BrowserName' => 'Unknown',
+				'Device' => 'Unknown',
+				'IsMobile' => false,
+				'OS' => 'Unknown',
+				'Version' => 'Unknown',
+			)
+		);
 		$this->detect();
 	}
- 
+
 	/**
-	*Create or retrieve object instance
-	*
-	*/
-	static function getInstance() { return self::createInstance(__CLASS__); }
+	 *Create or retrieve object instance
+	 *
+	 */
+	static function getInstance()
+	{
+		return self::createInstance(__CLASS__);
+	}
 
-	private function detect() {
-		require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/UserAgent.inc.php');
+	private function detect()
+	{
+		require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/UserAgent.inc.php');
 
-		foreach($UserAgent['OS'] as $k => $v) {
-			if(preg_match('/' . $k . '/i', $_SERVER['HTTP_USER_AGENT'])) {
+		foreach ($UserAgent['OS'] as $k => $v) {
+			if (preg_match('/' . $k . '/i', $_SERVER['HTTP_USER_AGENT'])) {
 				$this->OS = $v;
-				if(isset($UserAgent['Device'][$v])) {
-					foreach($UserAgent['Device'][$v] as $dk => $d) {
-						if(preg_match('/' . $dk . '/i', $_SERVER['HTTP_USER_AGENT'])) { $this->Device = $d; break; }
-			    		}
+				if (isset($UserAgent['Device'][$v])) {
+					foreach ($UserAgent['Device'][$v] as $dk => $d) {
+						if (preg_match('/' . $dk . '/i', $_SERVER['HTTP_USER_AGENT'])) {
+							$this->Device = $d;
+							break;
+						}
+					}
 				}
 
 				break;
 			}
 		}
 
-		foreach($UserAgent['Browser'] as $k => $v) {
-			if(preg_match('/' . $k . '/i', $_SERVER['HTTP_USER_AGENT'])){
+		foreach ($UserAgent['Browser'] as $k => $v) {
+			if (preg_match('/' . $k . '/i', $_SERVER['HTTP_USER_AGENT'])) {
 				$this->BrowserName = $v[0];
 				$this->Version = end(explode($v[1][1], current(explode($v[1][0], stristr($_SERVER['HTTP_USER_AGENT'], $v[1][2])))));
 				break;
@@ -77,4 +88,3 @@ class ClientBrowser extends SingletonObject {
 		}
 	}
 }
-?>

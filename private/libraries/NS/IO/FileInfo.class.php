@@ -21,16 +21,18 @@
 
 namespace NS\IO;
 
-class FileInfo extends Object {
-	function __construct($path) {
-		if(!is_file($path)) throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $path));
+class FileInfo extends Object
+{
+	function __construct($path)
+	{
+		if (!is_file($path))
+			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $path));
 
 		$this->createProperties(array('BaseName' => '', 'FullName' => $path, 'Extension' => '', 'Size' => sprintf("%u", filesize($path))));
 
 		$explode = explode('/', $path);
 		$this->BaseName = $explode[count(explode('/', $path)) - 1];
 		$explode = explode('.', $path);
-		$this->Extension = '.'.$explode[count(explode('.', $path)) - 1];
+		$this->Extension = '.' . $explode[count(explode('.', $path)) - 1];
 	}
 }
-?>

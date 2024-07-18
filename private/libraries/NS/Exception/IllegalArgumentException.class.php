@@ -21,11 +21,12 @@
 
 namespace NS\Exception;
 
-final class IllegalArgumentException extends Exception {
-	function __construct($args) {
+final class IllegalArgumentException extends Exception
+{
+	function __construct($args)
+	{
 		$message = sprintf('Illegal argument [%s] with type [%s]', $args, gettype($args));
 
 		parent::__construct($message);
 	}
 }
-?>

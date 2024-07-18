@@ -371,7 +371,7 @@ class DateTime extends BaseObject
 		$date_time = explode(' ', $date);
 
 		$date = explode('/', $date_time[0]);
-		$time = array();
+		$time = [];
 
 		if (isset($date_time[1])) {
 			$time = explode(':', $date_time[1]);
@@ -427,9 +427,8 @@ class DateTime extends BaseObject
 	private static function loadLocale()
 	{
 		if (self::$_locale == null) {
-			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
+			require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
 			self::$_locale = $Locale;
 		}
 	}
 }
-?>

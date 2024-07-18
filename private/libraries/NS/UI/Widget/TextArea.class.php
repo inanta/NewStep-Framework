@@ -30,19 +30,26 @@ use NS\IO\Validator\ValidatorManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class TextArea extends UI {
-	function __construct($name, $value = '', $placeholder = null, $validators = null, $args = array()) {
+class TextArea extends UI
+{
+	function __construct($name, $value = '', $placeholder = null, $validators = null, $args = [])
+	{
 		$this->_attr['class'] = 'NS-TextArea';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['name'] = $name;
 
-		if($validators != null) ValidatorManager::getInstance()->initializeValidator($name, $validators);
+		if ($validators != null)
+			ValidatorManager::getInstance()->initializeValidator($name, $validators);
 
-		if($placeholder != null) {
+		if ($placeholder != null) {
 			$name = 'WidgetTextArea-' . $this->getUICount('WidgetTextArea');
 			$this->_attr['class'] .= ' ' . $name;
 
@@ -66,4 +73,3 @@ class TextArea extends UI {
 		parent::__construct($this->constructUI('textarea', true, $value));
 	}
 }
-?>

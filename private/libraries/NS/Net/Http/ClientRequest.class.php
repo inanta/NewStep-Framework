@@ -64,7 +64,8 @@ class ClientRequest extends SingletonObject
 		return parent::__get($k);
 	}
 
-	function method() {
+	function method()
+	{
 		return $_SERVER['REQUEST_METHOD'];
 	}
 
@@ -109,7 +110,8 @@ class ClientRequest extends SingletonObject
 		if (!is_array($validators))
 			$validators = array($validators);
 
-		$return;
+		$return = [];
+
 		foreach ($keys as $key) {
 			foreach ($validators as $validator) {
 				if (!$validator->validate($this->_input[$key]))
@@ -146,4 +148,3 @@ class ClientRequest extends SingletonObject
 		return self::createInstance(__CLASS__);
 	}
 }
-?>

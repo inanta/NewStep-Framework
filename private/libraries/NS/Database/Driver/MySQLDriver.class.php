@@ -40,7 +40,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 *
 	 *@throws LibraryException If MySQL library is not installed
 	 */
-	function __construct($args = array())
+	function __construct($args = [])
 	{
 		if (!function_exists('mysqli_connect'))
 			throw new LibraryException(array('code' => NS_EX_LIB_NOT_INSTALLED, 'class' => __CLASS__, 'library' => 'MySQL'));
@@ -167,7 +167,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	function getColumns($tables)
 	{
 		$result = $this->query('SHOW COLUMNS FROM `' . $tables . '`');
-		$columns = array();
+		$columns = [];
 
 		while ($row = $this->fetchRow($result)) {
 			$columns[] = $row[0];
@@ -183,7 +183,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	function getTables()
 	{
 		$result = $this->query('SHOW TABLES');
-		$tables = array();
+		$tables = [];
 
 		while ($row = $this->fetchRow($result)) {
 			$tables[] = $row[0];
@@ -253,4 +253,3 @@ class MySQLDriver extends Database implements IDatabaseDriver
 		return 'RAND(' . $seed . ')';
 	}
 }
-?>

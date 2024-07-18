@@ -30,8 +30,10 @@ use NS\UI\StyleManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Spinner extends UI {
-	function __construct($name, $value = null, $validators = null, $args = array(), $options = array()) {
+class Spinner extends UI
+{
+	function __construct($name, $value = null, $validators = null, $args = [], $options = [])
+	{
 		StyleManager::getInstance()->addExternalSource(NS_JQUERY_UI_STYLE_URL);
 		$scm = ScriptManager::getInstance();
 		$scm->addSource(NS_JQUERY_PATH);
@@ -41,8 +43,12 @@ class Spinner extends UI {
 		$this->_attr['class'] = 'NS-Spinner NS-Spinner-' . $count;
 		$this->_attr['name'] = $name;
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['value'] = $value;
@@ -51,4 +57,3 @@ class Spinner extends UI {
 		parent::__construct($this->constructUI('input'));
 	}
 }
-?>

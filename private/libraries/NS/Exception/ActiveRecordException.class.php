@@ -21,7 +21,8 @@
 
 namespace NS\Exception;
 
-class ActiveRecordException extends Exception {
+class ActiveRecordException extends Exception
+{
 	/**
 	 *Active record not initialized error code
 	 */
@@ -56,31 +57,39 @@ class ActiveRecordException extends Exception {
 	 *
 	 *@param array $args Exception parameter to show appropriate message
 	 */
-	function __construct($args = array()) {
+	function __construct($args = [])
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
 
 		switch ($args['code']) {
 			case self::NOT_INITIALIZED:
-				$message = sprintf($this->_('Active record that using table [%s] is not initialized'), $args['table']); break;
+				$message = sprintf($this->_('Active record that using table [%s] is not initialized'), $args['table']);
+				break;
 			case self::UNDEFINED_PRIMARY_KEY:
-				$message = sprintf($this->_('Primary key is not defined in table [%s]'), $args['table']); break;
+				$message = sprintf($this->_('Primary key is not defined in table [%s]'), $args['table']);
+				break;
 			case self::TABLE_NOT_EXIST:
-				$message = sprintf($this->_('Table [%s] is not exist in database [%s]'), $args['table'], $args['database']); break;
+				$message = sprintf($this->_('Table [%s] is not exist in database [%s]'), $args['table'], $args['database']);
+				break;
 			case self::COLUMN_NOT_EXIST:
-				$message = sprintf($this->_('Column name [%s] is not exist in table [%s]'), $args['column'], $args['table']); break;
+				$message = sprintf($this->_('Column name [%s] is not exist in table [%s]'), $args['column'], $args['table']);
+				break;
 			case self::RELATION_NOT_EXISTS:
-				$message = sprintf($this->_('Relation for table [%s] is not exist'), $args['table']); break;
+				$message = sprintf($this->_('Relation for table [%s] is not exist'), $args['table']);
+				break;
 			case self::INSTANCE_NOT_ACTIVE_RECORD:
-				$message = sprintf($this->_('Object instance [%s] added for relation is not valid relation object instance'), $args['object']); break;
+				$message = sprintf($this->_('Object instance [%s] added for relation is not valid relation object instance'), $args['object']);
+				break;
 			case self::DATA_NOT_INITIALIZED_FOR_INSERT:
-				$message = sprintf($this->_('Cannot perform insert operation to table [%s] please make sure data is initialized'), $args['table']); break;
+				$message = sprintf($this->_('Cannot perform insert operation to table [%s] please make sure data is initialized'), $args['table']);
+				break;
 			default:
-				if(!isset($args['code'])) $args['code'] = 'NO ERROR CODE RETURNED';
+				if (!isset($args['code']))
+					$args['code'] = 'NO ERROR CODE RETURNED';
 				$message = sprintf($this->_('Unknown active record error with code [%s]'), $args['code']);
 		}
 
 		parent::__construct($message);
 	}
 }
-?>

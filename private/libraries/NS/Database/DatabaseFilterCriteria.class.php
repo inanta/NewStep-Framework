@@ -205,4 +205,3 @@ class DatabaseFilterCriteria extends BaseObject
 		return ('(' . implode($this->_exp, $this->_conditions) . ')');
 	}
 }
-?>

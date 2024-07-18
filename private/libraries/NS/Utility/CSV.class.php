@@ -87,7 +87,7 @@ class CSV extends Iterable
 
 	function getColumns()
 	{
-		$columns = array();
+		$columns = [];
 
 		// $value is unused
 		foreach ($this->_columns as $key => $value) {
@@ -168,7 +168,7 @@ class CSV extends Iterable
 		if (count($columns) != count($this->_columns))
 			return;
 
-		$data = array();
+		$data = [];
 
 		foreach ($this->_columns as $column => $index) {
 			$data[$column] = $columns[$index];
@@ -215,4 +215,3 @@ class CSV extends Iterable
 		}
 	}
 }
-?>

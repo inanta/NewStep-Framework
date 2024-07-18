@@ -44,4 +44,3 @@ class HTMLMail extends Mail
 		return mail($this->To, $this->Subject, $this->Message, $header);
 	}
 }
-?>

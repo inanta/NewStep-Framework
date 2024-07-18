@@ -28,9 +28,10 @@ use NS\Utility\XML;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Exception extends \Exception {
-	public $ErrorCode = 0, $Message, $Source, $File, $Line, 
-		$DefaultMessageTemplate, $IsSendHttpHeader = true;
+class Exception extends \Exception
+{
+	public $ErrorCode = 0, $Message, $Source, $File, $Line,
+	$DefaultMessageTemplate, $IsSendHttpHeader = true;
 	protected $_errorShowed = false, $_httpHeader;
 
 	/**
@@ -64,15 +65,18 @@ class Exception extends \Exception {
 	 *
 	 *@param string $message Error message
 	 */
-	function __construct($message = 'NewStep Framework unknown error') {
-		if(isset($this->_httpHeader) && !array_key_exists('code', $this->_httpHeader) || !isset($this->_httpHeader)) {
+	function __construct($message = 'NewStep Framework unknown error')
+	{
+		if (isset($this->_httpHeader) && !array_key_exists('code', $this->_httpHeader) || !isset($this->_httpHeader)) {
 			$this->_httpHeader['code'] = 500;
 			$this->_httpHeader['message'] = 'Internal Server Error';
 		}
 
-		if(!isset($this->DefaultMessageTemplate)) $this->DefaultMessageTemplate = NS_SYSTEM_PATH . '/asset/template/error/NS.Exception.Exception.php';
+		if (!isset($this->DefaultMessageTemplate))
+			$this->DefaultMessageTemplate = NS_SYSTEM_PATH . '/asset/template/error/NS.Exception.Exception.php';
 
-		if(!NS_DEBUG_MODE) $message = preg_replace('/\[[^\]]*\]/', '[HIDDEN]', $message);
+		if (!NS_DEBUG_MODE)
+			$message = preg_replace('/\[[^\]]*\]/', '[HIDDEN]', $message);
 		parent::__construct($message);
 
 		$this->Message = $this->getMessage();
@@ -86,8 +90,9 @@ class Exception extends \Exception {
 	 *
 	 *@param string $msg Message to be translated
 	 */
-	function _($msg) {
-		if(function_exists('ns_gettext_init')) {
+	function _($msg)
+	{
+		if (function_exists('ns_gettext_init')) {
 			ns_gettext_init(str_replace('\\', '.', get_class($this)));
 
 			return _($msg);
@@ -99,34 +104,49 @@ class Exception extends \Exception {
 	/**
 	 *Show error message
 	 */
-	function showMessage() {
-		if(isset($this->_httpHeader['code']) && $this->IsSendHttpHeader) header($_SERVER['SERVER_PROTOCOL'] . ' ' . $this->_httpHeader['code'] . ' ' . $this->_httpHeader['message']);
+	function showMessage()
+	{
+		if (isset($this->_httpHeader['code']) && $this->IsSendHttpHeader)
+			header($_SERVER['SERVER_PROTOCOL'] . ' ' . $this->_httpHeader['code'] . ' ' . $this->_httpHeader['message']);
 
-		if(function_exists('ns_gettext_init')) {
+		if (function_exists('ns_gettext_init')) {
 			ns_gettext_init('NS');
 		}
 
 		$error = array(
-			'ErrorHeader' => _('The page cannot be displayed due to internal error'), 'NSErrorMessageCaption' => _('NS Error Message'), 'ExceptionCaption' => _('Exception'), 'FileCaption' => _('File'), 'LastOutputCaption' => _('Last Output From Buffer'), 'TraceCaption' => _('Trace'),
+			'ErrorHeader' => _('The page cannot be displayed due to internal error'),
+			'NSErrorMessageCaption' => _('NS Error Message'),
+			'ExceptionCaption' => _('Exception'),
+			'FileCaption' => _('File'),
+			'LastOutputCaption' => _('Last Output From Buffer'),
+			'TraceCaption' => _('Trace'),
 			'HTTPHeaderCode' => $this->_httpHeader['code'],
 			'HTTPHeaderMessage' => $this->_httpHeader['message'],
-			'LastOutput' => htmlentities(ob_get_contents()), 'Message' => $this->Message, 'Source' => $this->Source, 'File' => $this->File, 'Line' => $this->Line, 'Trace' => (NS_DEBUG_MODE ? $this->getTrace() : array()),
+			'LastOutput' => htmlentities(ob_get_contents()),
+			'Message' => $this->Message,
+			'Source' => $this->Source,
+			'File' => $this->File,
+			'Line' => $this->Line,
+			'Trace' => (NS_DEBUG_MODE ? $this->getTrace() : []),
 			'ErrorCode' => $this->ErrorCode
 		);
 
-		if(ob_get_contents()) ob_end_clean();
+		if (ob_get_contents())
+			ob_end_clean();
 
-		if((!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') || 
-		(!empty($_SERVER['HTTP_ACCEPT']) && strtolower($_SERVER['HTTP_ACCEPT']) == 'application/json')) {
+		if (
+			(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') ||
+			(!empty($_SERVER['HTTP_ACCEPT']) && strtolower($_SERVER['HTTP_ACCEPT']) == 'application/json')
+		) {
 			self::$DisplayFormat = self::DISPLAY_FORMAT_REST_JSON;
 		}
 
-		switch(self::$DisplayFormat) {
+		switch (self::$DisplayFormat) {
 			case self::DISPLAY_FORMAT_REST_JSON:
 				$this->_showMessageJSON($error);
 				break;
 			case self::DISPLAY_FORMAT_REST_XML:
-			    $this->_showMessageXML($error);
+				$this->_showMessageXML($error);
 				break;
 			case self::DISPLAY_FORMAT_CLI:
 			case self::DISPLAY_FORMAT_HTML:
@@ -139,25 +159,29 @@ class Exception extends \Exception {
 		die(0);
 	}
 
-	private function _showMessageHTML($error) {
+	private function _showMessageHTML($error)
+	{
 		extract($error);
 
-		if(is_file($ex_path = NS_SYSTEM_PATH . '/asset/template/error/' . str_replace('\\', '.', get_class($this)) . '.php')) include($ex_path);
-		else if(is_file($ex_path = $this->DefaultMessageTemplate)) include($ex_path);
+		if (is_file($ex_path = NS_SYSTEM_PATH . '/asset/template/error/' . str_replace('\\', '.', get_class($this)) . '.php'))
+			include ($ex_path);
+		else if (is_file($ex_path = $this->DefaultMessageTemplate))
+			include ($ex_path);
 		else {
 			echo sprintf('NS Error Message: %s<br/>Exception: %s<br/>File: %s line %s', $this->Message, $this->Source, $this->File, $this->Line);
-			if(NS_DEBUG_MODE) {
+			if (NS_DEBUG_MODE) {
 				$counter = 0;
-				foreach($Trace as $x) {
-					if(isset($x['file'])) {
-						echo '<br />Trace ', $counter++, ': ', $x['file'], ' line ',  $x['line'];
+				foreach ($Trace as $x) {
+					if (isset($x['file'])) {
+						echo '<br />Trace ', $counter++, ': ', $x['file'], ' line ', $x['line'];
 					}
 				}
 			}
 		}
 	}
 
-	private function _showMessageJSON($error) {
+	private function _showMessageJSON($error)
+	{
 		$error = array(
 			'code' => $error['ErrorCode'],
 			'message' => $error['Message'],
@@ -168,7 +192,7 @@ class Exception extends \Exception {
 			'trace' => $error['Trace']
 		);
 
-		if(!NS_DEBUG_MODE) {
+		if (!NS_DEBUG_MODE) {
 			unset($error['exception'], $error['file'], $error['line'], $error['last_output'], $error['trace']);
 		}
 
@@ -176,7 +200,8 @@ class Exception extends \Exception {
 		echo @json_encode($error);
 	}
 
-	private function _showMessageXML($error) {
+	private function _showMessageXML($error)
+	{
 		$error = array(
 			'Code' => $error['ErrorCode'],
 			'Message' => $error['Message'],
@@ -187,7 +212,7 @@ class Exception extends \Exception {
 			'Trace' => $error['Trace']
 		);
 
-		if(!NS_DEBUG_MODE) {
+		if (!NS_DEBUG_MODE) {
 			unset($error['Exception'], $error['File'], $error['Line'], $error['Last_output'], $error['Trace']);
 		}
 
@@ -195,4 +220,3 @@ class Exception extends \Exception {
 		echo XML::fromArray($error, 'Error');
 	}
 }
-?>

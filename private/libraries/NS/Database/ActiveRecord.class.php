@@ -68,9 +68,9 @@ class ActiveRecord
 	protected $_isUsedInRelation = null;
 	private $_multiRowResult = null, $_columns, $_originalColumns, $_lastQueriedColumns,
 	$_numRows = 0, $_rowIterator, $_isDataInitialized = false, $_hasRelation = false, $_dataShadow,
-	$_hasOne = array(), $_hasMany = array(), $_relationHasMany = array(),
-	$_hasOneQuery = array(), $_hasManyQuery = array(), $_queryWithRelation = false, $_lastQueryFromRelation = false,
-	$_column_aliases = array();
+	$_hasOne = [], $_hasMany = [], $_relationHasMany = [],
+	$_hasOneQuery = [], $_hasManyQuery = [], $_queryWithRelation = false, $_lastQueryFromRelation = false,
+	$_column_aliases = [];
 
 	/**
 	 *Initialize active record with table name, primary key (if any) and database connection configuration (if any)
@@ -141,7 +141,7 @@ class ActiveRecord
 	{
 		reset($this->_columns);
 
-		$constructed = array();
+		$constructed = [];
 
 		if (count($this->_hasOne) != 0) {
 			$this->_constructJoin($this, $with_relation, false, $constructed);
@@ -332,7 +332,7 @@ class ActiveRecord
 
 	function getHasOne($with_relation = true)
 	{
-		$return = array();
+		$return = [];
 		$this->_getHasOne($this, $with_relation, $return);
 
 		return $return;
@@ -441,7 +441,7 @@ class ActiveRecord
 	{
 		$this->_resetColumns();
 
-		$column = array();
+		$column = [];
 		foreach ($this->_columns as $key => $value) {
 			if ($value !== null && $key != $this->PrimaryKey)
 				$column[$key] = ($value !== null ? "'" . $this->Database->escape($value) . "'" : 'NULL');
@@ -585,7 +585,7 @@ class ActiveRecord
 		if (($this->_numRows = $this->Database->numRows($this->_multiRowResult))) {
 			$column_count = $this->Database->numFields($this->_multiRowResult);
 
-			$this->_lastQueriedColumns = array();
+			$this->_lastQueriedColumns = [];
 
 			for ($i = 0; $i < $column_count; $i++) {
 				$this->_lastQueriedColumns[] = $this->Database->fieldName($this->_multiRowResult, $i);
@@ -634,7 +634,7 @@ class ActiveRecord
 	 */
 	function toArray($limit = null)
 	{
-		$array = array();
+		$array = [];
 
 		if (!$this->_isDataInitialized)
 			return $array;
@@ -698,7 +698,7 @@ class ActiveRecord
 	 */
 	function updateAll($values = null, $condition = null, $limit = null)
 	{
-		$column = array();
+		$column = [];
 
 		foreach ($values as $key => $value) {
 			if ($value !== null && $key != $this->PrimaryKey) {
@@ -974,7 +974,7 @@ class ActiveRecord
 		if ($this->PrimaryKey != null && $group == null)
 			$column = array_merge(array($this->PrimaryKey), $column);
 
-		$this->_lastQueriedColumns = array();
+		$this->_lastQueriedColumns = [];
 
 		foreach ($column as $k => $v) {
 			if (is_object($v)) {
@@ -1156,4 +1156,3 @@ class ActiveRecord
 		reset($this->_columns);
 	}
 }
-?>

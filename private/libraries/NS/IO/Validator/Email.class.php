@@ -26,13 +26,15 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Email extends Validator {	
-	function __construct($message = 'Please enter a valid email address') {
+class Email extends Validator
+{
+	function __construct($message = 'Please enter a valid email address')
+	{
 		parent::__construct('email', $message);
 	}
 
-	function validate(&$data) {
+	function validate(&$data)
+	{
 		return (preg_match('/^(([A-Za-z0-9]+_+)|([A-Za-z0-9]+\-+)|([A-Za-z0-9]+\.+)|([A-Za-z0-9]+\++))*[A-Za-z0-9]+@((\w+\-+)|(\w+\.))*\w{1,63}\.[a-zA-Z]{2,6}$/', $data));
 	}
 }
-?>

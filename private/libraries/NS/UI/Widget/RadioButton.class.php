@@ -30,39 +30,48 @@ use NS\IO\Validator\ValidatorManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class RadioButton extends UI {
+class RadioButton extends UI
+{
 	private $_items;
 
-	function __construct($name, $data = null, $selected = null, $validators = null, $args = array()) {
+	function __construct($name, $data = null, $selected = null, $validators = null, $args = [])
+	{
 		$this->_attr['class'] = 'NS-RadioButton';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['type'] = 'radio';
 		$this->_attr['name'] = $name;
 
-		if(is_array($data)) {
-			foreach($data as $key => $value) {
+		if (is_array($data)) {
+			foreach ($data as $key => $value) {
 				$this->_attr['value'] = $key;
 
-				if($selected != null && $selected == $key) $this->_attr['checked'] = 'checked';
-				else unset($this->_attr['checked']);
+				if ($selected != null && $selected == $key)
+					$this->_attr['checked'] = 'checked';
+				else
+					unset($this->_attr['checked']);
 
 				$this->_items[$key] = '<label class="' . $this->_attr['class'] . '-Label">' . $this->constructUI('input') . (!empty($value) ? '&nbsp;' . $value : '') . '</label>';
 			}
 		}
 
-		parent::__construct(implode('', $this->_items));;
+		parent::__construct(implode('', $this->_items));
+		;
 	}
 
-	function getItem($key) {
-		if(isset($this->_items[$key])) {
+	function getItem($key)
+	{
+		if (isset($this->_items[$key])) {
 			return $this->_items[$key];
 		}
 
 		return false;
 	}
 }
-?>

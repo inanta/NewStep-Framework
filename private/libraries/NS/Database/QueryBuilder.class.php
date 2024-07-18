@@ -27,7 +27,8 @@ use NS\Object;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class QueryBuilder extends Object {
+class QueryBuilder extends Object
+{
 	private $_fields, $_tables, $_conditions;
 
 	/**
@@ -35,45 +36,50 @@ class QueryBuilder extends Object {
 	 */
 	public $LastQuery;
 
-	function select($fields = '*') {
+	function select($fields = '*')
+	{
 		$this->_fields = !is_array($fields) ? array($fields) : $fields;
 		return $this;
 	}
 
-	function from($tables) {
+	function from($tables)
+	{
 		$this->_tables = !is_array($tables) ? array($tables) : $tables;
 		return $this;
 	}
 
-	function where($conditions) {
+	function where($conditions)
+	{
 		$this->_conditions = $conditions;
 		return $this;
 	}
 
-	function execute() {
+	function execute()
+	{
 		$db = DatabaseFactory::getInstance();
 		$this->_compile();
 
 		$db->query($this->LastQuery);
 	}
-	
-	function getSQL() {
+
+	function getSQL()
+	{
 		$this->_compile();
 		return $this->LastQuery;
 	}
 
-	private function _compile() {
+	private function _compile()
+	{
 		$this->LastQuery = "SELECT " . implode(", ", $this->_fields) . " FROM " . implode(", ", $this->_tables);
 
-		if(count($this->_conditions)) {
-			$where = array();
+		if (count($this->_conditions)) {
+			$where = [];
 
-			foreach($this->_conditions as $column => $value) { 
-				$where[] = $column . " = " . $value; 
+			foreach ($this->_conditions as $column => $value) {
+				$where[] = $column . " = " . $value;
 			}
 
 			$this->LastQuery .= " WHERE " . implode(' AND ', $where);
 		}
 	}
 }
-?>

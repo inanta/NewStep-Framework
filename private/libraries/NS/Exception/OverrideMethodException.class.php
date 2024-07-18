@@ -28,4 +28,3 @@ final class OverrideMethodException extends Exception
 		parent::__construct(sprintf(T_('Method [%s] must be overridden'), $name));
 	}
 }
-?>

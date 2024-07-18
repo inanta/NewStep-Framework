@@ -21,12 +21,13 @@
 
 namespace NS\Exception;
 
-class PageNotFoundException extends Exception {
-	function __construct() {
+class PageNotFoundException extends Exception
+{
+	function __construct()
+	{
 		$this->_httpHeader['code'] = 404;
 		$this->_httpHeader['message'] = 'Not Found';
 
 		parent::__construct(sprintf($this->_('404 page [%s] not found'), NS_CURRENT_URL));
 	}
 }
-?>

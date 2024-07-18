@@ -21,24 +21,26 @@
 
 namespace NS\Exception;
 
-class UploadException extends Exception {
+class UploadException extends Exception
+{
 	/**
 	 *Undefined files submition
 	 */
 	const UNDEFINED_FILES = 1;
 
-	function __construct($args) {
+	function __construct($args)
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
-		
+
 		switch ($args['code']) {
 			case self::UNDEFINED_FILES:
-				$message = sprintf($this->_('Unable to handle upload file because [%s] is not defined in global variable'), $args['variable']); break;
+				$message = sprintf($this->_('Unable to handle upload file because [%s] is not defined in global variable'), $args['variable']);
+				break;
 			default:
 				$message = sprintf($this->_('Unknown upload error with code [%s]'), $args['code']);
 		}
-		
+
 		parent::__construct($message);
 	}
 }
-?>

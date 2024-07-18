@@ -30,21 +30,28 @@ use NS\IO\Validator\ValidatorManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Text extends UI {
-	function __construct($name, $value = '', $placeholder = null, $validators = null, $args = array()) {
+class Text extends UI
+{
+	function __construct($name, $value = '', $placeholder = null, $validators = null, $args = [])
+	{
 		$this->_attr['class'] = 'NS-Text';
 		$this->_attr['name'] = $name;
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['type'] = 'text';
 		$this->_attr['value'] = $value;
 
-		if($validators != null) ValidatorManager::getInstance()->initializeValidator($name, $validators);
+		if ($validators != null)
+			ValidatorManager::getInstance()->initializeValidator($name, $validators);
 
-		if($placeholder != null) {
+		if ($placeholder != null) {
 			$name = 'NS-Text-' . $this->getUICount(__CLASS__);
 			$this->_attr['class'] .= ' ' . $name;
 			$this->_attr['placeholder'] = $placeholder;
@@ -82,4 +89,3 @@ class Text extends UI {
 		parent::__construct($this->constructUI('input'));
 	}
 }
-?>

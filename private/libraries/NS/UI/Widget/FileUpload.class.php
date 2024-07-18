@@ -29,18 +29,23 @@ use NS\UI\Widget\Hidden;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class FileUpload extends UI {
-	function __construct($name, $value = '', $maxfilesize = 102400000, $args = array()) {
+class FileUpload extends UI
+{
+	function __construct($name, $value = '', $maxfilesize = 102400000, $args = [])
+	{
 		$this->_attr['class'] = 'NS-FileUpload';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['type'] = 'file';
 		$this->_attr['name'] = $name;
 		$this->_attr['value'] = $value;
-		
+
 		parent::__construct(new Hidden('MAX_FILE_SIZE', $maxfilesize) . $this->constructUI('input'));
 	}
 }
-?>

@@ -30,35 +30,44 @@ use NS\Exception\PageNotFoundException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Router extends SingletonObject {
+class Router extends SingletonObject
+{
 	public $UseAlias = false, $App, $File;
 
 	/**
 	 *Initialize router from user request
 	 *
 	 */
-	function initialize(&$cf) {
-		if(!preg_match($cf->Application->PermittedURLChar, NS_CURRENT_URL)) {
+	function initialize(&$cf)
+	{
+		if (!preg_match($cf->Application->PermittedURLChar, NS_CURRENT_URL)) {
 			throw new SecurityException(array('code' => SecurityException::INVALID_URL));
 		}
 
-		$segments = array(); $dir = ''; $idx = 0; $class = null;
+		$segments = [];
+		$dir = '';
+		$idx = 0;
+		$class = null;
 
-		if($pos = strpos($_SERVER['PHP_SELF'], 'index.php/')) $segments = explode('/', (substr($_SERVER['PHP_SELF'] . '/', $pos + 10)), -1);
+		if ($pos = strpos($_SERVER['PHP_SELF'], 'index.php/'))
+			$segments = explode('/', (substr($_SERVER['PHP_SELF'] . '/', $pos + 10)), -1);
 		$count = count($segments);
 
-		for($idx; $idx < $count; ++$idx) {
-			if($segments[$idx] == '') break;
-			if(!is_dir(NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder . '/controllers' .  $dir . '/' . $segments[$idx])) break;
+		for ($idx; $idx < $count; ++$idx) {
+			if ($segments[$idx] == '')
+				break;
+			if (!is_dir(NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder . '/controllers' . $dir . '/' . $segments[$idx]))
+				break;
 
 			$dir .= '/' . $segments[$idx];
 		}
 
-		if(!isset($segments[$idx]) || $segments[$idx] == '') $segments[$idx] = $cf->Application->DefaultController;
+		if (!isset($segments[$idx]) || $segments[$idx] == '')
+			$segments[$idx] = $cf->Application->DefaultController;
 
-		if(($handle = @opendir(NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder . '/controllers' . $dir))) {
-			while(false !== ($entry = readdir($handle))) {
-				if(strtolower($segments[$idx] . '.php') === strtolower($entry)) {
+		if (($handle = @opendir(NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder . '/controllers' . $dir))) {
+			while (false !== ($entry = readdir($handle))) {
+				if (strtolower($segments[$idx] . '.php') === strtolower($entry)) {
 					$this->File = NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder . '/controllers' . $dir . '/' . $entry;
 					$class = substr($entry, 0, -4);
 					break;
@@ -69,19 +78,23 @@ class Router extends SingletonObject {
 		}
 
 		ns_gettext_init($class, NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder . '/locales');
-		if(!is_readable($this->File)) throw new PageNotFoundException();
+		if (!is_readable($this->File))
+			throw new PageNotFoundException();
 
-		require($this->File);
-		if(defined('_NAMESPACE_')) $class = _NAMESPACE_ . '\\' . $class;
+		require ($this->File);
+		if (defined('_NAMESPACE_'))
+			$class = _NAMESPACE_ . '\\' . $class;
 
-		if(!class_exists($class)) throw new PageNotFoundException();
+		if (!class_exists($class))
+			throw new PageNotFoundException();
 
 		$this->App = new $class;
-		if(!$this->App instanceof Controller && !$this->App instanceof RESTController) throw new PageNotFoundException();
+		if (!$this->App instanceof Controller && !$this->App instanceof RESTController)
+			throw new PageNotFoundException();
 
 		$this->App->Path = NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder;
 
-		if(preg_match('@\\\\([\w]+)$@', ($dir .  '/' . strtolower(get_class($this->App))), $matches)) {
+		if (preg_match('@\\\\([\w]+)$@', ($dir . '/' . strtolower(get_class($this->App))), $matches)) {
 			$this->App->ControllerPath = $matches[1];
 		}
 
@@ -89,16 +102,19 @@ class Router extends SingletonObject {
 		// 	$cf->Application->DefaultControllerAction = $this->App->DefaultAction;
 		// }
 
-		if(!isset($segments[++$idx]) || $segments[$idx] == '') $segments[$idx] = $cf->Application->DefaultControllerAction;
+		if (!isset($segments[++$idx]) || $segments[$idx] == '')
+			$segments[$idx] = $cf->Application->DefaultControllerAction;
 
 		if (method_exists($this->App, $segments[$idx]) && $segments[$idx][0] != '_') {
 			// die($segments[$idx]);
 
-			$this->App->Action = $segments[$idx]; ++$idx;
-			
-			for($idx; $idx < $count; ++$idx) { 
-				if($segments[$idx] == '') break; 
-				
+			$this->App->Action = $segments[$idx];
+			++$idx;
+
+			for ($idx; $idx < $count; ++$idx) {
+				if ($segments[$idx] == '')
+					break;
+
 				$this->App->Params[] = $segments[$idx];
 			}
 
@@ -109,9 +125,10 @@ class Router extends SingletonObject {
 		} else if ($this->App->DefaultAction != null && method_exists($this->App, $this->App->DefaultAction)) {
 			$this->App->Action = $this->App->DefaultAction;
 
-			for($idx; $idx < $count; ++$idx) { 
-				if($segments[$idx] == '') break; 
-				
+			for ($idx; $idx < $count; ++$idx) {
+				if ($segments[$idx] == '')
+					break;
+
 				$this->App->Params[] = $segments[$idx];
 			}
 			// die('sssssxx');
@@ -136,6 +153,8 @@ class Router extends SingletonObject {
 	 *Create or retrieve object instance
 	 *
 	 */
-	static function getInstance() { return self::createInstance(__CLASS__); }
+	static function getInstance()
+	{
+		return self::createInstance(__CLASS__);
+	}
 }
-?>

@@ -32,14 +32,15 @@ use NS\Database\ActiveRecord;
  * @property boolean $Debug Return debug information
  * @property-read integer $Draw Number of draw request
  */
-class DataTables extends BaseObject {
+class DataTables extends BaseObject
+{
 	const REQUEST_POST = 0;
 	const REQUEST_GET = 1;
 
 	private $_ar;
 	private $_columns;
 	private $_length;
-	private $_order = array();
+	private $_order = [];
 	private $_orderableColumns;
 	private $_search;
 	private $_searchableColumns;
@@ -49,34 +50,39 @@ class DataTables extends BaseObject {
 	 * 
 	 * @param ActiveRecord $ar
 	 */
-	function __construct($ar, $request = self::REQUEST_POST) {
+	function __construct($ar, $request = self::REQUEST_POST)
+	{
 		$this->_ar = $ar;
 
-		$data = array();
+		$data = [];
 
-		if($request == self::REQUEST_GET) {
+		if ($request == self::REQUEST_GET) {
 			$data = $_GET;
 		} else {
 			$data = $_POST;
 		}
 
-		$this->createProperties(array(
-			'Draw' => $data['draw'],
-			'Debug' => false
-		));
+		$this->createProperties(
+			array(
+				'Draw' => $data['draw'],
+				'Debug' => false
+			)
+		);
 
-		$this->setReadOnlyProperties(array(
-			'Draw'
-		));
+		$this->setReadOnlyProperties(
+			array(
+				'Draw'
+			)
+		);
 
-		foreach($data['columns'] as $key => $columns) {
+		foreach ($data['columns'] as $key => $columns) {
 			$this->_columns[] = $columns['data'];
 
-			if($columns['orderable'] === 'true') {
+			if ($columns['orderable'] === 'true') {
 				$this->_orderableColumns[$key] = $columns['data'];
 			}
 
-			if($columns['searchable'] === 'true') {
+			if ($columns['searchable'] === 'true') {
 				$this->_searchableColumns[$key] = $columns['data'];
 			}
 		}
@@ -85,7 +91,7 @@ class DataTables extends BaseObject {
 		$this->_start = $data['start'];
 
 		foreach ($data['order'] as $order) {
-			if(isset($this->_orderableColumns[$order['column']])) {
+			if (isset($this->_orderableColumns[$order['column']])) {
 				$this->_order[$order['column']] = $order['dir'];
 			}
 		}
@@ -93,27 +99,33 @@ class DataTables extends BaseObject {
 		$this->_search = $data['search']['value'];
 	}
 
-	function getAllOrderableColumns() {
+	function getAllOrderableColumns()
+	{
 		return $this->_orderableColumns;
 	}
 
-	function getAllSearchableColumns() {
+	function getAllSearchableColumns()
+	{
 		return $this->_searchableColumns;
 	}
 
-	function isOrderableColumn($column_name) {
+	function isOrderableColumn($column_name)
+	{
 		return in_array($column_name, $this->_orderableColumns);
 	}
 
-	function isSearchableColumn($column_name) {
+	function isSearchableColumn($column_name)
+	{
 		return in_array($column_name, $this->_searchableColumns);
 	}
 
-	function setSearchableColumns($columns = array()) {
+	function setSearchableColumns($columns = [])
+	{
 		$this->_searchableColumns = $columns;
 	}
 
-	function setOrderableColumns($columns = array()) {
+	function setOrderableColumns($columns = [])
+	{
 		$this->_orderableColumns = $columns;
 	}
 
@@ -122,35 +134,36 @@ class DataTables extends BaseObject {
 	 * @param array $additional_condition Additional database query condition
 	 * @return array Database records result
 	 */
-	function getResult($additional_condition = array(), $method = 'getAll', $with_relation = false) {
-		$result = array();
+	function getResult($additional_condition = [], $method = 'getAll', $with_relation = false)
+	{
+		$result = [];
 
 		$criteria = $this->_ar->createFilterCriteria();
 		$criteria->setExpression(DatabaseFilterCriteria::EXP_OR);
 
-		foreach($this->getAllSearchableColumns() as $column) {
-			if($this->_ar->hasColumn($column) && $this->_search != '') {
+		foreach ($this->getAllSearchableColumns() as $column) {
+			if ($this->_ar->hasColumn($column) && $this->_search != '') {
 				$criteria->contains($column, $this->_search);
 			}
 		}
 
 		$orders = null;
 
-		foreach($this->_order as $key => $dir) {
-			if($this->_ar->hasColumn($this->_orderableColumns[$key])) {
+		foreach ($this->_order as $key => $dir) {
+			if ($this->_ar->hasColumn($this->_orderableColumns[$key])) {
 				$orders[$this->_orderableColumns[$key]] = ($dir == 'asc' ? ActiveRecord::ORDER_ASC : ActiveRecord::ORDER_DESC);
 			}
 		}
-		
-		if($with_relation) {
+
+		if ($with_relation) {
 			$columns = $this->_ar->getColumns();
 
-			foreach($this->_ar->getHasOne() as $has_one) {
+			foreach ($this->_ar->getHasOne() as $has_one) {
 				$has_one_criteria = $has_one->createFilterCriteria();
 				$has_one_criteria->setExpression(DatabaseFilterCriteria::EXP_OR);
 
-				foreach($this->getAllSearchableColumns() as $column) {
-					if($has_one->hasColumn($column) && $this->_search != '') {
+				foreach ($this->getAllSearchableColumns() as $column) {
+					if ($has_one->hasColumn($column) && $this->_search != '') {
 						$criteria->addCondition(key($columns), $has_one->quote($column) . " LIKE '%" . $this->_search . "%'");
 					}
 				}
@@ -160,24 +173,26 @@ class DataTables extends BaseObject {
 		$result['draw'] = $this->Draw;
 
 		$result['recordsTotal'] = $this->_ar->count($additional_condition);
-		if($this->Debug) $result['rt_query'] = $this->_ar->LastQuery;
+		if ($this->Debug)
+			$result['rt_query'] = $this->_ar->LastQuery;
 
 		$additional_condition[] = $criteria;
 
 		$result['recordsFiltered'] = $this->_ar->count($additional_condition);
-		if($this->Debug) $result['rf_query'] = $this->_ar->LastQuery;
+		if ($this->Debug)
+			$result['rf_query'] = $this->_ar->LastQuery;
 
 		$items = $this->_ar->{$method}(null, $additional_condition, $orders, $this->_start, $this->_length);
-		$data = array();
+		$data = [];
 
-		foreach($items as $item) {
+		foreach ($items as $item) {
 			$data[] = $item;
 		}
-		
+
 		$result['data'] = $data;
-		if($this->Debug) $result['data_query'] = $this->_ar->LastQuery;
+		if ($this->Debug)
+			$result['data_query'] = $this->_ar->LastQuery;
 
 		return $result;
 	}
 }
-?>

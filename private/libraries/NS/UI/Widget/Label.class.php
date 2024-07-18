@@ -28,19 +28,23 @@ use NS\UI\UI;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Label extends UI {	
-	function __construct($name = null, $label = '', $args = array()) {
+class Label extends UI
+{
+	function __construct($name = null, $label = '', $args = [])
+	{
 		$this->_attr['class'] = 'NS-Label';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['type'] = 'text';
 		$this->_attr['name'] = $name;
-		$this->_attr['value'] = $value;
 
 		parent::__construct($this->constructUI('label', true, $label));
 	}
 }
-?>

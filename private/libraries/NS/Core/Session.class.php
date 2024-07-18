@@ -28,26 +28,32 @@ use NS\SingletonObject;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Session extends SingletonObject {
+class Session extends SingletonObject
+{
 	/**
 	 *Initialize session
 	 *
 	 */
-	function __construct() {
-		if(Config::getInstance()->Application->UseDatabaseBasedSession ? Config::getInstance()->Application->SessionBasedDatabaseConenction : false) DatabaseSessionHandler::getInstance();
-		if(!isset($_SESSION)) session_start();
+	function __construct()
+	{
+		if (Config::getInstance()->Application->UseDatabaseBasedSession ? Config::getInstance()->Application->SessionBasedDatabaseConenction : false)
+			DatabaseSessionHandler::getInstance();
+		if (!isset($_SESSION))
+			session_start();
 
-		if(isset($_SESSION['NS'])) {
-			foreach($_SESSION['NS'] as $k => $v) {
-				if(isset($_SESSION['NS'][$k]['e']) && $_SESSION['NS'][$k]['e'] < time()) {
+		if (isset($_SESSION['NS'])) {
+			foreach ($_SESSION['NS'] as $k => $v) {
+				if (isset($_SESSION['NS'][$k]['e']) && $_SESSION['NS'][$k]['e'] < time()) {
 					unset($_SESSION['NS'][$k]);
 					continue;
 				}
-				
-				if(isset($_SESSION['NS'][$k]['u'])) {
-					if((is_string($_SESSION['NS'][$k]['u']) && $_SESSION['NS'][$k]['u'] != NS_CURRENT_URL) ||
-						(is_array($_SESSION['NS'][$k]['u']) && !in_array(NS_CURRENT_URL, $_SESSION['NS'][$k]['u'])))
-					unset($_SESSION['NS'][$k]);
+
+				if (isset($_SESSION['NS'][$k]['u'])) {
+					if (
+						(is_string($_SESSION['NS'][$k]['u']) && $_SESSION['NS'][$k]['u'] != NS_CURRENT_URL) ||
+						(is_array($_SESSION['NS'][$k]['u']) && !in_array(NS_CURRENT_URL, $_SESSION['NS'][$k]['u']))
+					)
+						unset($_SESSION['NS'][$k]);
 				}
 			}
 		}
@@ -61,11 +67,14 @@ class Session extends SingletonObject {
 	 *@param mixed $expire Number of seconds session will be expired
 	 *@param mixed $url Specify allowed URL that can access this session data
 	 */
-	function set($key, $val, $expire = null, $url = null) {
+	function set($key, $val, $expire = null, $url = null)
+	{
 		$_SESSION['NS'][$key]['v'] = $val;
 
-		if($expire !== null) $_SESSION['NS'][$key]['e'] = time() + $expire;
-		if($url !== null) $_SESSION['NS'][$key]['u'] = $url;
+		if ($expire !== null)
+			$_SESSION['NS'][$key]['e'] = time() + $expire;
+		if ($url !== null)
+			$_SESSION['NS'][$key]['u'] = $url;
 	}
 
 	/**
@@ -74,7 +83,8 @@ class Session extends SingletonObject {
 	 *@param string $key Key name
 	 *@param mixed $val Value that will be saved to session
 	 */
-	function setRaw($key, $val, $expire = null, $url = null) {
+	function setRaw($key, $val, $expire = null, $url = null)
+	{
 		$_SESSION[$key] = $val;
 	}
 
@@ -84,7 +94,10 @@ class Session extends SingletonObject {
 	 *@param string Key name
 	 *@return mixed Return value stored in session
 	 */
-	function get($key) { return  (isset($_SESSION['NS'][$key]['v']) ? $_SESSION['NS'][$key]['v'] : false); }
+	function get($key)
+	{
+		return (isset($_SESSION['NS'][$key]['v']) ? $_SESSION['NS'][$key]['v'] : false);
+	}
 
 	/**
 	 *Get stored session data directly from $_SESSION variable
@@ -92,7 +105,10 @@ class Session extends SingletonObject {
 	 *@param string Key name
 	 *@return mixed Return value stored in session
 	 */
-	function getRaw($key) { return  (isset($_SESSION[$key]) ? $_SESSION[$key] : false); }
+	function getRaw($key)
+	{
+		return (isset($_SESSION[$key]) ? $_SESSION[$key] : false);
+	}
 
 	/**
 	 *Get and remove stored session data
@@ -100,8 +116,10 @@ class Session extends SingletonObject {
 	 *@param string Key name
 	 *@return mixed Return value stored in session
 	 */
-	function flush($key) {
-		if(!isset($_SESSION['NS'][$key])) return false;
+	function flush($key)
+	{
+		if (!isset($_SESSION['NS'][$key]))
+			return false;
 
 		$ret = $_SESSION['NS'][$key]['v'];
 		unset($_SESSION['NS'][$key]);
@@ -115,8 +133,10 @@ class Session extends SingletonObject {
 	 *@param string Key name
 	 *@return mixed Return value stored in session
 	 */
-	function flushRaw($key) {
-		if(!isset($_SESSION[$key])) return false;
+	function flushRaw($key)
+	{
+		if (!isset($_SESSION[$key]))
+			return false;
 
 		$ret = $_SESSION[$key];
 		unset($_SESSION[$key]);
@@ -129,6 +149,8 @@ class Session extends SingletonObject {
 	 *
 	 *@return self 
 	 */
-	static function getInstance() { return self::createInstance(__CLASS__); }
+	static function getInstance()
+	{
+		return self::createInstance(__CLASS__);
+	}
 }
-?>

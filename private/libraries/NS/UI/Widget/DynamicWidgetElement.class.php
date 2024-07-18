@@ -30,17 +30,19 @@ use NS\UI\ScriptManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class DynamicWidgetElement extends UI {
-	function __construct($widget, $attrs, $max = 0, $add_text = 'Add More', $remove_text = 'Remove') {
+class DynamicWidgetElement extends UI
+{
+	function __construct($widget, $attrs, $max = 0, $add_text = 'Add More', $remove_text = 'Remove')
+	{
 		$name = $widget->name;
 		$widget->name = $widget->name . '[]';
 		$widget->UI = $widget->constructUI();
 		$count = $this->getUICount(__CLASS__);
 
 		$this->UI =
-		'<div class="NS-DynamicWidgetElement-Container NS-DynamicWidgetElement-Container-' . $count . '">
+			'<div class="NS-DynamicWidgetElement-Container NS-DynamicWidgetElement-Container-' . $count . '">
 			<div id="NS-DynamicWidgetElement-Element-Template-' . $count . '" class="NS-DynamicWidgetElement-Element NS-DynamicWidgetElement-Element-' . $count . '">' .
-				$widget->UI . '&nbsp;
+			$widget->UI . '&nbsp;
 				<a class="NS-DynamicWidgetElement-Add NS-DynamicWidgetElement-Add-' . $count . '" href="#">' . $add_text . '</a>&nbsp;
 				<span class="NS-DynamicWidgetElement-Remove-Container NS-DynamicWidgetElement-Remove-Container-' . $count . '" style="display:none;">
 					<span class="NS-DynamicWidgetElement-Splitter NS-DynamicWidgetElement-Splitter-' . $count . '">|</span>&nbsp;
@@ -92,4 +94,3 @@ class DynamicWidgetElement extends UI {
 		);
 	}
 }
-?>

@@ -28,18 +28,25 @@ use NS\UI\UI;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Hyperlink extends UI {	
-	function __construct($name, $link, $text = '', $args = array()) {
-		if(empty($text)) $text = $link;
+class Hyperlink extends UI
+{
+	function __construct($name, $link, $text = '', $args = [])
+	{
+		if (empty($text))
+			$text = $link;
 
 		$this->_attr['class'] = 'NS-Hyperlink';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['href'] = $link;
 
-		if($name != null) {
+		if ($name != null) {
 			$this->_attr['id'] = $name;
 			$this->_attr['name'] = $name;
 		}
@@ -47,4 +54,3 @@ class Hyperlink extends UI {
 		parent::__construct($this->constructUI('a', true, $text));
 	}
 }
-?>

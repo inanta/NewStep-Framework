@@ -34,12 +34,15 @@ use NS\Exception\IOException;
  *@property string $FileName File name for download header
  *@property string $Size Size of the file
  */
-class Download extends Object {
+class Download extends Object
+{
 	private $_filename;
 
-	function startTransfer() {
-		include(NS_SYSTEM_PATH . '/' .  Config::getInstance()->ConfigFolder . '/MimeType.inc.php');
-		if(isset($MimeType[$ext])) $this->ContentType = $MimeType[$ext];
+	function startTransfer()
+	{
+		include (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/MimeType.inc.php');
+		if (isset($MimeType[$ext]))
+			$this->ContentType = $MimeType[$ext];
 
 		header('Content-Description: File Transfer');
 		header('Content-Type: ' . $this->ContentType);
@@ -56,23 +59,27 @@ class Download extends Object {
 		exit;
 	}
 
-	function __construct($filename) {
-		if(!is_file($filename)) throw new IOException(array('code' => NS_EX_IO_FILE_NOT_FOUND, 'filename' => $filename));
-		if(!is_readable($filename)) throw new IOException(array('code' => NS_EX_IO_FILE_NOT_READABLE, 'filename' => $filename));
+	function __construct($filename)
+	{
+		if (!is_file($filename))
+			throw new IOException(array('code' => NS_EX_IO_FILE_NOT_FOUND, 'filename' => $filename));
+		if (!is_readable($filename))
+			throw new IOException(array('code' => NS_EX_IO_FILE_NOT_READABLE, 'filename' => $filename));
 
 		$this->_filename = $filename;
 
 		$filename_part = explode('.', $this->_filename);
 		$file_path = explode('/', $this->_filename);
 
-		$this->createProperties(array(
-			'FileName' => end($file_path),
-			'FileExtension' => end($filename_part),
-			'Size' => filesize($this->_filename),
-			'ContentType' => 'application/force-download'
-		));
+		$this->createProperties(
+			array(
+				'FileName' => end($file_path),
+				'FileExtension' => end($filename_part),
+				'Size' => filesize($this->_filename),
+				'ContentType' => 'application/force-download'
+			)
+		);
 
-		
+
 	}
 }
-?>

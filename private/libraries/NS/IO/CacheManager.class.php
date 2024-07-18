@@ -24,50 +24,57 @@ namespace NS\IO;
 use NS\SingletonObject;
 use NS\Exception\IOException;
 
-if(!defined('NS_CACHE_EXPIRE')) define('NS_CACHE_EXPIRE', 86400);
+if (!defined('NS_CACHE_EXPIRE'))
+	define('NS_CACHE_EXPIRE', 86400);
 
 /**
  *Manage cache for framework
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class CacheManager extends SingletonObject {
-	function __construct() {
+class CacheManager extends SingletonObject
+{
+	function __construct()
+	{
 		define('NS_CACHE_PATH', NS_SYSTEM_PATH . '/asset/cache');
-		if(!is_writeable(NS_CACHE_PATH)) throw new IOException(array('code' => IOException::DIRECTORY_NOT_WRITEABLE, 'directory' => NS_CACHE_PATH));
+		if (!is_writeable(NS_CACHE_PATH))
+			throw new IOException(array('code' => IOException::DIRECTORY_NOT_WRITEABLE, 'directory' => NS_CACHE_PATH));
 	}
 
-	function write($file, $contents) {
+	function write($file, $contents)
+	{
 		$cache_fp = null;
 
-		if(!file_exists(NS_CACHE_PATH . '/' . $file)) {
+		if (!file_exists(NS_CACHE_PATH . '/' . $file)) {
 			$cache_fp = true;
-		} elseif((filemtime(NS_CACHE_PATH . '/' . $file) + NS_CACHE_EXPIRE) < time()) {			
+		} elseif ((filemtime(NS_CACHE_PATH . '/' . $file) + NS_CACHE_EXPIRE) < time()) {
 			$cache_fp = true;
 		}
 
-		if($cache_fp) {
-			$cache_fp = fopen(NS_CACHE_PATH . '/' . $file , 'w');
+		if ($cache_fp) {
+			$cache_fp = fopen(NS_CACHE_PATH . '/' . $file, 'w');
 			fwrite($cache_fp, $contents);
-			
+
 			return true;
 		}
 
 		return false;
 	}
 
-	function read($file) {
-		if(file_exists(NS_CACHE_PATH . '/' . $file)) {
-			if((filemtime(NS_CACHE_PATH . '/' . $file) + NS_CACHE_EXPIRE) < time()) return false;
-			
+	function read($file)
+	{
+		if (file_exists(NS_CACHE_PATH . '/' . $file)) {
+			if ((filemtime(NS_CACHE_PATH . '/' . $file) + NS_CACHE_EXPIRE) < time())
+				return false;
+
 			return file_get_contents(NS_CACHE_PATH . '/' . $file);
 		}
 
 		return false;
 	}
 
-	static function getInstance() {
+	static function getInstance()
+	{
 		return self::createInstance(__CLASS__);
 	}
 }
-?>

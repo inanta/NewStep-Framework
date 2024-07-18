@@ -30,21 +30,28 @@ use NS\IO\Validator\ValidatorManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Password extends UI {	
-	function __construct($name, $value = '', $placeholder = null, $validators = null, $args = array()) {
+class Password extends UI
+{
+	function __construct($name, $value = '', $placeholder = null, $validators = null, $args = [])
+	{
 		$this->_attr['class'] = 'NS-Text NS-Password';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['type'] = 'password';
 		$this->_attr['name'] = $name;
 		$this->_attr['value'] = $value;
 
-		if($validators != null) ValidatorManager::getInstance()->initializeValidator($name, $validators);
+		if ($validators != null)
+			ValidatorManager::getInstance()->initializeValidator($name, $validators);
 
-		if($placeholder != null) {
+		if ($placeholder != null) {
 			$name = 'WidgetPassword-' . $this->getUICount('WidgetPassword');
 			$this->_attr['class'] .= ' ' . $name;
 			$this->_attr['placeholder'] = $placeholder;
@@ -88,4 +95,3 @@ class Password extends UI {
 		parent::__construct($this->constructUI('input'));
 	}
 }
-?>

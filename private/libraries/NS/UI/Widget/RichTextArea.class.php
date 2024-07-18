@@ -31,12 +31,18 @@ use NS\IO\Validator\ValidatorManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class RichTextArea extends UI {
-	function __construct($name, $value = '') {
+class RichTextArea extends UI
+{
+	function __construct($name, $value = '', $args)
+	{
 		$this->_attr['class'] = 'NS-RichTextArea';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['name'] = $name;
@@ -47,11 +53,10 @@ class RichTextArea extends UI {
 		$scm->addSource(NS_JQUERY_PATH);
 		$scm->addExternalSource(NS_PUBLIC_URL . '/ns/asset/3rdparty/rte/jquery.rte.js');
 		$scm->addExternalSource(NS_PUBLIC_URL . '/ns/asset/3rdparty/rte/jquery.rte.tb.js');
-		$scm->addScript('jQuery(function() { jQuery(\'#'. $name .'\').rte({ controls_rte: rte_toolbar }); });');
+		$scm->addScript('jQuery(function() { jQuery(\'#' . $name . '\').rte({ controls_rte: rte_toolbar }); });');
 
 		$sm->addExternalSource(NS_PUBLIC_URL . '/ns/asset/3rdparty/rte/jquery.rte.css');
 
 		parent::__construct($this->constructUI('textarea', true, $value));
 	}
 }
-?>

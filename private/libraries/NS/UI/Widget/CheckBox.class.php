@@ -28,16 +28,23 @@ use NS\UI\UI;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class CheckBox extends UI {
-	function __construct($name, $value = '', $is_checked = false, $label = '', $args = array()) {
-		if($is_checked) $this->_attr['checked'] = 'checked';
+class CheckBox extends UI
+{
+	function __construct($name, $value = '', $is_checked = false, $label = '', $args = [])
+	{
+		if ($is_checked)
+			$this->_attr['checked'] = 'checked';
 
 		$this->_attr['class'] = 'NS-Checkbox';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
-		if($name != null) {
+		if ($name != null) {
 			$this->_attr['id'] = $name;
 			$this->_attr['name'] = $name;
 		}
@@ -45,21 +52,24 @@ class CheckBox extends UI {
 		$this->_attr['type'] = 'checkbox';
 		$this->_attr['value'] = $value;
 
-		if(!empty($label)) {
+		if (!empty($label)) {
 			$this->_attr['label'] = $label;
 		}
 
-		parent::__construct($this->constructUI('input'), false, $label);;
+		parent::__construct($this->constructUI('input'), false, $label);
+		;
 	}
 
-	protected function constructUI($tag = null, $close_tag = false, $content = '') {
-		if(isset($this->_attr['label'])) {
+	protected function constructUI($tag = null, $close_tag = false, $content = '')
+	{
+		if (isset($this->_attr['label'])) {
 			$content = '&nbsp;' . $this->_attr['label'];
 			unset($this->_attr['label']);
 		}
 
-		if(!empty($content)) return '<label>' . parent::constructUI($tag, $close_tag) . $content . '</label>';
-		else return parent::constructUI($tag, $close_tag);
+		if (!empty($content))
+			return '<label>' . parent::constructUI($tag, $close_tag) . $content . '</label>';
+		else
+			return parent::constructUI($tag, $close_tag);
 	}
 }
-?>

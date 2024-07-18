@@ -28,16 +28,19 @@ use NS\Exception\SecurityException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class OpenSSL {
+class OpenSSL
+{
 	private $_key = 'NS';
 	const METHOD = 'aes-256-ctr';
-	
-	function __construct($key = null) {
-		if(!empty($key)) 
+
+	function __construct($key = null)
+	{
+		if (!empty($key))
 			$this->_key = $key;
 	}
 
-	function encrypt($message) {
+	function encrypt($message)
+	{
 		$nonceSize = openssl_cipher_iv_length(self::METHOD);
 		$nonce = openssl_random_pseudo_bytes($nonceSize);
 
@@ -49,12 +52,13 @@ class OpenSSL {
 			$nonce
 		);
 
-		return base64_encode($nonce.$ciphertext);
+		return base64_encode($nonce . $ciphertext);
 	}
 
-	function decrypt($message) {
+	function decrypt($message)
+	{
 		$message = base64_decode($message, true);
-		
+
 		if ($message === false) {
 			throw new SecurityException(array('code' => SecurityException::INVALID_ENCRYPTION));
 		}
@@ -74,4 +78,3 @@ class OpenSSL {
 		return $plaintext;
 	}
 }
-?>

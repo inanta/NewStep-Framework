@@ -36,98 +36,121 @@ use NS\Template\Engine\PHPTemplate;
  *@property string $CC CC email address
  *@property string $BCC BCC email address
  */
-class Mail extends Object {
-	function __construct() {
-		$this->createProperties(array(
-			'To' => '',
-			 'Subject' => '',
-			 'Message' => '',
-			 'From' => '',
-			 'ReplyTo' => '',
-			 'CC' => '',
-			 'BCC' => ''
-		));
+class Mail extends Object
+{
+	function __construct()
+	{
+		$this->createProperties(
+			array(
+				'To' => '',
+				'Subject' => '',
+				'Message' => '',
+				'From' => '',
+				'ReplyTo' => '',
+				'CC' => '',
+				'BCC' => ''
+			)
+		);
 	}
 
 	/**
-	*Add BCC recipient email address and name
-	*
-	*@param string $email Email address
-	*@param string $name Recipient name
-	*/
-	function addBCC($email, $name = null) {
-		if($name != null) {
+	 *Add BCC recipient email address and name
+	 *
+	 *@param string $email Email address
+	 *@param string $name Recipient name
+	 */
+	function addBCC($email, $name = null)
+	{
+		if ($name != null) {
 			$email = '"' . $name . '" <' . $email . '>';
 		}
 
-		if($this->BCC != '') $this->BCC .= ', ' . $email;
-		else $this->BCC = $email;
+		if ($this->BCC != '')
+			$this->BCC .= ', ' . $email;
+		else
+			$this->BCC = $email;
 	}
 
 	/**
-	*Add many BCC recipients email address and name
-	*
-	*@param array $emails Associative array containing email address as key and recipient name as value
-	*/
-	function addBCCs($emails) {
-		foreach($emails as $email => $name) { $this->addBCC($email, $name); }
+	 *Add many BCC recipients email address and name
+	 *
+	 *@param array $emails Associative array containing email address as key and recipient name as value
+	 */
+	function addBCCs($emails)
+	{
+		foreach ($emails as $email => $name) {
+			$this->addBCC($email, $name);
+		}
 	}
 
 	/**
-	*Add CC recipient email address and name
-	*
-	*@param string $email Email address
-	*@param string $name Recipient name
-	*/
-	function addCC($email, $name = null) {
-		if($name != null) {
+	 *Add CC recipient email address and name
+	 *
+	 *@param string $email Email address
+	 *@param string $name Recipient name
+	 */
+	function addCC($email, $name = null)
+	{
+		if ($name != null) {
 			$email = '"' . $name . '" <' . $email . '>';
 		}
 
-		if($this->CC != '') $this->CC .= ', ' . $email;
-		else $this->CC = $email;
+		if ($this->CC != '')
+			$this->CC .= ', ' . $email;
+		else
+			$this->CC = $email;
 	}
 
 	/**
-	*Add many CC recipients email address and name
-	*
-	*@param array $emails Associative array containing email address as key and recipient name as value
-	*/
-	function addCCs($emails) {
-		foreach($emails as $email => $name) { $this->addCC($email, $name); }
+	 *Add many CC recipients email address and name
+	 *
+	 *@param array $emails Associative array containing email address as key and recipient name as value
+	 */
+	function addCCs($emails)
+	{
+		foreach ($emails as $email => $name) {
+			$this->addCC($email, $name);
+		}
 	}
 
 	/**
-	*Add recipient email address and name
-	*
-	*@param string $email Email address
-	*@param string $name Recipient name
-	*/
-	function addRecipient($email, $name = null) {
-		if($name != null) {
+	 *Add recipient email address and name
+	 *
+	 *@param string $email Email address
+	 *@param string $name Recipient name
+	 */
+	function addRecipient($email, $name = null)
+	{
+		if ($name != null) {
 			$email = '"' . $name . '" <' . $email . '>';
 		}
 
-		if($this->To != '') $this->To .= ', ' . $email;
-		else $this->To = $email;
+		if ($this->To != '')
+			$this->To .= ', ' . $email;
+		else
+			$this->To = $email;
 	}
 
 	/**
-	*Add many recipients email address and name
-	*
-	*@param array $emails Associative array containing email address as key and recipient name as value
-	*/
-	function addRecipients($emails) {
-		foreach($emails as $email => $name) { $this->addRecipient($email, $name); }
+	 *Add many recipients email address and name
+	 *
+	 *@param array $emails Associative array containing email address as key and recipient name as value
+	 */
+	function addRecipients($emails)
+	{
+		foreach ($emails as $email => $name) {
+			$this->addRecipient($email, $name);
+		}
 	}
 
 	/**
-	*Parse email message from template
-	*
-	*@param string $file Template file name and path
-	*@param mixed $data Variable that will be used in template file
-	*/
-	function parseMessage($file, $data) {
+	 *Parse email message from template
+	 *
+	 *@param string $file Template file name and path
+	 *@param mixed $data Variable that will be used in template file
+	 */
+	function parseMessage($file, $data)
+	{
 		$template = new PHPTemplate();
 		$template->assign($data);
 
@@ -135,11 +158,12 @@ class Mail extends Object {
 	}
 
 	/**
-	*Send email
-	*
-	*@return boolean Return true if email is sent successfully
-	*/
-	function send() {
+	 *Send email
+	 *
+	 *@return boolean Return true if email is sent successfully
+	 */
+	function send()
+	{
 		$header =
 			'From: ' . $this->From . "\r\n" .
 			'Reply-To: ' . ($this->ReplyTo == '' ? $this->From : $this->ReplyTo) . "\r\n" .
@@ -150,4 +174,3 @@ class Mail extends Object {
 		return mail($this->To, $this->Subject, $this->Message, $header);
 	}
 }
-?>

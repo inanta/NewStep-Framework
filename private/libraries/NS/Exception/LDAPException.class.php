@@ -33,34 +33,47 @@ define('NS_EX_DB_UNDEFINED_CONNECTION_NAME', 9);
 define('NS_EX_DB_UNDEFINED_PRIMARY_KEY', 10);
 define('NS_EX_DB_AR_NOT_INITIALIZED', 11);
 
-class LDAPException extends Exception {
-	function __construct($args) {
+class LDAPException extends Exception
+{
+	function __construct($args)
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
 
 		switch ($args['code']) {
 			case NS_EX_DB_UNABLE_TO_CONNECT:
-				$message = sprintf($this->_('Unable to connect to server host [%s]'), $args['host']); break;
+				$message = sprintf($this->_('Unable to connect to server host [%s]'), $args['host']);
+				break;
 			case NS_EX_DB_UNABLE_TO_ACCESS:
-				$message = sprintf($this->_('Access denied for user [%s] to database [%s]'), $args['user'], $args['database']); break;
+				$message = sprintf($this->_('Access denied for user [%s] to database [%s]'), $args['user'], $args['database']);
+				break;
 			case NS_EX_DB_UNABLE_TO_USE:
-				$message = sprintf($this->_('Unable to select or open database [%s]'), $args['database']); break;
+				$message = sprintf($this->_('Unable to select or open database [%s]'), $args['database']);
+				break;
 			case NS_EX_DB_QUERY_ERROR:
-				$message = sprintf($this->_('Unable to execute query [%s] please check if the query is correct'), $args['query']); break;
+				$message = sprintf($this->_('Unable to execute query [%s] please check if the query is correct'), $args['query']);
+				break;
 			case NS_EX_DB_QUERY_TABLE_NOT_EXIST:
-				$message = sprintf($this->_('Unable to execute query [%s] please check table name in the query'), $args['query']); break;
+				$message = sprintf($this->_('Unable to execute query [%s] please check table name in the query'), $args['query']);
+				break;
 			case NS_EX_DB_QUERY_COLUMN_NOT_EXIST:
-				$message = sprintf($this->_('Unable to execute query [%s] please check column name in the query'), $args['query']); break;
+				$message = sprintf($this->_('Unable to execute query [%s] please check column name in the query'), $args['query']);
+				break;
 			case NS_EX_DB_TABLE_NOT_EXIST:
-				$message = sprintf($this->_('Table [%s] is not exist in database [%s]'), $args['table'], $args['database']); break;
+				$message = sprintf($this->_('Table [%s] is not exist in database [%s]'), $args['table'], $args['database']);
+				break;
 			case NS_EX_DB_COLUMN_NOT_EXIST:
-				$message = sprintf($this->_('Column name [%s] is not exist in table [%s]'), $args['column'], $args['table']); break;
+				$message = sprintf($this->_('Column name [%s] is not exist in table [%s]'), $args['column'], $args['table']);
+				break;
 			case NS_EX_DB_UNDEFINED_CONNECTION_NAME:
-				$message = sprintf($this->_('Connection name [%s] is not defined'), $args['connection']); break;
+				$message = sprintf($this->_('Connection name [%s] is not defined'), $args['connection']);
+				break;
 			case NS_EX_DB_UNDEFINED_PRIMARY_KEY:
-				$message = sprintf($this->_('Primary key is not defined in table [%s]'), $args['table']); break;
+				$message = sprintf($this->_('Primary key is not defined in table [%s]'), $args['table']);
+				break;
 			case NS_EX_DB_AR_NOT_INITIALIZED:
-				$message = sprintf($this->_('Active record that using table [%s] is not initialized'), $args['table']); break;
+				$message = sprintf($this->_('Active record that using table [%s] is not initialized'), $args['table']);
+				break;
 			default:
 				$message = sprintf($this->_('Unknown database error [%s] with code [%s] when executing query [%s]'), $args['message'], $args['code'], $args['query']);
 		}
@@ -68,4 +81,3 @@ class LDAPException extends Exception {
 		parent::__construct($message);
 	}
 }
-?>

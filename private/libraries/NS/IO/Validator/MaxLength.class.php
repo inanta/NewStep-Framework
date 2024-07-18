@@ -26,14 +26,16 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class MaxLength extends Validator {	
-	function __construct($length, $message = 'Maximum length is %s characters') {
+class MaxLength extends Validator
+{
+	function __construct($length, $message = 'Maximum length is %s characters')
+	{
 		parent::__construct('maxlength', sprintf($message, $length));
 		$this->Param = $length;
 	}
 
-	function validate(&$data) {
+	function validate(&$data)
+	{
 		return (strlen($data) <= $this->Param);
 	}
 }
-?>

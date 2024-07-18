@@ -33,72 +33,86 @@ define('NS_TPL_SMARTY', 'smarty');
  *@author Inanta Martsanto <inanta@inationsoft.com>
  *@property string $File Template file name and path that will be used
  */
-abstract class Template extends BaseObject {
-	protected $_vars = array();
+abstract class Template extends BaseObject
+{
+	protected $_vars = [];
 
-	static private $_lastInstance = array();
-	static private $_enginesInstance = array();
+	static private $_lastInstance = [];
+	static private $_enginesInstance = [];
 
-	function __construct($args) {
+	function __construct($args)
+	{
 		$this->createProperties(array('Path' => '', 'File' => ''));
 	}
 
 	/**
-	*Assign variable to template
-	*
-	*@param string|array $tpl_var Variable name or associative array of variables that will be assigned to template
-	*/
-	function assign($tpl_var, $value = null) {
-		if(is_array($tpl_var)) {
-			foreach($tpl_var as $k => $v) { 
-				$this->_vars[$k] = $v; 
+	 *Assign variable to template
+	 *
+	 *@param string|array $tpl_var Variable name or associative array of variables that will be assigned to template
+	 */
+	function assign($tpl_var, $value = null)
+	{
+		if (is_array($tpl_var)) {
+			foreach ($tpl_var as $k => $v) {
+				$this->_vars[$k] = $v;
 			}
-		} else { 
-			$this->_vars[$tpl_var] = $value; 
+		} else {
+			$this->_vars[$tpl_var] = $value;
 		}
 	}
 
 	/**
-	*Remove all variables from template
-	*
-	*/
-	function clearAllAssign() {
-		$this->_vars = array();
+	 *Remove all variables from template
+	 *
+	 */
+	function clearAllAssign()
+	{
+		$this->_vars = [];
 	}
 
 	/**
-	*Clear variable or variables from template
-	*
-	*@param string|array $tpl_var Variable name or associative array of variables that will removed from template
-	*/
-	function clearAssign($tpl_var) {
-		if(is_array($tpl_var)) {
-			foreach($tpl_var as $k => $v) { unset($this->_vars[$v]); }
-		} else { unset($this->_vars[$tpl_var]); }
-	 }
+	 *Clear variable or variables from template
+	 *
+	 *@param string|array $tpl_var Variable name or associative array of variables that will removed from template
+	 */
+	function clearAssign($tpl_var)
+	{
+		if (is_array($tpl_var)) {
+			foreach ($tpl_var as $k => $v) {
+				unset($this->_vars[$v]);
+			}
+		} else {
+			unset($this->_vars[$tpl_var]);
+		}
+	}
 
 	/**
-	*Print rendered template
-	*
-	*/
-	function display($resource_name) {
+	 *Print rendered template
+	 *
+	 */
+	function display($resource_name)
+	{
 		echo $this->fetch($resource_name);
 	}
 
 	/**
-	*Return rendered template
-	*
-	*@return string Rendered content
-	*/
+	 *Return rendered template
+	 *
+	 *@return string Rendered content
+	 */
 	abstract function fetch($resource_name);
 
-	static function getInstance($tpl_type = null, $args = array(), $id  = 0) {
-		if($tpl_type == null) $tpl_type = Config::getInstance()->Application->TemplateEngine;
+	static function getInstance($tpl_type = null, $args = [], $id = 0)
+	{
+		if ($tpl_type == null)
+			$tpl_type = Config::getInstance()->Application->TemplateEngine;
 
-		if(isset(self::$_lastInstance[$id])) self::$_lastInstance[$id] = $tpl_type;
-		if(isset(self::$_enginesInstance[$tpl_type][$id])) return self::$_enginesInstance[$tpl_type][$id];
+		if (isset(self::$_lastInstance[$id]))
+			self::$_lastInstance[$id] = $tpl_type;
+		if (isset(self::$_enginesInstance[$tpl_type][$id]))
+			return self::$_enginesInstance[$tpl_type][$id];
 
-		switch(self::$_lastInstance) {
+		switch (self::$_lastInstance) {
 			case NS_TPL_SMARTY:
 				return (self::$_enginesInstance[NS_TPL_SMARTY][$id] = new Engine\SmartyTemplate($args));
 			case NS_TPL_PHP:
@@ -107,8 +121,9 @@ abstract class Template extends BaseObject {
 		}
 	}
 
-	static function newInstance($tpl_type = NS_TPL_PHP, $args = array()) {
-		switch($tpl_type) {
+	static function newInstance($tpl_type = NS_TPL_PHP, $args = [])
+	{
+		switch ($tpl_type) {
 			case NS_TPL_SMARTY:
 				return (new Engine\SmartyTemplate($args));
 				break;
@@ -118,4 +133,3 @@ abstract class Template extends BaseObject {
 		}
 	}
 }
-?>

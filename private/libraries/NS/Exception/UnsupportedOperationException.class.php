@@ -21,12 +21,13 @@
 
 namespace NS\Exception;
 
-class UnsupportedOperationException extends Exception {
-	function __construct() {
+class UnsupportedOperationException extends Exception
+{
+	function __construct()
+	{
 		$this->_httpHeader['code'] = 501;
 		$this->_httpHeader['message'] = 'Not Implemented';
 
 		parent::__construct($this->_('Unsupported operation'));
 	}
 }
-?>

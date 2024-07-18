@@ -31,34 +31,41 @@ use NS\IO\Validator\ValidatorManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class ConnectedListBox extends UI {
-	public $ListBox = array();
+class ConnectedListBox extends UI
+{
+	public $ListBox = [];
 
-	function __construct($name, $value = null, $selected = null, $validators = null, $args = array()) {
+	function __construct($name, $value = null, $selected = null, $validators = null, $args = [])
+	{
 		$ui_count = $this->getUICount(__CLASS__);
 		$this->_attr['class'] = 'NS-ConnectedListBox-Container-' . $ui_count;
 
 		$unmodified_args = $args;
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$dataIndex = 0;
-		$connectedData = array();
+		$connectedData = [];
 
 		$args = $unmodified_args;
 
-		foreach($value as $data) {
+		foreach ($value as $data) {
 			$args['class'] = 'NS-ConnectedListBox-Item NS-ConnectedListBox-Item-' . $ui_count . (isset($args['class']) ? ' ' . $args['class'] : '');
 
-			if($dataIndex != 0) $connectedData[$dataIndex] = $data;
+			if ($dataIndex != 0)
+				$connectedData[$dataIndex] = $data;
 			$this->ListBox[] = new ListBox($name, ($dataIndex == 0 ? $data : null), ($dataIndex == 0 ? $selected[0] : null), $validators, $args);
 
 			++$dataIndex;
 		}
 
 		$content = '';
-		foreach($this->ListBox as $key => $lb) {
+		foreach ($this->ListBox as $key => $lb) {
 			$this->ListBox[$key]->id .= '-' . $key;
 			$this->ListBox[$key]->name .= '[]';
 			$this->ListBox[$key]->UI = $this->ListBox[$key]->constructUI();
@@ -118,8 +125,8 @@ class ConnectedListBox extends UI {
 		parent::__construct($this->constructUI('div', true, $content));
 	}
 
-	function getListBox($index) {
+	function getListBox($index)
+	{
 		return (isset($this->ListBox[$index]) ? $this->ListBox[$index] : false);
 	}
 }
-?>

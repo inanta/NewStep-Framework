@@ -28,35 +28,42 @@ use NS\UI\UI;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Button extends UI {
+class Button extends UI
+{
 	/**
-	*Normal HTML button
-	*/ 
+	 *Normal HTML button
+	 */
 	const BUTTON_NORMAL = 'Button';
-	
+
 	/**
-	*Submit form button
-	*/ 
+	 *Submit form button
+	 */
 	const BUTTON_SUBMIT = 'Submit';
-	
+
 	/**
-	*Reset form button
-	*/ 
+	 *Reset form button
+	 */
 	const BUTTON_RESET = 'Reset';
 
-	function __construct($name, $value = '', $type = self::BUTTON_NORMAL, $text = null, $args  = array()) {
+	function __construct($name, $value = '', $type = self::BUTTON_NORMAL, $text = null, $args = [])
+	{
 		$this->_attr['class'] = 'NS-Button';
 		$this->_attr['name'] = $name;
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
-		if(!isset($this->_attr['id'])) $this->_attr['id'] = $name;
+		if (!isset($this->_attr['id']))
+			$this->_attr['id'] = $name;
 		$this->_attr['type'] = strtolower($type);
 		$this->_attr['value'] = $value;
 
-		if($value == '') $value = $type;
+		if ($value == '')
+			$value = $type;
 		parent::__construct($this->constructUI('button', true, ($text == null ? ucwords($value) : $text)));
 	}
 }
-?>

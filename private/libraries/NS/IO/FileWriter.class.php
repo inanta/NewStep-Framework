@@ -29,28 +29,34 @@ use NS\Exception\IOException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class FileWriter extends BaseObject {
+class FileWriter extends BaseObject
+{
 	const MODE_WRITE = 'w';
 	const MODE_APPEND = 'a';
 
 	private $_fp, $_isClosed = false;
 
-	function __construct($filename, $mode = self::MODE_WRITE) {
+	function __construct($filename, $mode = self::MODE_WRITE)
+	{
 		$this->_fp = @fopen($filename, $mode);
-		if(!$this->_fp) throw new IOException(array('code' => IOException::FILE_NOT_WRITEABLE, 'filename' => $filename));
+		if (!$this->_fp)
+			throw new IOException(array('code' => IOException::FILE_NOT_WRITEABLE, 'filename' => $filename));
 	}
 
-	function __destruct() {
+	function __destruct()
+	{
 		$this->close();
 	}
 
-	function write($contents) {
+	function write($contents)
+	{
 		fwrite($this->_fp, $contents);
 	}
 
-	function close() {
-		if(!$this->_isClosed) fclose($this->_fp);
+	function close()
+	{
+		if (!$this->_isClosed)
+			fclose($this->_fp);
 		return ($this->_isClosed = true);
 	}
 }
-?>

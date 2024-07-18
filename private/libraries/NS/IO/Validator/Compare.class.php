@@ -28,30 +28,35 @@ use NS\Exception\UnsupportedOperationException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Compare extends Validator {
+class Compare extends Validator
+{
 	const EQUALS = 0;
 	const GREATER_THAN = 1;
 	const LESS_THAN = 2;
 	const NOT_EQUALS = 3;
 
-	function __construct($id, $operator = self::EQUALS, $message = 'Not match') {
-		switch($operator) {
+	function __construct($id, $operator = self::EQUALS, $message = 'Not match')
+	{
+		switch ($operator) {
 			case self::EQUALS:
-				parent::__construct('equalTo', $message); break;
+				parent::__construct('equalTo', $message);
+				break;
 			case self::GREATER_THAN:
-				parent::__construct('greaterThan', $message); break;
+				parent::__construct('greaterThan', $message);
+				break;
 			case self::LESS_THAN:
-				parent::__construct('lessThan', $message); break;
+				parent::__construct('lessThan', $message);
+				break;
 			case self::NOT_EQUALS:
-				parent::__construct('notEqualTo', $message); break;
+				parent::__construct('notEqualTo', $message);
+				break;
 		}
 
-		$this->Param = '#'.$id;
+		$this->Param = '#' . $id;
 	}
 
-	function validate(&$data) {
+	function validate(&$data)
+	{
 		throw new UnsupportedOperationException();
 	}
 }
-
-?>

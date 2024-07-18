@@ -29,45 +29,54 @@ use NS\IO\Validator\ValidatorManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class ListBox extends UI {
-	public $Options = array();
+class ListBox extends UI
+{
+	public $Options = [];
 	private $_previousSelected = null;
 
-	function __construct($name, $value = null, $selected = null, $validators = null, $args = array()) {
+	function __construct($name, $value = null, $selected = null, $validators = null, $args = [])
+	{
 		$this->_attr['class'] = 'NS-ListBox';
 
-		if(isset($args['class'])) { $this->_attr['class'] .= (' ' . $args['class']); unset($args['class']); }
-		if(!empty($args)) $this->_attr = array_merge($this->_attr, $args);
+		if (isset($args['class'])) {
+			$this->_attr['class'] .= (' ' . $args['class']);
+			unset($args['class']);
+		}
+		if (!empty($args))
+			$this->_attr = array_merge($this->_attr, $args);
 
 		$this->_attr['id'] = $name;
 		$this->_attr['name'] = isset($args['multiple']) ? $name . '[]' : $name;
 
 		$this->createProperties(array('Selected' => ($selected == null) ? null : $selected));
 
-		if($value != null) {
+		if ($value != null) {
 			$this->addItem($value);
 		} else {
-		    parent::__construct($this->constructUI('select', true, implode('', $this->Options)));
+			parent::__construct($this->constructUI('select', true, implode('', $this->Options)));
 		}
 
-		if($validators != null) ValidatorManager::getInstance()->initializeValidator($name, $validators);
+		if ($validators != null)
+			ValidatorManager::getInstance()->initializeValidator($name, $validators);
 	}
 
-	function addItem($item, $name = '') {
-		if(is_array($item)) {
-			foreach($item as $value => $text) {
-				$this->Options[$value] = '<option value="'.$value.'">'.$text.'</option>';
+	function addItem($item, $name = '')
+	{
+		if (is_array($item)) {
+			foreach ($item as $value => $text) {
+				$this->Options[$value] = '<option value="' . $value . '">' . $text . '</option>';
 			}
 		} else {
-			$name != '' ? $this->Options[$name] = '<option value="'.$name.'">'.$item.'</option>' : $this->Options[$item] = '<option value="'.$item.'">'.$item.'</option>';
+			$name != '' ? $this->Options[$name] = '<option value="' . $name . '">' . $item . '</option>' : $this->Options[$item] = '<option value="' . $item . '">' . $item . '</option>';
 		}
 
 		$this->changeSelected();
 		parent::__construct($this->constructUI('select', true, implode('', $this->Options)));
 	}
 
-	function __set($property, $value) {
-		if($property == 'Selected') {
+	function __set($property, $value)
+	{
+		if ($property == 'Selected') {
 			$this->_previousSelected = $this->Selected;
 			parent::__set($property, $value);
 			$this->changeSelected();
@@ -78,9 +87,11 @@ class ListBox extends UI {
 		parent::__set($property, $value);
 	}
 
-	private function changeSelected() {
-		if($this->_previousSelected != null) $this->Options[$this->_previousSelected] = str_replace(' selected="selected"', '', $this->Options[$this->_previousSelected]);
-		if($this->Selected != null && isset($this->Options[$this->Selected])) $this->Options[$this->Selected] = str_replace('<option', '<option selected="selected"', $this->Options[$this->Selected]);
+	private function changeSelected()
+	{
+		if ($this->_previousSelected != null)
+			$this->Options[$this->_previousSelected] = str_replace(' selected="selected"', '', $this->Options[$this->_previousSelected]);
+		if ($this->Selected != null && isset($this->Options[$this->Selected]))
+			$this->Options[$this->Selected] = str_replace('<option', '<option selected="selected"', $this->Options[$this->Selected]);
 	}
 }
-?>

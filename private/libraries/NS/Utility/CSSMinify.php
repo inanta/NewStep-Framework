@@ -29,12 +29,15 @@ use NS\Exception\IOException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class CSSMinify extends Object {
+class CSSMinify extends Object
+{
 	private $_filename = null;
 
-	function __construct($filename) {
-		if(!is_readable($filename)) {
-			if(!is_file($filename)) throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
+	function __construct($filename)
+	{
+		if (!is_readable($filename)) {
+			if (!is_file($filename))
+				throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
 
 			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $filename));
 		}
@@ -42,15 +45,15 @@ class CSSMinify extends Object {
 		$this->_filename = $filename;
 	}
 
-	function minify() {
+	function minify()
+	{
 		$contents = file_get_contents($this->_filename);
 		$contents = preg_replace('/\/\*(.*?)\*\//is', '', $contents);
-		$contents = preg_replace('/;?\s*}/', '}', $contents); 
-		$contents = preg_replace('/\s*([\{:;,])\s*/', '$1', $contents); 
-		$contents = preg_replace('/^\s*|\s*$/m', '', $contents); 
+		$contents = preg_replace('/;?\s*}/', '}', $contents);
+		$contents = preg_replace('/\s*([\{:;,])\s*/', '$1', $contents);
+		$contents = preg_replace('/^\s*|\s*$/m', '', $contents);
 		$contents = preg_replace('/\n/', '', $contents);
 
 		return $contents;
 	}
 }
-?>

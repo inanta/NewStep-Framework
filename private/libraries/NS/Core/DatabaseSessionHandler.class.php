@@ -123,4 +123,3 @@ class DatabaseSessionHandler extends SingletonObject
 		return self::createInstance(__CLASS__);
 	}
 }
-?>

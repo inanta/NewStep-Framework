@@ -28,11 +28,14 @@ use NS\Exception\UnsupportedOperationException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-abstract class Iterable extends Object {
+abstract class Iterable extends Object
+{
 	protected $_iterator, $_end, $_collection;
 
-	function __construct($collection = null) {
-		if($collection != null) $this->_collection = $collection;
+	function __construct($collection = null)
+	{
+		if ($collection != null)
+			$this->_collection = $collection;
 
 		$this->_end = (count($this->_collection) - 1);
 		$this->_iterator = -1;
@@ -44,29 +47,35 @@ abstract class Iterable extends Object {
 	}
 
 	/**
-	*Iterate / move pointer to next data
-	*
-	*/
-	function next() {
+	 *Iterate / move pointer to next data
+	 *
+	 */
+	function next()
+	{
 		++$this->_iterator;
 	}
 
-	function hasNext() {
+	function hasNext()
+	{
 		return ($this->_iterator <= $this->_end);
 	}
 
-	function isLast() {
+	function isLast()
+	{
 		return ($this->_iterator == $this->_end);
 	}
 
-	function isFirst() {
+	function isFirst()
+	{
 		return ($this->_iterator === 0);
 	}
 
 	/**
-	*Translate current object data to array
-	*
-	*/
-	function toArray() { return $this->_collection; }
+	 *Translate current object data to array
+	 *
+	 */
+	function toArray()
+	{
+		return $this->_collection;
+	}
 }
-?>

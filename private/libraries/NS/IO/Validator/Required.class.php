@@ -26,13 +26,15 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Required extends Validator {	
-	function __construct($message = 'This field is required') {
+class Required extends Validator
+{
+	function __construct($message = 'This field is required')
+	{
 		parent::__construct('required', $message);
 	}
 
-	function validate(&$data) {
+	function validate(&$data)
+	{
 		return ($data != '');
 	}
 }
-?>

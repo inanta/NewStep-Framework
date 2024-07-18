@@ -48,7 +48,7 @@ class SimpleXor
 
 	private function _simpleXor($string, $key)
 	{
-		$key_list = array(); // Initialise key array
+		$key_list = []; // Initialise key array
 		$output = ""; // Initialise out variable
 
 		## Convert $Key into array of ASCII values
@@ -67,4 +67,3 @@ class SimpleXor
 		return $output;
 	}
 }
-?>

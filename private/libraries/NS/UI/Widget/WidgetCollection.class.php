@@ -30,9 +30,12 @@ use NS\UI\ScriptManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class WidgetCollection extends UI {
-	function __construct($widget, $attrs = array()) {
-		if(!($widget instanceof UI)) throw new IllegalArgumentException($widget);
+class WidgetCollection extends UI
+{
+	function __construct($widget, $attrs = [])
+	{
+		if (!($widget instanceof UI))
+			throw new IllegalArgumentException($widget);
 
 		$count = $this->getUICount(__CLASS__);
 
@@ -41,15 +44,15 @@ class WidgetCollection extends UI {
 		$widget->_attr['name'] = $widget->_attr['name'] . '[]';
 		unset($widget->_attr['id']);
 
-		$widget_attr = array();
+		$widget_attr = [];
 
-		foreach($attrs as $attr => $values) {
-			foreach($values as $key => $value) {
+		foreach ($attrs as $attr => $values) {
+			foreach ($values as $key => $value) {
 				$widget_attr[$key][$attr] = $value;
 			}
 		}
 
-		foreach($widget_attr as $widget_data) {
+		foreach ($widget_attr as $widget_data) {
 			$widget->_attr = array_merge($widget->_attr, $widget_data);
 
 			$this->UI .= '<div class="NS-WidgetCollection-Element NS-WidgetCollection-Element-' . $count . '">' . $widget->constructUI() . '</div>';
@@ -58,4 +61,3 @@ class WidgetCollection extends UI {
 		$this->UI .= '</div>';
 	}
 }
-?>

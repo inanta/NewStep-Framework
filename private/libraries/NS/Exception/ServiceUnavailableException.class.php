@@ -21,12 +21,13 @@
 
 namespace NS\Exception;
 
-class ServiceUnavailableException extends Exception {
-	function __construct($message = 'Service for [%s] is unavailable') {
+class ServiceUnavailableException extends Exception
+{
+	function __construct($message = 'Service for [%s] is unavailable')
+	{
 		$this->_httpHeader['code'] = 503;
 		$this->_httpHeader['message'] = 'Service Unavailable';
 
 		parent::__construct(sprintf($this->_($message), NS_CURRENT_URL));
 	}
 }
-?>

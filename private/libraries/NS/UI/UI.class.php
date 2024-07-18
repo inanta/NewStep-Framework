@@ -29,30 +29,37 @@ use NS\BaseObject;
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
 
-abstract class UI extends BaseObject {
+abstract class UI extends BaseObject
+{
 	protected static $_count;
-	protected $_attr = array(), $_tag, $_isTagClosed, $_content;
+	protected $_attr = [], $_tag, $_isTagClosed, $_content;
 	public $UI;
 
 	/**
-	*Initialize user interface
-	*
-	*/
-	function __construct($ui) {
+	 *Initialize user interface
+	 *
+	 */
+	function __construct($ui)
+	{
 		$this->UI = $ui;
 	}
 
-	function __toString() {
-		try { return ('' . $this->UI); }
-		catch(Exception $e) { return __CLASS__; }
+	function __toString()
+	{
+		try {
+			return ('' . $this->UI);
+		} catch (Exception $e) {
+			return __CLASS__;
+		}
 	}
 
 	/**
-	*Construct widget
-	*
-	*/
-	protected function constructUI($tag = null, $close_tag = false, $content = '') {
-		if($tag == null) {
+	 *Construct widget
+	 *
+	 */
+	protected function constructUI($tag = null, $close_tag = false, $content = '')
+	{
+		if ($tag == null) {
 			$tag = $this->_tag;
 			$close_tag = $this->_isTagClosed;
 			$content = $this->_content;
@@ -64,10 +71,15 @@ abstract class UI extends BaseObject {
 
 		$w = '<' . $tag;
 
-		foreach($this->_attr as $att => $value) {
-			if($att == 'value' && $value === '') continue;
-			if($att == 'value') $value = htmlentities($value);
-			if($att == 'id') if(($pos = strpos($value, '[')) !== false) { $value = substr($value, 0, $pos); $value .= '-' . $this->getUICount($value); }
+		foreach ($this->_attr as $att => $value) {
+			if ($att == 'value' && $value === '')
+				continue;
+			if ($att == 'value')
+				$value = htmlentities($value);
+			if ($att == 'id') if (($pos = strpos($value, '[')) !== false) {
+				$value = substr($value, 0, $pos);
+				$value .= '-' . $this->getUICount($value);
+			}
 
 			$w .= ' ' . $att . '="' . $value . '"';
 		}
@@ -77,26 +89,31 @@ abstract class UI extends BaseObject {
 		return $w;
 	}
 
-	function __set($p, $v) {
-		if(isset($this->_attr[$p])) {
+	function __set($p, $v)
+	{
+		if (isset($this->_attr[$p])) {
 			$this->_attr[$p] = $v;
-		}
-		else parent::__set($p, $v);
+		} else
+			parent::__set($p, $v);
 	}
 
-	function __get($p) {
-		if(isset($this->_attr[$p])) return $this->_attr[$p];
-		else return parent::__get($p);
+	function __get($p)
+	{
+		if (isset($this->_attr[$p]))
+			return $this->_attr[$p];
+		else
+			return parent::__get($p);
 	}
 
 	/**
-	*Counter for initialized user interface
-	*
-	*/
-	protected function getUICount($name) {
-		if(!isset(self::$_count[$name])) self::$_count[$name] = 0;
+	 *Counter for initialized user interface
+	 *
+	 */
+	protected function getUICount($name)
+	{
+		if (!isset(self::$_count[$name]))
+			self::$_count[$name] = 0;
 
 		return (++self::$_count[$name]);
 	}
 }
-?>

@@ -26,14 +26,16 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class MinLength extends Validator {	
-	function __construct($length, $message = 'Minimum length is %s characters') {
+class MinLength extends Validator
+{
+	function __construct($length, $message = 'Minimum length is %s characters')
+	{
 		parent::__construct('minlength', sprintf($message, $length));
 		$this->Param = $length;
 	}
 
-	function validate(&$data) {
+	function validate(&$data)
+	{
 		return (strlen($data) >= $this->Param);
 	}
 }
-?>

@@ -30,7 +30,8 @@ use NS\UI\StyleManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Autocomplete extends UI {
+class Autocomplete extends UI
+{
 	/**
 	 * 
 	 * @param string $id Widget ID and name
@@ -41,7 +42,8 @@ class Autocomplete extends UI {
 	 * @param array $args Optional widget HTML attribute
 	 * @param array $options Optional widget option
 	 */
-	function __construct($id, $source, $value = null, $placeholder = null, $validators = null, $args = array(), $options = array()) {
+	function __construct($id, $source, $value = null, $placeholder = null, $validators = null, $args = [], $options = [])
+	{
 		StyleManager::getInstance()->addExternalSource(NS_JQUERY_UI_STYLE_URL);
 		$scm = ScriptManager::getInstance();
 		$scm->addSource(NS_JQUERY_PATH);
@@ -50,13 +52,13 @@ class Autocomplete extends UI {
 		$count = $this->getUICount(__CLASS__);
 		$args['class'] = (isset($args['class']) ? $args['class'] . ' ' : '') . 'NS-Autocomplete NS-Autocomplete-' . $count;
 
-		if(is_array($source)) {
-			$organized_source = array();
+		if (is_array($source)) {
+			$organized_source = [];
 
-			foreach($source as $source_value => $label) {
+			foreach ($source as $source_value => $label) {
 				$organized_source[] = array('value' => $source_value, 'label' => $label);
 			}
-			
+
 			$options['source'] = $organized_source;
 			$options['minLength'] = 0;
 		} else {
@@ -69,4 +71,3 @@ class Autocomplete extends UI {
 		$scm->addScript('jQuery(function(){ jQuery(".NS-Autocomplete-' . $count . '").autocomplete(' . json_encode($options) . '); });');
 	}
 }
-?>

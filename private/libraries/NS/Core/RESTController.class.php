@@ -39,7 +39,8 @@ define('NS_CSS_RENDERED', true);
  *@author Inanta Martsanto <inanta@inationsoft.com>
  *@property string $Content Content generated from current controller
  */
-abstract class RESTController extends BaseObject {
+abstract class RESTController extends BaseObject
+{
 	/**
 	 * Response type JSON
 	 */
@@ -80,11 +81,12 @@ abstract class RESTController extends BaseObject {
 	 */
 	public $ResponseType = self::REST_TYPE_JSON;
 
-	public $Path, $ControllerPath, $URL, $Action, $Params = array(), $Content;
+	public $Path, $ControllerPath, $URL, $Action, $Params = [], $Content;
 	protected $_actionCache = null;
 	private $_isConstructorCalled = false;
 
-	function __construct() {
+	function __construct()
+	{
 		ob_start();
 		$this->createProperties(array('Session' => Session::getInstance()));
 		$this->setReadOnlyProperties(array('Session'));
@@ -99,8 +101,9 @@ abstract class RESTController extends BaseObject {
 	 *Run controller
 	 *
 	 */
-	function _run() {
-		if(method_exists($this, '_main')) {
+	function _run()
+	{
+		if (method_exists($this, '_main')) {
 			$this->_main();
 		}
 
@@ -112,7 +115,8 @@ abstract class RESTController extends BaseObject {
 	 *Create object property
 	 *
 	 */
-	function _createProperty($k, $v = null) {
+	function _createProperty($k, $v = null)
+	{
 		$this->createProperty($k, $v);
 	}
 
@@ -120,7 +124,8 @@ abstract class RESTController extends BaseObject {
 	 *Create object properties
 	 *
 	 */
-	function _createProperties($p) {
+	function _createProperties($p)
+	{
 		$this->createProperties($p);
 	}
 
@@ -128,8 +133,10 @@ abstract class RESTController extends BaseObject {
 	 *Call another method by user request
 	 *
 	 */
-	protected function _dispatch() {
-		if(!$this->_isConstructorCalled) throw new \NS\Exception\Exception('Parent constructor is not called');
+	protected function _dispatch()
+	{
+		if (!$this->_isConstructorCalled)
+			throw new \NS\Exception\Exception('Parent constructor is not called');
 
 		call_user_func_array(array($this, $this->Action), $this->Params);
 	}
@@ -138,15 +145,16 @@ abstract class RESTController extends BaseObject {
 	 *Finalize controller
 	 *
 	 */
-	protected function _finalize() {
+	protected function _finalize()
+	{
 		$echo = ob_get_clean();
 
 		header($_SERVER['SERVER_PROTOCOL'] . ' ' . $this->ResponseHeaderCode . ' ' . $this->ResponseHeaderMessage);
 
-		if($this->ResponseType == self::REST_TYPE_XML) {
+		if ($this->ResponseType == self::REST_TYPE_XML) {
 			header('Content-type: application/xml');
-			
-			if($echo != '') {
+
+			if ($echo != '') {
 				$this->Response['Output'] = $echo;
 			}
 
@@ -154,18 +162,18 @@ abstract class RESTController extends BaseObject {
 		} else {
 			header('Content-type: application/json');
 
-			if($echo != '') {
+			if ($echo != '') {
 				$this->Response['output'] = $echo;
 			}
 
 			$this->Content = @json_encode($this->Response);
 		}
 
-		if(isset($this->_actionCache[$this->Action])) {
+		if (isset($this->_actionCache[$this->Action])) {
 			$cm = CacheManager::getInstance();
-			if($cm->write(str_replace('\\', '.',get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)), $this->Content)) {
-				$cm->write(str_replace('\\', '.',get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.css', StyleManager::getInstance()->get());
-				$cm->write(str_replace('\\', '.',get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.js', ScriptManager::getInstance()->get());
+			if ($cm->write(str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)), $this->Content)) {
+				$cm->write(str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.css', StyleManager::getInstance()->get());
+				$cm->write(str_replace('\\', '.', get_class($this)) . '.' . $this->Action . '.' . md5(implode($this->Params)) . '.js', ScriptManager::getInstance()->get());
 			}
 		}
 	}
@@ -174,7 +182,8 @@ abstract class RESTController extends BaseObject {
 	 *Redirect to another controller or action
 	 *
 	 */
-	protected function redirect($url, $message = null, $header = null, $time = 4) {
+	protected function redirect($url, $message = null, $header = null, $time = 4)
+	{
 		$this->redirectURL(NS_BASE_URL . '/' . $url, $message, $header, $time);
 	}
 
@@ -182,7 +191,8 @@ abstract class RESTController extends BaseObject {
 	 *Redirect full URL
 	 *
 	 */
-	protected function redirectURL($url) {
+	protected function redirectURL($url)
+	{
 		ns_gettext_init('NS');
 
 		header('Location: ' . $url);
@@ -190,4 +200,3 @@ abstract class RESTController extends BaseObject {
 		exit;
 	}
 }
-?>

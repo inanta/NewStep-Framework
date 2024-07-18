@@ -28,16 +28,18 @@ use NS\Exception\NetException;
  *
  * @author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Mikrotik {
+class Mikrotik
+{
 	private $_socket, $_debug, $_errorNo, $_errorMessage, $_retryAttemps = 5,
-		$_isConnected = false, $_retryTimeout = 3, $_defaultPort = 8728,
-		$_connectionTimeout = 3;
+	$_isConnected = false, $_retryTimeout = 3, $_defaultPort = 8728,
+	$_connectionTimeout = 3;
 
 	/**
 	 * 
 	 * @param type $text
 	 */
-	function debug($text) {
+	function debug($text)
+	{
 		if ($this->_debug)
 			echo $text . "\n";
 	}
@@ -47,7 +49,8 @@ class Mikrotik {
 	 * @param type $length
 	 * @return string
 	 */
-	function encodeLength($length) {
+	function encodeLength($length)
+	{
 		if ($length < 0x80) {
 			$length = chr($length);
 		} else if ($length < 0x4000) {
@@ -73,7 +76,8 @@ class Mikrotik {
 	 * @return type
 	 * @throws NetException
 	 */
-	function connect($ip, $username, $password) {
+	function connect($ip, $username, $password)
+	{
 		for ($ATTEMPT = 1; $ATTEMPT <= $this->_retryAttemps; $ATTEMPT++) {
 			$this->_isConnected = false;
 			$this->debug('Connection attempt #' . $ATTEMPT . ' to ' . $ip . ':' . $this->_defaultPort . '...');
@@ -84,7 +88,7 @@ class Mikrotik {
 				$RESPONSE = $this->read(false);
 
 				if ($RESPONSE[0] == '!done') {
-					$MATCHES = array();
+					$MATCHES = [];
 
 					if (preg_match_all('/[^=]+/i', $RESPONSE[1], $MATCHES)) {
 						if ($MATCHES[0][0] == 'ret' && strlen($MATCHES[0][1]) == 32) {
@@ -107,52 +111,60 @@ class Mikrotik {
 		}
 
 		/*
-		if ($this->_isConnected) {
-			$this->_debug('Connected...');
-		} else {
-			$this->_debug('Error...');
-		}
-		*/
-		
-		if(!$this->_isConnected) throw new NetException(array('code' => NetException::UNABLE_TO_LOGIN, 'username' => $username));
+					if ($this->_isConnected) {
+						$this->_debug('Connected...');
+					} else {
+						$this->_debug('Error...');
+					}
+					*/
+
+		if (!$this->_isConnected)
+			throw new NetException(array('code' => NetException::UNABLE_TO_LOGIN, 'username' => $username));
 
 		return $this->_isConnected;
 	}
-	
-	
+
+
 	/**
 	 * 
 	 */
-	function disconnect() {
+	function disconnect()
+	{
 		fclose($this->_socket);
 		$this->_isConnected = false;
 		$this->debug('Disconnected...');
 	}
-	
-	
+
+
 	/**
 	 * 
 	 * @param type $response
 	 * @return array
 	 */
-	function parseResponse($response) {
+	function parseResponse($response)
+	{
 		if (is_array($response)) {
-			$PARSED      = array();
-			$CURRENT     = null;
+			$PARSED = [];
+			$CURRENT = null;
 			$singlevalue = null;
 
 			foreach ($response as $x) {
-				if (in_array($x, array(
-					'!fatal',
-					'!re',
-					'!trap'
-				))) {
+				if (
+					in_array(
+						$x,
+						array(
+							'!fatal',
+							'!re',
+							'!trap'
+						)
+					)
+				) {
 					if ($x == '!re') {
 						$CURRENT =& $PARSED[];
 					} else
 						$CURRENT =& $PARSED[$x][];
 				} else if ($x != '!done') {
-					$MATCHES = array();
+					$MATCHES = [];
 
 					if (preg_match_all('/[^=]+/i', $x, $MATCHES)) {
 						if ($MATCHES[0][0] == 'ret') {
@@ -170,7 +182,7 @@ class Mikrotik {
 
 			return $PARSED;
 		} else
-			return array();
+			return [];
 	}
 
 	/**
@@ -178,21 +190,22 @@ class Mikrotik {
 	 * @param type $array
 	 * @return type
 	 */
-	function arrayChangeKeyName(&$array) {
-	    if (is_array($array)) {
-		foreach ($array as $k => $v) {
-		    $tmp = str_replace("-", "_", $k);
-		    $tmp = str_replace("/", "_", $tmp);
-		    if ($tmp) {
-			$array_new[$tmp] = $v;
-		    } else {
-			$array_new[$k] = $v;
-		    }
+	function arrayChangeKeyName(&$array)
+	{
+		if (is_array($array)) {
+			foreach ($array as $k => $v) {
+				$tmp = str_replace("-", "_", $k);
+				$tmp = str_replace("/", "_", $tmp);
+				if ($tmp) {
+					$array_new[$tmp] = $v;
+				} else {
+					$array_new[$k] = $v;
+				}
+			}
+			return $array_new;
+		} else {
+			return $array;
 		}
-		return $array_new;
-	    } else {
-		return $array;
-	    }
 	}
 
 	/**
@@ -200,12 +213,13 @@ class Mikrotik {
 	 * @param type $parse
 	 * @return type
 	 */
-	function read($parse = true) {
-		$RESPONSE = array();
-	    	$receiveddone = false;
+	function read($parse = true)
+	{
+		$RESPONSE = [];
+		$receiveddone = false;
 
 		while (true) {
-			$BYTE   = ord(fread($this->_socket, 1));
+			$BYTE = ord(fread($this->_socket, 1));
 			$LENGTH = 0;
 
 			if ($BYTE & 128) {
@@ -233,7 +247,7 @@ class Mikrotik {
 			}
 
 			if ($LENGTH > 0) {
-				$_      = "";
+				$_ = "";
 				$retlen = 0;
 
 				while ($retlen < $LENGTH) {
@@ -248,12 +262,12 @@ class Mikrotik {
 
 			if ($_ == "!done")
 				$receiveddone = true;
-			
+
 			$STATUS = socket_get_status($this->_socket);
 
 			if ($LENGTH > 0)
 				$this->debug('>>> [' . $LENGTH . ', ' . $STATUS['unread_bytes'] . ']' . $_);
-			
+
 			if ((!$this->_isConnected && !$STATUS['unread_bytes']) || ($this->_isConnected && !$STATUS['unread_bytes'] && $receiveddone))
 				break;
 		}
@@ -270,7 +284,8 @@ class Mikrotik {
 	 * @param type $param2
 	 * @return boolean
 	 */
-	function write($command, $param2 = true) {
+	function write($command, $param2 = true)
+	{
 		if ($command) {
 			$data = explode("\n", $command);
 
@@ -297,7 +312,8 @@ class Mikrotik {
 	 * @param type $arr
 	 * @return type
 	 */
-	function command($command, $arr = array()) {
+	function command($command, $arr = [])
+	{
 		$count = count($arr);
 		$this->write($command, !$arr);
 		$i = 0;
@@ -322,4 +338,3 @@ class Mikrotik {
 		return $this->read();
 	}
 }
-?>

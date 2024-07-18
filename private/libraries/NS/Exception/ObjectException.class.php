@@ -21,7 +21,8 @@
 
 namespace NS\Exception;
 
-final class ObjectException extends Exception {
+final class ObjectException extends Exception
+{
 	/**
 	 *Undefined property when getting value error code
 	 */
@@ -60,38 +61,48 @@ final class ObjectException extends Exception {
 	 *
 	 *@param array $args Exception parameter to show appropriate message
 	 */
-	public function __construct($args = array()) {
+	public function __construct($args = [])
+	{
 		$message = null;
 		$this->ErrorCode = $args['code'];
 
 		switch ($args['code']) {
 			case self::UNDEFINED_GET:
-				$message = sprintf($this->_('Property [%s] is not exist and cannot return a value'), $args['property']); break;
+				$message = sprintf($this->_('Property [%s] is not exist and cannot return a value'), $args['property']);
+				break;
 			case self::UNDEFINED_SET:
-				$message = sprintf($this->_('Property [%s] not defined before and cannot be set to [%s]'), $args['property'], $args['value']); break;
+				$message = sprintf($this->_('Property [%s] not defined before and cannot be set to [%s]'), $args['property'], $args['value']);
+				break;
 			case self::UNDEFINED_PROPERTY:
-				$message = sprintf($this->_('Property [%s] not defined before and cannot be set to read-only or write-only property'), $args['property']); break;
+				$message = sprintf($this->_('Property [%s] not defined before and cannot be set to read-only or write-only property'), $args['property']);
+				break;
 			case self::ALREADY_WO_PROPERTY:
-				$message = sprintf($this->_('Property [%s] already defined as write-only property and cannot be set as read-only property'), $args['property']); break;
+				$message = sprintf($this->_('Property [%s] already defined as write-only property and cannot be set as read-only property'), $args['property']);
+				break;
 			case self::ALREADY_RO_PROPERTY:
-				$message = sprintf($this->_('Property [%s] already defined as read-only property and cannot be set as write-only property'), $args['property']); break;
+				$message = sprintf($this->_('Property [%s] already defined as read-only property and cannot be set as write-only property'), $args['property']);
+				break;
 			case self::WO_PROPERTY:
-				$message = sprintf($this->_('Property [%s] is write-only property and cannot return a value'), $args['property']); break;
+				$message = sprintf($this->_('Property [%s] is write-only property and cannot return a value'), $args['property']);
+				break;
 			case self::RO_PROPERTY:
-				$message = sprintf($this->_('Property [%s] is read-only property and cannot be set to [%s]'), $args['property'], $args['value']); break;
+				$message = sprintf($this->_('Property [%s] is read-only property and cannot be set to [%s]'), $args['property'], $args['value']);
+				break;
 			case self::UNDEFINED_METHOD:
 				$argsline = implode(', ', $args['args']);
 
-				if($argsline == '') $message = sprintf($this->_('Call to undefined method [%s]'), $args['method']);
-				else $message = sprintf($this->_('Call to undefined method [%s] with [%s] arguments [%s]'), $args['method'], count($args['args']), $argsline);
+				if ($argsline == '')
+					$message = sprintf($this->_('Call to undefined method [%s]'), $args['method']);
+				else
+					$message = sprintf($this->_('Call to undefined method [%s] with [%s] arguments [%s]'), $args['method'], count($args['args']), $argsline);
 
 				break;
 			default:
-			    if(!isset($args['code'])) $args['code'] = 'NO ERROR CODE RETURNED';
-			    $message = sprintf($this->_('Unknown NewStep Object error with code[%s]'), $args['code']);
+				if (!isset($args['code']))
+					$args['code'] = 'NO ERROR CODE RETURNED';
+				$message = sprintf($this->_('Unknown NewStep Object error with code[%s]'), $args['code']);
 		}
 
 		parent::__construct($message);
 	}
 }
-?>

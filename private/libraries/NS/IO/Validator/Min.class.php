@@ -26,14 +26,16 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Min extends Validator {	
-	function __construct($min, $message = 'Please enter a valid number and minimum value is %s') {
+class Min extends Validator
+{
+	function __construct($min, $message = 'Please enter a valid number and minimum value is %s')
+	{
 		parent::__construct('min', sprintf($message, $min));
 		$this->Param = $min;
 	}
-	
-	function validate(&$data) {
+
+	function validate(&$data)
+	{
 		return ($data >= $this->Param);
 	}
 }
-?>

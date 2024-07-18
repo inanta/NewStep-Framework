@@ -29,42 +29,46 @@ use NS\UI\ScriptManager;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class ValidatorManager extends SingletonObject {
-	private $_id, $_messages = array(), $_rules = array(), $_scm = null;
+class ValidatorManager extends SingletonObject
+{
+	private $_id, $_messages = [], $_rules = [], $_scm = null;
 
-	function initializeValidator($id, $validators = array()) {
+	function initializeValidator($id, $validators = [])
+	{
 		$this->_scm = ScriptManager::getInstance();
 		$this->_scm->addSource(NS_JQUERY_PATH);
 		$this->_scm->addSource(NS_PUBLIC_PATH . '/ns/asset/3rdparty/jquery.validate/jquery.validate.min.js');
 
-		$rules = array();
-		$messages = array();
+		$rules = [];
+		$messages = [];
 
-		if(count($validators) > 0) {
-			foreach($validators as $validator) {
-				if($validator instanceof Validator) {
-					$rules[''.$validator] = $validator->Param;
-					$messages[''.$validator] = $validator->Message; 
+		if (count($validators) > 0) {
+			foreach ($validators as $validator) {
+				if ($validator instanceof Validator) {
+					$rules['' . $validator] = $validator->Param;
+					$messages['' . $validator] = $validator->Message;
 				}
 			}
 
-			if(count($rules) > 0) {
+			if (count($rules) > 0) {
 				$this->_rules[$id] = $rules;
 				$this->_messages[$id] = $messages;
 			}
 		}
 	}
 
-	function addValidate($id) {
-		$this->_scm->addScript('jQuery(document).ready(function() { jQuery("#'.$id.'").validate(' . ValidatorManager::getInstance()->getValidator() . '); });');
+	function addValidate($id)
+	{
+		$this->_scm->addScript('jQuery(document).ready(function() { jQuery("#' . $id . '").validate(' . ValidatorManager::getInstance()->getValidator() . '); });');
 	}
 
-	function getValidator() {
+	function getValidator()
+	{
 		return json_encode(array('ignore' => '', 'rules' => $this->_rules, 'messages' => $this->_messages));
 	}
 
-	static function getInstance() {
+	static function getInstance()
+	{
 		return self::createInstance(__CLASS__);
 	}
 }
-?>

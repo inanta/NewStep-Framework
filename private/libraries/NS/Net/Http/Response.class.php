@@ -29,7 +29,8 @@ use NS\Core\Config;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Response {
+class Response
+{
 	private $_statusCode = 200;
 	private $_statusText = '';
 	private $_headers = array(
@@ -37,7 +38,8 @@ class Response {
 	);
 	private $_content = '';
 
-	function __construct($content = '', $status_code = 200, $headers = array()) {
+	function __construct($content = '', $status_code = 200, $headers = [])
+	{
 		$this->_statusCode = $status_code;
 
 		if (is_array($headers) && count($headers) > 0) {
@@ -49,17 +51,20 @@ class Response {
 		$this->_content = $content;
 	}
 
-	function getContent() {
+	function getContent()
+	{
 		return $this->_content;
 	}
 
-	function getHeader($key) {
+	function getHeader($key)
+	{
 		$key = strtolower($key);
 
-		return (isset($this->_headers[$key]) ? $this->_headers[$key] : array());
+		return (isset($this->_headers[$key]) ? $this->_headers[$key] : []);
 	}
 
-	function hasHeader($key, $value = null) {
+	function hasHeader($key, $value = null)
+	{
 		$key = strtolower($key);
 
 		if (isset($this->_headers[$key])) {
@@ -78,14 +83,16 @@ class Response {
 
 		return false;
 
-		return (isset($this->_headers[$key]) ? $this->_headers[$key] : array());
+		return (isset($this->_headers[$key]) ? $this->_headers[$key] : []);
 	}
 
-	function setContent($content) {
+	function setContent($content)
+	{
 		$this->_content = $content;
 	}
 
-	function setHeader($key, $values, $replace = true) {
+	function setHeader($key, $values, $replace = true)
+	{
 		$key = strtolower($key);
 
 		if (!is_array($values)) {
@@ -98,13 +105,14 @@ class Response {
 			$this->_headers[$key] = array_merge($this->_headers[$key], $values);
 		}
 	}
- 
-	function sendHeaders() {
+
+	function sendHeaders()
+	{
 		if (headers_sent()) {
 			return;
 		}
 
-		include(NS_SYSTEM_PATH . '/' .  Config::getInstance()->ConfigFolder . '/HttpCode.inc.php');
+		include (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/HttpCode.inc.php');
 
 		$this->_statusText = isset($HttpCode[$this->_statusCode]) ? $HttpCode[$this->_statusCode] : 'Unknown Status';
 
@@ -117,13 +125,14 @@ class Response {
 		}
 	}
 
-	function sendContent() {
+	function sendContent()
+	{
 		echo $this->_content;
 	}
 
-	function send() {
+	function send()
+	{
 		$this->sendHeaders();
 		$this->sendContent();
 	}
 }
-?>

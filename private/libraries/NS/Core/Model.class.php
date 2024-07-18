@@ -32,7 +32,7 @@ use NS\Exception\ClassException;
  */
 abstract class Model extends ActiveRecord
 {
-	static private $_modelsInstance = array();
+	static private $_modelsInstance = [];
 
 	/**
 	 *Get single database record
@@ -148,7 +148,8 @@ abstract class Model extends ActiveRecord
 			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $path));
 		if (!is_readable($path))
 			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $path));
-		require_once($path);
+
+		require_once ($path);
 
 		if (!class_exists($model))
 			throw new ClassException(array('code' => ClassException::CLASS_NOT_FOUND, 'class' => $model));
@@ -156,4 +157,3 @@ abstract class Model extends ActiveRecord
 		return (self::$_modelsInstance[$model]['0'] = new $model);
 	}
 }
-?>

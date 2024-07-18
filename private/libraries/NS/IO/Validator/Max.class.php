@@ -26,14 +26,16 @@ namespace NS\IO\Validator;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Max extends Validator {	
-	function __construct($max, $message = 'Please enter a valid number and maximum value is %s') {
+class Max extends Validator
+{
+	function __construct($max, $message = 'Please enter a valid number and maximum value is %s')
+	{
 		parent::__construct('max', sprintf($message, $max));
 		$this->Param = $max;
 	}
 
-	function validate(&$data) {
+	function validate(&$data)
+	{
 		return ($data <= $this->Param);
 	}
 }
-?>
