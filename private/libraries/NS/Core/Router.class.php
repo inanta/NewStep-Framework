@@ -79,7 +79,6 @@ class Router extends SingletonObject
 			closedir($handle);
 		}
 
-		ns_gettext_init($class, NS_SYSTEM_PATH . '/' . $cf->ApplicationFolder . '/locales');
 		if (!is_readable($this->File))
 			throw new PageNotFoundException();
 
@@ -100,16 +99,10 @@ class Router extends SingletonObject
 			$this->App->ControllerPath = $matches[1];
 		}
 
-		// if ($this->App->DefaultAction !== null) {
-		// 	$cf->Application->DefaultControllerAction = $this->App->DefaultAction;
-		// }
-
 		if (!isset($segments[++$idx]) || $segments[$idx] == '')
 			$segments[$idx] = $cf->Application->DefaultControllerAction;
 
 		if (method_exists($this->App, $segments[$idx]) && $segments[$idx][0] != '_') {
-			// die($segments[$idx]);
-
 			$this->App->Action = $segments[$idx];
 			++$idx;
 
@@ -119,9 +112,6 @@ class Router extends SingletonObject
 
 				$this->App->Params[] = $segments[$idx];
 			}
-
-			// print_r($this->App->Params);
-			// die();
 
 			$this->App->URL = NS_BASE_URL . '/' . implode('/', $segments);
 		} else if ($this->App->DefaultAction != null && method_exists($this->App, $this->App->DefaultAction)) {
@@ -133,22 +123,9 @@ class Router extends SingletonObject
 
 				$this->App->Params[] = $segments[$idx];
 			}
-			// die('sssssxx');
 		} else {
 			throw new PageNotFoundException();
 		}
-
-		// if(!isset($segments[++$idx]) || $segments[$idx] == '') $segments[$idx] = $cf->Application->DefaultControllerAction;
-
-		// if(!method_exists($this->App, $segments[$idx]) || $segments[$idx][0] == '_') {
-		// 	throw new PageNotFoundException();
-		// } else {
-		// 	$this->App->Action = $segments[$idx]; ++$idx;
-		// }
-
-		// for($idx; $idx < $count; ++$idx) { if($segments[$idx] == '') break; $this->App->Params[] = $segments[$idx]; }
-
-		// $this->App->URL = NS_BASE_URL . '/' . implode('/', $segments);
 	}
 
 	/**
