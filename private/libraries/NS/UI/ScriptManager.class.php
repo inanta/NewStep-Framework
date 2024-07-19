@@ -42,7 +42,12 @@ class ScriptManager extends SingletonObject
 	function addSource($location)
 	{
 		if (!file_exists($location))
-			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $location));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_FOUND,
+					'filename' => $location
+				]
+			);
 		$this->_sources[md5($location)] = $location;
 	}
 	function addScript($script)

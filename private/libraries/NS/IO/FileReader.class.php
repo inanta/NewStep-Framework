@@ -36,15 +36,30 @@ class FileReader extends BaseObject
 	function __construct($filename)
 	{
 		if (!is_file($filename))
-			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_FOUND,
+					'filename' => $filename
+				]
+			);
 
 		$this->createProperty('Length', @filesize($filename));
 		$this->bindProperty('CurrentPosition', $this->_pos);
-		$this->setReadOnlyProperties(array('Length', 'CurrentPosition'));
+		$this->setReadOnlyProperties(
+			[
+				'Length',
+				'CurrentPosition'
+			]
+		);
 
 		$this->_fp = fopen($filename, 'rb');
 		if (!$this->_fp)
-			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $filename));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_READABLE,
+					'filename' => $filename
+				]
+			);
 	}
 
 	function __destruct()

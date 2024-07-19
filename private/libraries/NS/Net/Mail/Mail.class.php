@@ -21,7 +21,7 @@
 
 namespace NS\Net\Mail;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Template\Engine\PHPTemplate;
 
 /**
@@ -36,12 +36,12 @@ use NS\Template\Engine\PHPTemplate;
  *@property string $CC CC email address
  *@property string $BCC BCC email address
  */
-class Mail extends Object
+class Mail extends BaseObject
 {
 	function __construct()
 	{
 		$this->createProperties(
-			array(
+			[
 				'To' => '',
 				'Subject' => '',
 				'Message' => '',
@@ -49,7 +49,7 @@ class Mail extends Object
 				'ReplyTo' => '',
 				'CC' => '',
 				'BCC' => ''
-			)
+			]
 		);
 	}
 

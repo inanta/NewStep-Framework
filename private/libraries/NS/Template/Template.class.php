@@ -42,7 +42,12 @@ abstract class Template extends BaseObject
 
 	function __construct($args)
 	{
-		$this->createProperties(array('Path' => '', 'File' => ''));
+		$this->createProperties(
+			[
+				'Path' => '',
+				'File' => ''
+			]
+		);
 	}
 
 	/**
@@ -126,7 +131,6 @@ abstract class Template extends BaseObject
 		switch ($tpl_type) {
 			case NS_TPL_SMARTY:
 				return (new Engine\SmartyTemplate($args));
-				break;
 			case NS_TPL_PHP:
 			default:
 				return (new Engine\PHPTemplate($args));

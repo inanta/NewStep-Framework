@@ -36,7 +36,7 @@ class Mikrotik
 
 	/**
 	 * 
-	 * @param type $text
+	 * @param string $text
 	 */
 	function debug($text)
 	{
@@ -46,7 +46,7 @@ class Mikrotik
 
 	/**
 	 * 
-	 * @param type $length
+	 * @param integer $length
 	 * @return string
 	 */
 	function encodeLength($length)
@@ -70,10 +70,10 @@ class Mikrotik
 
 	/**
 	 * 
-	 * @param type $ip
-	 * @param type $username
-	 * @param type $password
-	 * @return type
+	 * @param string $ip
+	 * @param string $username
+	 * @param string $password
+	 * @return boolean
 	 * @throws NetException
 	 */
 	function connect($ip, $username, $password)
@@ -82,6 +82,7 @@ class Mikrotik
 			$this->_isConnected = false;
 			$this->debug('Connection attempt #' . $ATTEMPT . ' to ' . $ip . ':' . $this->_defaultPort . '...');
 			$this->_socket = @fsockopen($ip, $this->_defaultPort, $this->_errorNo, $this->_errorMessage, $this->_connectionTimeout);
+
 			if ($this->_socket) {
 				socket_set_timeout($this->_socket, $this->_connectionTimeout);
 				$this->write('/login');
@@ -110,16 +111,13 @@ class Mikrotik
 			sleep($this->_retryTimeout);
 		}
 
-		/*
-					if ($this->_isConnected) {
-						$this->_debug('Connected...');
-					} else {
-						$this->_debug('Error...');
-					}
-					*/
-
 		if (!$this->_isConnected)
-			throw new NetException(array('code' => NetException::UNABLE_TO_LOGIN, 'username' => $username));
+			throw new NetException(
+				[
+					'code' => NetException::UNABLE_TO_LOGIN,
+					'username' => $username
+				]
+			);
 
 		return $this->_isConnected;
 	}
@@ -138,7 +136,7 @@ class Mikrotik
 
 	/**
 	 * 
-	 * @param type $response
+	 * @param array $response
 	 * @return array
 	 */
 	function parseResponse($response)
@@ -152,11 +150,11 @@ class Mikrotik
 				if (
 					in_array(
 						$x,
-						array(
+						[
 							'!fatal',
 							'!re',
 							'!trap'
-						)
+						]
 					)
 				) {
 					if ($x == '!re') {
@@ -187,8 +185,8 @@ class Mikrotik
 
 	/**
 	 * 
-	 * @param type $array
-	 * @return type
+	 * @param array $array
+	 * @return array
 	 */
 	function arrayChangeKeyName(&$array)
 	{
@@ -210,8 +208,8 @@ class Mikrotik
 
 	/**
 	 * 
-	 * @param type $parse
-	 * @return type
+	 * @param boolean $parse
+	 * @return array
 	 */
 	function read($parse = true)
 	{
@@ -280,8 +278,8 @@ class Mikrotik
 
 	/**
 	 * 
-	 * @param type $command
-	 * @param type $param2
+	 * @param string $command
+	 * @param string $param2
 	 * @return boolean
 	 */
 	function write($command, $param2 = true)
@@ -308,9 +306,9 @@ class Mikrotik
 
 	/**
 	 * 
-	 * @param type $command
-	 * @param type $arr
-	 * @return type
+	 * @param string $command
+	 * @param array $arr
+	 * @return array
 	 */
 	function command($command, $arr = [])
 	{

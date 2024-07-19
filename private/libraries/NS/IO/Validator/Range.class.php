@@ -31,7 +31,10 @@ class Range extends Validator
 	function __construct($min, $max, $message = 'This field is required')
 	{
 		parent::__construct('range', $message);
-		$this->Param = array($min, $max);
+		$this->Param = [
+			$min,
+			$max
+		];
 	}
 
 	function validate(&$data)

@@ -1,5 +1,5 @@
 <?php
-$Timezone = array(
+$Timezone = [
 	'-12' => _('(GMT-12:00) Eniwetok, Kwajalein'),
 	'-11' => _('(GMT-11:00) Midway Island, Samoa'),
 	'-10' => _('(GMT-10:00) Hawaii'),
@@ -29,5 +29,5 @@ $Timezone = array(
 	'9.5' => _('(GMT+9:30) Adelaide, Darwin'),
 	'10' => _('(GMT+10:00) Brisbane, Canberra, Melbourne, Sydney, Guam,Vlasdiostok'),
 	'11' => _('(GMT+11:00) Magadan, Solomon Islands, New Caledonia'),
-	'12' => _('(GMT+12:00) Auckland, Wellington, Fiji, Kamchatka, Marshall Island'));
-?>
+	'12' => _('(GMT+12:00) Auckland, Wellington, Fiji, Kamchatka, Marshall Island')
+];

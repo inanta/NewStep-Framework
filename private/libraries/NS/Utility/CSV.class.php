@@ -42,7 +42,9 @@ class CSV extends Iterable
 	function addColumns($columns)
 	{
 		if (!is_array($columns))
-			$columns = array($columns);
+			$columns = [
+				$columns
+			];
 
 		$column_index = count($this->_columns);
 
@@ -101,12 +103,29 @@ class CSV extends Iterable
 	{
 		if (!is_readable($filename)) {
 			if (!is_file($filename))
-				throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
+				throw new IOException([
+					'code' => IOException::FILE_NOT_FOUND,
+					'filename' => $filename
+				]);
 
-			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $filename));
+			throw new IOException([
+				'code' => IOException::FILE_NOT_READABLE,
+				'filename' => $filename
+			]);
 		}
 
-		$rows = explode("\n", str_replace(array("\n\r", "\r\n", "\r"), "\n", file_get_contents($filename)));
+		$rows = explode(
+			"\n",
+			str_replace(
+				[
+					"\n\r",
+					"\r\n",
+					"\r"
+				],
+				"\n",
+				file_get_contents($filename)
+			)
+		);
 		$column_row = 0;
 
 		if (($sep_pos = strpos($rows[$column_row], 'sep=')) !== false) {

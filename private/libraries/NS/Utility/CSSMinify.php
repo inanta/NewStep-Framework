@@ -21,7 +21,7 @@
 
 namespace NS\Utility;
 
-use NS\Object;
+use NS\BaseObject;
 use NS\Exception\IOException;
 
 /**
@@ -29,7 +29,7 @@ use NS\Exception\IOException;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class CSSMinify extends Object
+class CSSMinify extends BaseObject
 {
 	private $_filename = null;
 
@@ -37,9 +37,19 @@ class CSSMinify extends Object
 	{
 		if (!is_readable($filename)) {
 			if (!is_file($filename))
-				throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
+				throw new IOException(
+					[
+						'code' => IOException::FILE_NOT_FOUND,
+						'filename' => $filename
+					]
+				);
 
-			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $filename));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_READABLE,
+					'filename' => $filename
+				]
+			);
 		}
 
 		$this->_filename = $filename;

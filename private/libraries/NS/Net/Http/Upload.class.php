@@ -43,7 +43,12 @@ class Upload extends BaseObject
 	function __construct($name, $strict = true)
 	{
 		if (!isset($_FILES[$name]) && $strict)
-			throw new UploadException(array('code' => UploadException::UNDEFINED_FILES, 'variable' => $name));
+			throw new UploadException(
+				[
+					'code' => UploadException::UNDEFINED_FILES,
+					'variable' => $name
+				]
+			);
 
 		$this->_postName = $name;
 		$this->_fileIterator = -1;
@@ -70,10 +75,21 @@ class Upload extends BaseObject
 	{
 		if ($file == null)
 			$file = $_FILES[$this->_postName]['name'][$this->_fileIterator];
+
 		if ($_FILES[$this->_postName]['error'][$this->_fileIterator] != UPLOAD_ERR_OK && $_FILES[$this->_postName]['error'][$this->_fileIterator] != UPLOAD_ERR_NO_FILE)
-			throw new UploadException(array('code' => $_FILES[$this->_postName]['error'][$this->_fileIterator]));
+			throw new UploadException(
+				[
+					'code' => $_FILES[$this->_postName]['error'][$this->_fileIterator]
+				]
+			);
+
 		if (!is_writeable($folder))
-			throw new IOException(array('code' => IOException::DIRECTORY_NOT_WRITEABLE, 'directory' => $folder));
+			throw new IOException(
+				[
+					'code' => IOException::DIRECTORY_NOT_WRITEABLE,
+					'directory' => $folder
+				]
+			);
 
 		// TODO: Why we need this in cPanel, is it cPanel bug?
 		getcwd();

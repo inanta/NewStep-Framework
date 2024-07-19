@@ -59,9 +59,13 @@ class OpenSSL
 	{
 		$message = base64_decode($message, true);
 
-		if ($message === false) {
-			throw new SecurityException(array('code' => SecurityException::INVALID_ENCRYPTION));
-		}
+		if ($message === false)
+			throw new SecurityException(
+				[
+					'code' => SecurityException::INVALID_ENCRYPTION
+				]
+			);
+
 
 		$nonceSize = openssl_cipher_iv_length(self::METHOD);
 		$nonce = mb_substr($message, 0, $nonceSize, '8bit');

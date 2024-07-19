@@ -58,13 +58,21 @@ class Image extends BaseObject
 	{
 		if (!is_readable($filename)) {
 			if (!is_file($filename))
-				throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $filename));
+				throw new IOException([
+					'code' => IOException::FILE_NOT_FOUND,
+					'filename' => $filename
+				]);
 
-			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $filename));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_READABLE,
+					'filename' => $filename
+				]
+			);
 		}
 
 		$image_info = getimagesize($filename);
-		if (!in_array($image_info['mime'], array('image/jpeg', 'image/jpg', 'image/gif', 'image/png')))
+		if (!in_array($image_info['mime'], ['image/jpeg', 'image/jpg', 'image/gif', 'image/png']))
 			throw new Exception('Error file type');
 
 		$this->_imageType = $image_info[2];
@@ -77,10 +85,10 @@ class Image extends BaseObject
 			$this->_image = imagecreatefrompng($filename);
 
 		$this->createProperties(
-			array(
+			[
 				'Width' => imagesx($this->_image),
 				'Height' => imagesy($this->_image)
-			)
+			]
 		);
 
 		$this->_orientation = ($this->Width > $this->Height ? self::ORIENTATION_LANDSCAPE : self::ORIENTATION_PORTRAIT);
@@ -96,10 +104,14 @@ class Image extends BaseObject
 	function save($filename, $image_type = null, $compression = 100, $permissions = null)
 	{
 		$return = false;
-		$folder = str_replace('/' . end(explode('/', $filename)), '', $filename);
+		$filename_parts = explode('/', $filename);
+		$folder = str_replace('/' . end($filename_parts), '', $filename);
 
 		if (!is_writeable($folder))
-			throw new IOException(array('code' => IOException::DIRECTORY_NOT_WRITEABLE, 'directory' => $folder));
+			throw new IOException([
+				'code' => IOException::DIRECTORY_NOT_WRITEABLE,
+				'directory' => $folder
+			]);
 
 		if ($image_type == null) {
 			$image_type = $this->_imageType;

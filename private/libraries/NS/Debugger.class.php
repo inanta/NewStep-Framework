@@ -26,18 +26,18 @@ namespace NS;
  *
  *@author Inanta Martsanto <inanta@inationsoft.com>
  */
-class Debugger extends Object
+class Debugger extends BaseObject
 {
 	private $_headerPrinted = false;
 
 	function __construct($params = null)
 	{
 		$this->createProperties(
-			array(
+			[
 				'Buffer' => (isset($params['buffer']) ? $params['buffer'] : true),
 				'DebugHeader' => (isset($params['header']) ? $params['header'] : T_('Unknown')),
 				'DebugInfo' => ''
-			)
+			]
 		);
 	}
 

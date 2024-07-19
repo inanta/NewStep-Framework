@@ -33,9 +33,11 @@ class Response
 {
 	private $_statusCode = 200;
 	private $_statusText = '';
-	private $_headers = array(
-		'content-type' => array('text/html; charset=utf-8')
-	);
+	private $_headers = [
+		'content-type' => [
+			'text/html; charset=utf-8'
+		]
+	];
 	private $_content = '';
 
 	function __construct($content = '', $status_code = 200, $headers = [])
@@ -96,7 +98,9 @@ class Response
 		$key = strtolower($key);
 
 		if (!is_array($values)) {
-			$values = array($values);
+			$values = [
+				$values
+			];
 		}
 
 		if ($replace || !isset($this->_headers[$key])) {

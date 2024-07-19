@@ -93,7 +93,7 @@ class Number extends BaseObject
 	static function fromRoman($number)
 	{
 		$result = 0;
-		$romans = array(
+		$romans = [
 			'M' => 1000,
 			'CM' => 900,
 			'D' => 500,
@@ -107,7 +107,7 @@ class Number extends BaseObject
 			'V' => 5,
 			'IV' => 4,
 			'I' => 1,
-		);
+		];
 
 		if (!preg_match('/^M{0,3}(CM|CD|D?C{0,3})(XC|XL|L?X{0,3})(IX|IV|V?I{0,3})$/', $number))
 			return $result;
@@ -130,7 +130,7 @@ class Number extends BaseObject
 	{
 		$n = $number;
 		$result = '';
-		$romans = array(
+		$romans = [
 			'M' => 1000,
 			'CM' => 900,
 			'D' => 500,
@@ -144,7 +144,7 @@ class Number extends BaseObject
 			'V' => 5,
 			'IV' => 4,
 			'I' => 1,
-		);
+		];
 
 		foreach ($romans as $roman => $number) {
 			$matches = $n / $number;

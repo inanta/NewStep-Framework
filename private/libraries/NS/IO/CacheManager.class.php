@@ -38,7 +38,10 @@ class CacheManager extends SingletonObject
 	{
 		define('NS_CACHE_PATH', NS_SYSTEM_PATH . '/asset/cache');
 		if (!is_writeable(NS_CACHE_PATH))
-			throw new IOException(array('code' => IOException::DIRECTORY_NOT_WRITEABLE, 'directory' => NS_CACHE_PATH));
+			throw new IOException([
+				'code' => IOException::DIRECTORY_NOT_WRITEABLE,
+				'directory' => NS_CACHE_PATH
+			]);
 	}
 
 	function write($file, $contents)

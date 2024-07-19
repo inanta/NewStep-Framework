@@ -1,12 +1,18 @@
 <?php
-$Event = array (
-	'beforeApplicationInit' => array(
-	),
-	'afterApplicationInit' => array(
-	),
-	'beforeApplicationOutput' => array(
-	),
-	'afterApplicationOutput' => array(
-	),
-);
-?>
+$Event = [
+	'beforeApplicationInit' => [
+
+	]
+	,
+	'afterApplicationInit' => [
+
+	]
+	,
+	'beforeApplicationOutput' => [
+
+	]
+	,
+	'afterApplicationOutput' => [
+
+	]
+];

@@ -36,7 +36,15 @@ class Cookie extends SingletonObject
 
 	function __construct()
 	{
-		$this->createProperties(array('Expire' => time() + self::EXPIRE_ONE_HOUR, 'Path' => '/', 'Domain' => '', 'Secure' => false, 'HTTPOnly' => false));
+		$this->createProperties(
+			[
+				'Expire' => time() + self::EXPIRE_ONE_HOUR,
+				'Path' => '/',
+				'Domain' => '',
+				'Secure' => false,
+				'HTTPOnly' => false
+			]
+		);
 	}
 
 	function get($name)

@@ -68,7 +68,7 @@ class DateTime extends BaseObject
 		}
 
 		$this->createProperties(
-			array(
+			[
 				'Date' => @date('j', $this->_timestamp),
 				'Month' => @date('n', $this->_timestamp),
 				'Year' => @date('Y', $this->_timestamp),
@@ -77,10 +77,12 @@ class DateTime extends BaseObject
 				'Minute' => @date('i', $this->_timestamp),
 				'Second' => @date('s', $this->_timestamp),
 				'Timestamp' => $this->_timestamp
-			)
+			]
 		);
 
-		$this->createProperties(array('IsLeapYear' => self::isLeapYear($this->Year)));
+		$this->createProperties([
+			'IsLeapYear' => self::isLeapYear($this->Year)
+		]);
 	}
 
 	function __get($property)
@@ -93,9 +95,31 @@ class DateTime extends BaseObject
 			case 'MonthStartTime':
 				return mktime(0, 0, 0, $this->Month, 1, $this->Year);
 			case 'MonthEndTime':
-				if (in_array($this->Month, array(1, 3, 5, 7, 8, 10))) {
+				if (
+					in_array(
+						$this->Month,
+						[
+							1,
+							3,
+							5,
+							7,
+							8,
+							10
+						]
+					)
+				) {
 					return mktime(23, 59, 59, $this->Month, 31, $this->Year);
-				} else if (in_array($this->Month, array(4, 6, 9, 11))) {
+				} else if (
+					in_array(
+						$this->Month,
+						[
+							4,
+							6,
+							9,
+							11
+						]
+					)
+				) {
 					return mktime(23, 59, 59, $this->Month, 30, $this->Year);
 				} else if (self::isLeapYear($this->Year)) {
 					return mktime(23, 59, 59, $this->Month, 29, $this->Year);
@@ -388,7 +412,9 @@ class DateTime extends BaseObject
 				$time = array_merge($time, explode(':', date('i:s')));
 				break;
 			case 2:
-				$time = array_merge($time, array(date('s')));
+				$time = array_merge($time, [
+					date('s')
+				]);
 				break;
 		}
 

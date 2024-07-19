@@ -1,5 +1,5 @@
 <?php
-$Month = array(
+$Month = [
 	'1' => _('January'),
 	'2' => _('February'),
 	'3' => _('March'),
@@ -12,5 +12,4 @@ $Month = array(
 	'10' => _('October'),
 	'11' => _('November'),
 	'12' => _('December')
-);
-?>
+];

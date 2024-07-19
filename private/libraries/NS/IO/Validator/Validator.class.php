@@ -35,10 +35,10 @@ abstract class Validator extends BaseObject
 	function __construct($validator, $message)
 	{
 		$this->createProperties(
-			array(
+			[
 				'Message' => $message,
 				'Param' => true
-			)
+			]
 		);
 		$this->_validator = $validator;
 	}

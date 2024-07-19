@@ -104,11 +104,15 @@ class ClientRequest extends SingletonObject
 	{
 		$single = false;
 		if (!is_array($keys)) {
-			$keys = array($keys);
+			$keys = [
+				$keys
+			];
 			$single = true;
 		}
 		if (!is_array($validators))
-			$validators = array($validators);
+			$validators = [
+				$validators
+			];
 
 		$return = [];
 

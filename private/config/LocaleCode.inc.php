@@ -1,5 +1,5 @@
 <?php
-$LocaleCode = array(
+$LocaleCode = [
 	'ar_SA' => 'العربية',
 	'de_DE' => 'Deutsch',
 	'en_US' => 'English',
@@ -8,5 +8,5 @@ $LocaleCode = array(
 	'jv_ID' => 'Boso Jowo',
 	'kr_KR' => '한국어',
 	'su_ID' => 'Basa Sunda',
-	'zh_CN' => '中文');
-?>
+	'zh_CN' => '中文'
+];

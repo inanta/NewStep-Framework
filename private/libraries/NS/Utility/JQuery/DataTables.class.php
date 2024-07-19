@@ -63,16 +63,16 @@ class DataTables extends BaseObject
 		}
 
 		$this->createProperties(
-			array(
+			[
 				'Draw' => $data['draw'],
 				'Debug' => false
-			)
+			]
 		);
 
 		$this->setReadOnlyProperties(
-			array(
+			[
 				'Draw'
-			)
+			]
 		);
 
 		foreach ($data['columns'] as $key => $columns) {

@@ -52,8 +52,15 @@ abstract class Controller extends BaseObject
 	function _initialize()
 	{
 		ob_start();
-		$this->createProperties(array('View' => Template::getInstance(), 'Session' => Session::getInstance()));
-		$this->setReadOnlyProperties(array('View', 'Session'));
+		$this->createProperties([
+			'View' => Template::getInstance(),
+			'Session' => Session::getInstance()
+		]);
+
+		$this->setReadOnlyProperties([
+			'View',
+			'Session'
+		]);
 
 		$this->Request = ClientRequest::getInstance();
 		$this->_isConstructorCalled = true;
@@ -167,7 +174,14 @@ abstract class Controller extends BaseObject
 				$header = _('Redirecting...');
 
 			if (is_file($ex_path = NS_SYSTEM_PATH . '/asset/template/redirect.php')) {
-				extract(array('Header' => $header, 'Message' => $message, 'Time' => $time, 'URL' => $url, 'IfNotReload' => _('If the page does not automatically reload, please click here')));
+				extract([
+					'Header' => $header,
+					'Message' => $message,
+					'Time' => $time,
+					'URL' => $url,
+					'IfNotReload' => _('If the page does not automatically reload, please click here')
+				]);
+
 				include ($ex_path);
 			} else {
 				echo '<html><head><title>' . $header . '</title><meta charset="utf-8"><meta http-equiv="Refresh" content="' . $time . '; url=' . $url . '" /></head><body><h2>' . $message . '</h2><h3><a href="' . $url . '">' . _('If the page does not automatically reload, please click here') . '</a></h3></body></html>';

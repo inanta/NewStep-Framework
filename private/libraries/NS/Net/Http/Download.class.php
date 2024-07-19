@@ -62,9 +62,20 @@ class Download extends Object
 	function __construct($filename)
 	{
 		if (!is_file($filename))
-			throw new IOException(array('code' => NS_EX_IO_FILE_NOT_FOUND, 'filename' => $filename));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_FOUND,
+					'filename' => $filename
+				]
+			);
+
 		if (!is_readable($filename))
-			throw new IOException(array('code' => NS_EX_IO_FILE_NOT_READABLE, 'filename' => $filename));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_READABLE,
+					'filename' => $filename
+				]
+			);
 
 		$this->_filename = $filename;
 
@@ -72,12 +83,12 @@ class Download extends Object
 		$file_path = explode('/', $this->_filename);
 
 		$this->createProperties(
-			array(
+			[
 				'FileName' => end($file_path),
 				'FileExtension' => end($filename_part),
 				'Size' => filesize($this->_filename),
 				'ContentType' => 'application/force-download'
-			)
+			]
 		);
 
 

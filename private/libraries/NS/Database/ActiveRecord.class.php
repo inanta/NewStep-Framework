@@ -95,13 +95,21 @@ class ActiveRecord
 		if (array_key_exists($property, $this->_columns))
 			return $this->_columns[$property];
 
-		throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $property, 'table' => $this->Table));
+		throw new ActiveRecordException([
+			'code' => ActiveRecordException::COLUMN_NOT_EXIST,
+			'column' => $property,
+			'table' => $this->Table
+		]);
 	}
 
 	function __set($property, $value)
 	{
 		if (!array_key_exists($property, $this->_columns))
-			throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $property, 'table' => $this->Table));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::COLUMN_NOT_EXIST,
+				'column' => $property,
+				'table' => $this->Table
+			]);
 
 		$this->_columns[$property] = $value;
 	}
@@ -185,7 +193,10 @@ class ActiveRecord
 	{
 		if ($condition == null) {
 			if (!$this->_isDataInitialized)
-				throw new ActiveRecordException(array('code' => ActiveRecordException::NOT_INITIALIZED, 'table' => $this->Table));
+				throw new ActiveRecordException([
+					'code' => ActiveRecordException::NOT_INITIALIZED,
+					'table' => $this->Table
+				]);
 
 			$this->_resetColumns();
 
@@ -222,13 +233,29 @@ class ActiveRecord
 					if (is_array($with_relation) && !in_array($relation['ar']->Table, $with_relation))
 						continue;
 
-					$relation['ar']->deleteAll(array($relation['fk'] => $this->{$relation['pk']}), 1);
+					$relation['ar']->deleteAll(
+						[
+							$relation['fk'] => $this->{$relation['pk']}
+						],
+						1
+					);
 				}
 
 				foreach ($this->_hasMany as $relation) {
-					if ($relation['ar']->findAll($relation['fk'], array($relation['fk'] => $this->{$relation['pk']}))) {
+					if (
+						$relation['ar']->findAll(
+							$relation['fk'],
+							[
+								$relation['fk'] => $this->{$relation['pk']}
+							]
+						)
+					) {
 						while ($relation['ar']->hasNext()) {
-							$relation['ar']->deleteAll(array($relation['fk'] => $this->{$relation['fk']}));
+							$relation['ar']->deleteAll(
+								[
+									$relation['fk'] => $this->{$relation['fk']}
+								]
+							);
 							$relation['ar']->next();
 						}
 					}
@@ -251,9 +278,14 @@ class ActiveRecord
 	function deleteByPK($id, $with_relation = false)
 	{
 		if ($this->PrimaryKey == null)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY, 'table' => $this->Table));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY,
+				'table' => $this->Table
+			]);
 
-		return $this->deleteAll(array($this->PrimaryKey => $id), 1, $with_relation);
+		return $this->deleteAll([
+			$this->PrimaryKey => $id
+		], 1, $with_relation);
 	}
 
 	/**
@@ -299,9 +331,14 @@ class ActiveRecord
 	function findByPK($id, $with_relation = true)
 	{
 		if ($this->PrimaryKey == null)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY, 'table' => $this->Table));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY,
+				'table' => $this->Table
+			]);
 
-		return $this->_findAll(null, array($this->PrimaryKey => $id), null, null, 1, null, $with_relation);
+		return $this->_findAll(null, [
+			$this->PrimaryKey => $id
+		], null, null, 1, null, $with_relation);
 	}
 
 	/**
@@ -312,9 +349,14 @@ class ActiveRecord
 	function findFirst($column = '*', $with_relation = true)
 	{
 		if ($this->PrimaryKey == null)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY, 'table' => $this->Table));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY,
+				'table' => $this->Table
+			]);
 
-		return $this->_findAll($column, null, null, array($this->PrimaryKey => self::ORDER_ASC), 1, null, $with_relation);
+		return $this->_findAll($column, null, null, [
+			$this->PrimaryKey => self::ORDER_ASC
+		], 1, null, $with_relation);
 	}
 
 	/**
@@ -325,9 +367,14 @@ class ActiveRecord
 	function findLast($column = '*', $with_relation = true)
 	{
 		if ($this->PrimaryKey == null)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY, 'table' => $this->Table));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY,
+				'table' => $this->Table
+			]);
 
-		return $this->_findAll($column, null, null, array($this->PrimaryKey => self::ORDER_DESC), 1, null, $with_relation);
+		return $this->_findAll($column, null, null, [
+			$this->PrimaryKey => self::ORDER_DESC
+		], 1, null, $with_relation);
 	}
 
 	function getHasOne($with_relation = true)
@@ -410,7 +457,11 @@ class ActiveRecord
 	 */
 	function hasManyQuery($table, $columns = null, $condition = null, $order = null)
 	{
-		$this->_hasManyQuery[$table] = array('columns' => $columns, 'condition' => $condition, 'order' => $order);
+		$this->_hasManyQuery[$table] = [
+			'columns' => $columns,
+			'condition' => $condition,
+			'order' => $order
+		];
 	}
 
 	/**
@@ -429,7 +480,10 @@ class ActiveRecord
 	 */
 	function hasOneQuery($table, $columns = null, $condition = null)
 	{
-		$this->_hasOneQuery[$table] = array('columns' => $columns, 'condition' => $condition);
+		$this->_hasOneQuery[$table] = [
+			'columns' => $columns,
+			'condition' => $condition
+		];
 	}
 
 	/**
@@ -448,7 +502,10 @@ class ActiveRecord
 		}
 
 		if (count($column) == 0)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::DATA_NOT_INITIALIZED_FOR_INSERT, 'table' => $this->Table));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::DATA_NOT_INITIALIZED_FOR_INSERT,
+				'table' => $this->Table
+			]);
 
 		if ($this->Database->query($this->LastQuery = "INSERT INTO " . $this->Table . " (" . $this->Database->FieldQuote . implode($this->Database->FieldQuote . ', ' . $this->Database->FieldQuote, array_keys($column)) . $this->Database->FieldQuote . ") VALUES (" . implode(', ', $column) . ")")) {
 			if ($this->PrimaryKey != null)
@@ -507,7 +564,11 @@ class ActiveRecord
 						foreach ($this->_hasMany as $relation) {
 							$relation['ar']->_findAll(
 								isset($this->_hasManyQuery[$relation['ar']->Table]['columns']) ? $this->_hasManyQuery[$relation['ar']->Table]['columns'] : null,
-								isset($this->_hasManyQuery[$relation['ar']->Table]['condition']) && is_array($this->_hasManyQuery[$relation['ar']->Table]['condition']) ? $this->_hasManyQuery[$relation['ar']->Table]['condition'] + array($relation['fk'] => $this->{$relation['pk']}) : array($relation['fk'] => $this->{$relation['pk']}),
+								isset($this->_hasManyQuery[$relation['ar']->Table]['condition']) && is_array($this->_hasManyQuery[$relation['ar']->Table]['condition']) ? $this->_hasManyQuery[$relation['ar']->Table]['condition'] + [
+									$relation['fk'] => $this->{$relation['pk']}
+								] : [
+									$relation['fk'] => $this->{$relation['pk']}
+								],
 								null,
 								isset($this->_hasManyQuery[$relation['ar']->Table]['order']) ? $this->_hasManyQuery[$relation['ar']->Table]['order'] : null,
 								null,
@@ -529,7 +590,11 @@ class ActiveRecord
 						foreach ($this->_relationHasMany as $relation) {
 							$relation['ar']->_findAll(
 								isset($this->_hasManyQuery[$relation['ar']->Table]['columns']) ? $this->_hasManyQuery[$relation['ar']->Table]['columns'] : null,
-								isset($this->_hasManyQuery[$relation['ar']->Table]['condition']) && is_array($this->_hasManyQuery[$relation['ar']->Table]['condition']) ? $this->_hasManyQuery[$relation['ar']->Table]['condition'] + array($relation['fk'] => $this->{$relation['pk']}) : array($relation['fk'] => $this->{$relation['pk']}),
+								isset($this->_hasManyQuery[$relation['ar']->Table]['condition']) && is_array($this->_hasManyQuery[$relation['ar']->Table]['condition']) ? $this->_hasManyQuery[$relation['ar']->Table]['condition'] + [
+									$relation['fk'] => $this->{$relation['pk']}
+								] : [
+									$relation['fk'] => $this->{$relation['pk']}
+								],
 								null,
 								isset($this->_hasManyQuery[$relation['ar']->Table]['order']) ? $this->_hasManyQuery[$relation['ar']->Table]['order'] : null,
 								null,
@@ -682,10 +747,15 @@ class ActiveRecord
 	{
 		if ($condition == null) {
 			if (!$this->_isDataInitialized)
-				throw new ActiveRecordException(array('code' => ActiveRecordException::NOT_INITIALIZED, 'table' => $this->Table));
+				throw new ActiveRecordException([
+					'code' => ActiveRecordException::NOT_INITIALIZED,
+					'table' => $this->Table
+				]);
 
 			$this->_resetColumns();
-			return $this->updateAll($this->_columns, (isset($this->PrimaryKey) ? array($this->PrimaryKey => $this->_columns[$this->PrimaryKey]) : $this->_dataShadow), 1);
+			return $this->updateAll($this->_columns, (isset($this->PrimaryKey) ? [
+				$this->PrimaryKey => $this->_columns[$this->PrimaryKey]
+			] : $this->_dataShadow), 1);
 		}
 
 		return $this->updateAll($values, $condition, 1);
@@ -724,9 +794,14 @@ class ActiveRecord
 	function updateByPK($values, $id)
 	{
 		if ($this->PrimaryKey == null)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY, 'table' => $this->Table));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::UNDEFINED_PRIMARY_KEY,
+				'table' => $this->Table
+			]);
 
-		return $this->updateAll($values, array($this->PrimaryKey => $id), 1);
+		return $this->updateAll($values, [
+			$this->PrimaryKey => $id
+		], 1);
 	}
 
 	/**
@@ -748,7 +823,10 @@ class ActiveRecord
 			return $this->_hasMany[$table]['ar'];
 		}
 
-		throw new ActiveRecordException(array('code' => ActiveRecordException::RELATION_NOT_EXISTS, 'table' => $table));
+		throw new ActiveRecordException([
+			'code' => ActiveRecordException::RELATION_NOT_EXISTS,
+			'table' => $table
+		]);
 	}
 
 	/**
@@ -763,7 +841,12 @@ class ActiveRecord
 		// $this->_addRelation('_hasMany', $ar, $pk, $fk);
 		$this->_addRelationInitialization($ar, $pk, $fk);
 
-		$this->_hasMany[$ar->Table] = array('ar' => $ar, 'pk' => $pk, 'fk' => $fk, 'alias' => $alias);
+		$this->_hasMany[$ar->Table] = [
+			'ar' => $ar,
+			'pk' => $pk,
+			'fk' => $fk,
+			'alias' => $alias
+		];
 	}
 
 	/**
@@ -783,7 +866,12 @@ class ActiveRecord
 		// $this->_addRelation('_hasOne', $ar, $pk, $fk, $join_type);
 		$this->_addRelationInitialization($ar, $pk, $fk);
 
-		$this->_hasOne[$ar->Table] = array('ar' => $ar, 'pk' => $pk, 'fk' => $fk, 'join_type' => $join_type);
+		$this->_hasOne[$ar->Table] = [
+			'ar' => $ar,
+			'pk' => $pk,
+			'fk' => $fk,
+			'join_type' => $join_type
+		];
 	}
 
 	/**
@@ -807,11 +895,22 @@ class ActiveRecord
 					$this->_columns[$column] = null;
 			}
 
-			if ($this->PrimaryKey != null) if (!array_key_exists($this->PrimaryKey, $this->_columns))
-				throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $this->PrimaryKey, 'table' => $this->Table));
+			if ($this->PrimaryKey != null) {
+				if (!array_key_exists($this->PrimaryKey, $this->_columns)) {
+					throw new ActiveRecordException([
+						'code' => ActiveRecordException::COLUMN_NOT_EXIST,
+						'column' => $this->PrimaryKey,
+						'table' => $this->Table
+					]);
+				}
+			}
 		} catch (DatabaseException $ex) {
 			if ($ex->ErrorCode == DatabaseException::QUERY_TABLE_NOT_EXIST)
-				throw new ActiveRecordException(array('code' => ActiveRecordException::TABLE_NOT_EXIST, 'table' => $this->Table, 'database' => $this->Database->Database));
+				throw new ActiveRecordException([
+					'code' => ActiveRecordException::TABLE_NOT_EXIST,
+					'table' => $this->Table,
+					'database' => $this->Database->Database
+				]);
 			else
 				throw $ex;
 		}
@@ -847,20 +946,31 @@ class ActiveRecord
 	private function _addRelation($relation, &$ar, &$pk, &$fk, &$join_type = null)
 	{
 		if (!$ar instanceof ActiveRecord)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::INSTANCE_NOT_ACTIVE_RECORD, 'object' => get_class($ar)));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::INSTANCE_NOT_ACTIVE_RECORD,
+				'object' => get_class($ar)
+			]);
 
 		$this->_hasRelation = true;
 		$ar->_isUsedInRelation = $this->Table;
 
 		if ($fk == null)
 			$fk = $pk;
-		$this->{$relation}[$ar->Table] = array('ar' => $ar, 'pk' => $pk, 'fk' => $fk, 'join_type' => $join_type);
+		$this->{$relation}[$ar->Table] = [
+			'ar' => $ar,
+			'pk' => $pk,
+			'fk' => $fk,
+			'join_type' => $join_type
+		];
 	}
 
 	private function _addRelationInitialization(&$ar, &$pk, &$fk)
 	{
 		if (!$ar instanceof ActiveRecord)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::INSTANCE_NOT_ACTIVE_RECORD, 'object' => get_class($ar)));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::INSTANCE_NOT_ACTIVE_RECORD,
+				'object' => get_class($ar)
+			]);
 
 		$this->_hasRelation = true;
 		$ar->_isUsedInRelation = $this->Table;
@@ -916,7 +1026,11 @@ class ActiveRecord
 					}
 
 					if (!$is_found)
-						throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $k, 'table' => implode(', ', $this->getAllTables())));
+						throw new ActiveRecordException([
+							'code' => ActiveRecordException::COLUMN_NOT_EXIST,
+							'column' => $k,
+							'table' => implode(', ', $this->getAllTables())
+						]);
 				}
 			}
 
@@ -962,17 +1076,23 @@ class ActiveRecord
 
 		$this->_resetColumns();
 
-		$constructed = array('column' => '');
+		$constructed = [
+			'column' => ''
+		];
 
 		if (is_string($column) || $column == null) {
 			if ($column == '*' || $column == null)
 				$column = array_keys($this->_columns);
 			else
-				$column = array($column);
+				$column = [
+					$column
+				];
 		}
 
 		if ($this->PrimaryKey != null && $group == null)
-			$column = array_merge(array($this->PrimaryKey), $column);
+			$column = array_merge([
+				$this->PrimaryKey
+			], $column);
 
 		$this->_lastQueriedColumns = [];
 
@@ -1006,7 +1126,9 @@ class ActiveRecord
 		} else {
 			$column = implode(', ', $column);
 
-			$constructed = array('column' => '');
+			$constructed = [
+				'column' => ''
+			];
 			$this->_constructJoin($this, $with_relation, true, $constructed);
 
 			if ($group == null) {
@@ -1128,7 +1250,12 @@ class ActiveRecord
 	private function _removeRelation($relation, &$ar)
 	{
 		if (!$ar instanceof ActiveRecord)
-			throw new ActiveRecordException(array('code' => ActiveRecordException::INSTANCE_NOT_ACTIVE_RECORD, 'object' => get_class($ar)));
+			throw new ActiveRecordException(
+				[
+					'code' => ActiveRecordException::INSTANCE_NOT_ACTIVE_RECORD,
+					'object' => get_class($ar)
+				]
+			);
 
 		if (empty($this->_hasMany) && empty($this->_hasOne))
 			$this->_hasRelation = false;

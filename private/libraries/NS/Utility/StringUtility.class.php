@@ -51,7 +51,9 @@ class StringUtility extends BaseObject
 	static function contains($str, $search)
 	{
 		if (!is_array($search))
-			$search = array($search);
+			$search = [
+				$search
+			];
 
 		foreach ($search as $item) {
 			if (@preg_match('/' . $item . '/', $str) == 1) {
@@ -72,7 +74,9 @@ class StringUtility extends BaseObject
 	static function endsWith($str, $search)
 	{
 		if (!is_array($search))
-			$search = array($search);
+			$search = [
+				$search
+			];
 
 		foreach ($search as $item) {
 			if (@preg_match('/' . $item . '$/', $str) == 1) {
@@ -197,7 +201,9 @@ class StringUtility extends BaseObject
 	static function startsWith($str, $search)
 	{
 		if (!is_array($search))
-			$search = array($search);
+			$search = [
+				$search
+			];
 
 		foreach ($search as $item) {
 			if (@preg_match('/^' . $item . '/', $str) == 1) {

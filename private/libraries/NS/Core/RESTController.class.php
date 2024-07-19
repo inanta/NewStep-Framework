@@ -88,8 +88,16 @@ abstract class RESTController extends BaseObject
 	function __construct()
 	{
 		ob_start();
-		$this->createProperties(array('Session' => Session::getInstance()));
-		$this->setReadOnlyProperties(array('Session'));
+		$this->createProperties(
+			[
+				'Session' => Session::getInstance()
+			]
+		);
+		$this->setReadOnlyProperties(
+			[
+				'Session'
+			]
+		);
 
 		$this->Request = ClientRequest::getInstance();
 		$this->_isConstructorCalled = true;

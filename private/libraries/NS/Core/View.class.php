@@ -44,7 +44,9 @@ class View
 		$router = Router::getInstance();
 
 		if ($paths === null) {
-			$paths = array($router->App->Path . '/views');
+			$paths = [
+				$router->App->Path . '/views'
+			];
 		} else {
 			$paths[] = $router->App->Path . '/views';
 		}

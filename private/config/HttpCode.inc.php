@@ -1,5 +1,5 @@
 <?php
-$HttpCode = array(
+$HttpCode = [
 	100 => 'Continue',
 	101 => 'Switching Protocols',
 	102 => 'Processing',
@@ -55,5 +55,4 @@ $HttpCode = array(
 	507 => 'Insufficient Storage',
 	509 => 'Bandwidth Limit Exceeded',
 	510 => 'Not Extended'
-);
-?>
+];

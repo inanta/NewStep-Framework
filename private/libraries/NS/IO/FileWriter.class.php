@@ -39,8 +39,14 @@ class FileWriter extends BaseObject
 	function __construct($filename, $mode = self::MODE_WRITE)
 	{
 		$this->_fp = @fopen($filename, $mode);
+
 		if (!$this->_fp)
-			throw new IOException(array('code' => IOException::FILE_NOT_WRITEABLE, 'filename' => $filename));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_WRITEABLE,
+					'filename' => $filename
+				]
+			);
 	}
 
 	function __destruct()

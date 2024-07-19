@@ -40,9 +40,11 @@ class Router extends SingletonObject
 	 */
 	function initialize(&$cf)
 	{
-		if (!preg_match($cf->Application->PermittedURLChar, NS_CURRENT_URL)) {
-			throw new SecurityException(array('code' => SecurityException::INVALID_URL));
-		}
+		if (!preg_match($cf->Application->PermittedURLChar, NS_CURRENT_URL))
+			throw new SecurityException([
+				'code' => SecurityException::INVALID_URL
+			]);
+
 
 		$segments = [];
 		$dir = '';

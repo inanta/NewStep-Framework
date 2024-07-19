@@ -1,6 +1,6 @@
 <?php
-$Database = array (
-	'Default' => array(
+$Database = [
+	'Default' => [
 		'Driver' => 'mysql',
 		'Host' => '',
 		'Username' => '',
@@ -8,6 +8,5 @@ $Database = array (
 		'Database' => '',
 		'Persistent' => false,
 		'Prefix' => ''
-	),
-);
-?>
+	],
+];

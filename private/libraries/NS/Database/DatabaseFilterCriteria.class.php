@@ -162,9 +162,12 @@ class DatabaseFilterCriteria extends BaseObject
 	 */
 	function addCondition($column, $condition)
 	{
-		// if(!array_key_exists($column, $this->_ar->getAllColumns())) throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $column, 'table' => $this->_ar->Table));
 		if (!in_array($column, $this->_ar->getAllColumns()))
-			throw new ActiveRecordException(array('code' => ActiveRecordException::COLUMN_NOT_EXIST, 'column' => $column, 'table' => $this->_ar->Table));
+			throw new ActiveRecordException([
+				'code' => ActiveRecordException::COLUMN_NOT_EXIST,
+				'column' => $column,
+				'table' => $this->_ar->Table
+			]);
 
 		$this->_conditions[md5($condition)] = $condition;
 	}

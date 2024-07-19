@@ -30,7 +30,11 @@ class DirectoryInfo extends BaseObject
 
 	function __construct($path)
 	{
-		$this->createProperties(array('Path' => ''));
+		$this->createProperties(
+			[
+				'Path' => ''
+			]
+		);
 		$this->Path = $path;
 
 	}
@@ -93,7 +97,12 @@ class DirectoryInfo extends BaseObject
 	private function initializeEntries()
 	{
 		if (!is_dir($this->Path))
-			throw new IOException(array('code' => IOException::DIRECTORY_NOT_FOUND, 'dirname' => $this->Path));
+			throw new IOException(
+				[
+					'code' => IOException::DIRECTORY_NOT_FOUND,
+					'dirname' => $this->Path
+				]
+			);
 
 		$dir = dir($this->Path);
 		while (false !== ($entry = $dir->read())) {

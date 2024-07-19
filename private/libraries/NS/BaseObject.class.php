@@ -34,7 +34,11 @@ class BaseObject
 
 	function __call($m, $args)
 	{
-		throw new ObjectException(array('code' => ObjectException::UNDEFINED_METHOD, 'method' => $m, 'args' => $args));
+		throw new ObjectException([
+			'code' => ObjectException::UNDEFINED_METHOD,
+			'method' => $m,
+			'args' => $args
+		]);
 	}
 
 	function __get($k)
@@ -43,10 +47,16 @@ class BaseObject
 			if (!isset($this->_var[$k]['w']))
 				return $this->_var[$k]['v'];
 
-			throw new ObjectException(array('code' => ObjectException::WO_PROPERTY, 'property' => $k));
+			throw new ObjectException([
+				'code' => ObjectException::WO_PROPERTY,
+				'property' => $k
+			]);
 		}
 
-		throw new ObjectException(array('code' => ObjectException::UNDEFINED_GET, 'property' => $k));
+		throw new ObjectException([
+			'code' => ObjectException::UNDEFINED_GET,
+			'property' => $k
+		]);
 	}
 
 	function __set($k, $v)
@@ -57,10 +67,18 @@ class BaseObject
 				return;
 			}
 
-			throw new ObjectException(array('code' => ObjectException::RO_PROPERTY, 'property' => $k, 'value' => $v));
+			throw new ObjectException([
+				'code' => ObjectException::RO_PROPERTY,
+				'property' => $k,
+				'value' => $v
+			]);
 		}
 
-		throw new ObjectException(array('code' => ObjectException::UNDEFINED_SET, 'property' => $k, 'value' => $v));
+		throw new ObjectException([
+			'code' => ObjectException::UNDEFINED_SET,
+			'property' => $k,
+			'value' => $v
+		]);
 	}
 
 	function __toString()
@@ -127,10 +145,16 @@ class BaseObject
 	final protected function setReadOnlyProperty($k)
 	{
 		if (!isset($this->_var[$k]))
-			throw new ObjectException(array('code' => ObjectException::UNDEFINED_PROPERTY, 'property' => $k));
+			throw new ObjectException([
+				'code' => ObjectException::UNDEFINED_PROPERTY,
+				'property' => $k
+			]);
 		else {
 			if (isset($this->_var[$k]['w']))
-				throw new ObjectException(array('code' => ObjectException::ALREADY_WO_PROPERTY, 'property' => $k));
+				throw new ObjectException([
+					'code' => ObjectException::ALREADY_WO_PROPERTY,
+					'property' => $k
+				]);
 			else
 				$this->_var[$k]['r'] = 1;
 		}
@@ -155,10 +179,16 @@ class BaseObject
 	final protected function setWriteOnlyProperty($k)
 	{
 		if (!isset($this->_var[$k]))
-			throw new ObjectException(array('code' => ObjectException::UNDEFINED_PROPERTY, 'property' => $k));
+			throw new ObjectException([
+				'code' => ObjectException::UNDEFINED_PROPERTY,
+				'property' => $k
+			]);
 		else {
 			if (isset($this->_var[$k]['r']))
-				throw new ObjectException(array('code' => ObjectException::ALREADY_RO_PROPERTY, 'property' => $k));
+				throw new ObjectException([
+					'code' => ObjectException::ALREADY_RO_PROPERTY,
+					'property' => $k
+				]);
 			else
 				$this->_var[$k]['w'] = 1;
 		}

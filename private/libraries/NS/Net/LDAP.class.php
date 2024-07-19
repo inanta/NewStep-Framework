@@ -19,7 +19,12 @@ class LDAP extends BaseObject
 		if (ldap_bind($this->_connection, $username, $password) === true)
 			return true;
 
-		throw new NetException(array('code' => NetException::UNABLE_TO_LOGIN, 'username' => $username));
+		throw new NetException(
+			[
+				'code' => NetException::UNABLE_TO_LOGIN,
+				'username' => $username
+			]
+		);
 	}
 
 	function close()
@@ -41,9 +46,21 @@ class LDAP extends BaseObject
 	function __construct($host)
 	{
 		if (!function_exists('ldap_connect'))
-			throw new LibraryException(array('code' => NS_EX_LIB_NOT_INSTALLED, 'class' => __CLASS__, 'library' => 'LDAP'));
+			throw new LibraryException(
+				[
+					'code' => NS_EX_LIB_NOT_INSTALLED,
+					'class' => __CLASS__,
+					'library' => 'LDAP'
+				]
+			);
+
 		if (!$this->_connection = ldap_connect($host))
-			throw new NetException(array('code' => NetException::NOT_CONNECTED, 'server' => $host));
+			throw new NetException(
+				[
+					'code' => NetException::NOT_CONNECTED,
+					'server' => $host
+				]
+			);
 
 		$this->_isConnected = true;
 	}

@@ -1,5 +1,5 @@
 <?php
-$MimeType = array(
+$MimeType = [
 	'323' => 'text/h323',
 	'acx' => 'application/internet-property-stream',
 	'ai' => 'application/postscript',
@@ -186,5 +186,5 @@ $MimeType = array(
 	'xpm' => 'image/x-xpixmap',
 	'xwd' => 'image/x-xwindowdump',
 	'z' => 'application/x-compress',
-	'zip' => 'application/zip');
-?>
+	'zip' => 'application/zip'
+];

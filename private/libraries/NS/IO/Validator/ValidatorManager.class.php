@@ -64,7 +64,13 @@ class ValidatorManager extends SingletonObject
 
 	function getValidator()
 	{
-		return json_encode(array('ignore' => '', 'rules' => $this->_rules, 'messages' => $this->_messages));
+		return json_encode(
+			[
+				'ignore' => '',
+				'rules' => $this->_rules,
+				'messages' => $this->_messages
+			]
+		);
 	}
 
 	static function getInstance()

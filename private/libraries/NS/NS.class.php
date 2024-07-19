@@ -44,11 +44,21 @@ class NS
 	function __construct(&$System)
 	{
 		try {
-			register_shutdown_function(array($this, 'shutdown'));
+			register_shutdown_function(
+				[
+					$this,
+					'shutdown'
+				]
+			);
 
 			require (NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/NS/ClassMapper.class.php');
 			ClassMapper::$ClassPath = NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/';
-			spl_autoload_register(array($this, 'autoload'));
+			spl_autoload_register(
+				[
+					$this,
+					'autoload'
+				]
+			);
 
 			require (NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Event.inc.php');
 			require (NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Constant.inc.php');
@@ -91,9 +101,10 @@ class NS
 			$this->triggerEvent($Event['afterApplicationOutput']);
 
 			if (defined('NS_JS') && !defined('NS_JS_RENDERED'))
-				throw new UIException(array('code' => UIException::JS_NOT_RENDERED));
+				throw new UIException(['code' => UIException::JS_NOT_RENDERED]);
+
 			if (defined('NS_CSS') && !defined('NS_CSS_RENDERED'))
-				throw new UIException(array('code' => UIException::CSS_NOT_RENDERED));
+				throw new UIException(['code' => UIException::CSS_NOT_RENDERED]);
 		} catch (Exception $ex) {
 			if (isset($router->File)) {
 				foreach ($ex->getTrace() as $trace) {
@@ -166,9 +177,19 @@ class NS
 			header($_SERVER['SERVER_PROTOCOL'] . ' 500 Internal Server Error');
 
 			if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-				echo @json_encode(array('error' => true, 'message' => $error['message'], 'file' => $error['file'], 'line' => $error['line']));
+				echo @json_encode([
+					'error' => true,
+					'message' => $error['message'],
+					'file' => $error['file'],
+					'line' => $error['line']
+				]);
 			} else if (file_exists($er_file = NS_SYSTEM_PATH . '/asset/template/error/PHPFatalError.php')) {
-				extract(array('Message' => $error['message'], 'File' => $error['file'], 'Line' => $error['line']));
+				extract([
+					'Message' => $error['message'],
+					'File' => $error['file'],
+					'Line' => $error['line']
+				]);
+
 				require ($er_file);
 			} else
 				echo sprintf('PHP Fatal Error<br />NS Error Message: %s<br/>File: %s line %s', $error['message'], $error['file'], $error['line']);
@@ -206,7 +227,13 @@ class NS
 					$this->_eventCallback[$event['class']] = new $event['class'];
 				}
 
-				call_user_func_array(array($this->_eventCallback[$event['class']], $event['method']), $event['param']);
+				call_user_func_array(
+					[
+						$this->_eventCallback[$event['class']],
+						$event['method']
+					],
+					$event['param']
+				);
 			}
 		}
 	}

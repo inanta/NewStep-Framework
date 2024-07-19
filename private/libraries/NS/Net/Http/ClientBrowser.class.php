@@ -39,13 +39,13 @@ class ClientBrowser extends SingletonObject
 	function __construct()
 	{
 		$this->createProperties(
-			array(
+			[
 				'BrowserName' => 'Unknown',
 				'Device' => 'Unknown',
 				'IsMobile' => false,
 				'OS' => 'Unknown',
 				'Version' => 'Unknown',
-			)
+			]
 		);
 		$this->detect();
 	}

@@ -1,6 +1,6 @@
 <?php
-$UserAgent = array (
-	'OS' => array(
+$UserAgent = [
+	'OS' => [
 		'windows ce' => 'Windows CE',
 		'windows phone' => 'Windows Phone',
 		'win' => 'Windows',
@@ -23,23 +23,105 @@ $UserAgent = array (
 		'irix' => 'Irix',
 		'unix' => 'Generic Unix',
 		'bot' => 'Generic Spider / Robot',
-	),
-	'Browser' => array(
-		'chrome' => array('Chrome', array(' ', '/', 'Chrome')),
-		'safari' => array('Safari', array(' ', '/', 'Version')),
-		'msie' => array('MSIE', array(';', ' ', 'MSIE')),
-		'seamonkey' => array('SeaMonkeye', array(' ', '/', 'SeaMonkey')),
-		'firefox' => array('Firefox', array(' ', '/', 'Firefox')),
-		'netscape' => array('Netscape', array(' ', '/', 'Netscape')),
-		'opera mini' => array('Opera Mini', array(' ', '/', 'Opera')),
-		'opera' => array('Opera', array(' ', '/', 'Opera')),
-		'konqueror' => array('Konqueror', array(';', '/', 'Konqueror')),
-		'midori' => array('Midori', array(' ', '/', 'Midori')),
-		'mozilla' => array('Mozilla', array(' ', '/', 'Mozilla'))
-	),
-	'Device' => array(
-		'iOS' => array('ipod' => 'iPod', 'iphone' => 'iPhone', 'ipad' => 'iPad'),
-		'Android' => array('xoom' => 'Motorola Xoom')
-	)
-);
-?>
+	],
+	'Browser' => [
+		'chrome' => [
+			'Chrome',
+			[
+				' ',
+				'/',
+				'Chrome'
+			]
+		],
+		'safari' => [
+			'Safari',
+			[
+				' ',
+				'/',
+				'Version'
+			]
+		],
+		'msie' => [
+			'MSIE',
+			[
+				';',
+				' ',
+				'MSIE'
+			]
+		],
+		'seamonkey' => [
+			'SeaMonkeye',
+			[
+				' ',
+				'/',
+				'SeaMonkey'
+			]
+		],
+		'firefox' => [
+			'Firefox',
+			[
+				' ',
+				'/',
+				'Firefox'
+			]
+		],
+		'netscape' => [
+			'Netscape',
+			[
+				' ',
+				'/',
+				'Netscape'
+			]
+		],
+		'opera mini' => [
+			'Opera Mini',
+			[
+				' ',
+				'/',
+				'Opera'
+			]
+		],
+		'opera' => [
+			'Opera',
+			[
+				' ',
+				'/',
+				'Opera'
+			]
+		],
+		'konqueror' => [
+			'Konqueror',
+			[
+				';',
+				'/',
+				'Konqueror'
+			]
+		],
+		'midori' => [
+			'Midori',
+			[
+				' ',
+				'/',
+				'Midori'
+			]
+		],
+		'mozilla' => [
+			'Mozilla',
+			[
+				' ',
+				'/',
+				'Mozilla'
+			]
+		]
+	],
+	'Device' => [
+		'iOS' => [
+			'ipod' => 'iPod',
+			'iphone' => 'iPhone',
+			'ipad' => 'iPad'
+		],
+		'Android' => [
+			'xoom' => 'Motorola Xoom'
+		]
+	]
+];

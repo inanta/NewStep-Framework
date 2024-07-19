@@ -72,7 +72,7 @@ abstract class Database extends BaseObject
 	 */
 	static function getInstance($conn = null)
 	{
-		$Database = null;
+		$Database = [];
 
 		if (is_string($conn) || $conn == null) {
 			require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Database.inc.php');
@@ -81,7 +81,10 @@ abstract class Database extends BaseObject
 				$conn = key($Database);
 			else {
 				if (!isset($Database[$conn]))
-					throw new DatabaseException(array('code' => DatabaseException::UNDEFINED_CONNECTION_NAME, 'connection' => $conn));
+					throw new DatabaseException([
+						'code' => DatabaseException::UNDEFINED_CONNECTION_NAME,
+						'connection' => $conn
+					]);
 			}
 		} else if (is_array($conn)) {
 			$Database['Temp'] = $conn;

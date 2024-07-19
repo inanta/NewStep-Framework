@@ -39,9 +39,16 @@ final class PHPTemplate extends Template
 	function fetch($resource_name)
 	{
 		if (!is_file($resource_name))
-			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $resource_name));
+			throw new IOException([
+				'code' => IOException::FILE_NOT_FOUND,
+				'filename' => $resource_name
+			]);
+
 		if (!is_readable($resource_name))
-			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $resource_name));
+			throw new IOException([
+				'code' => IOException::FILE_NOT_READABLE,
+				'filename' => $resource_name
+			]);
 
 		ob_start();
 		extract($this->_vars, EXTR_REFS);

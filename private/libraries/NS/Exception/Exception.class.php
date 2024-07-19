@@ -121,7 +121,7 @@ class Exception extends \Exception
 			ns_gettext_init('NS');
 		}
 
-		$error = array(
+		$error = [
 			'ErrorHeader' => _('The page cannot be displayed due to internal error'),
 			'NSErrorMessageCaption' => _('NS Error Message'),
 			'ExceptionCaption' => _('Exception'),
@@ -137,7 +137,7 @@ class Exception extends \Exception
 			'Line' => $this->Line,
 			'Trace' => (NS_DEBUG_MODE ? $this->getTrace() : []),
 			'ErrorCode' => $this->ErrorCode
-		);
+		];
 
 		if (ob_get_contents())
 			ob_end_clean();
@@ -190,7 +190,7 @@ class Exception extends \Exception
 
 	private function _showMessageJSON($error)
 	{
-		$error = array(
+		$error = [
 			'code' => $error['ErrorCode'],
 			'message' => $error['Message'],
 			'exception' => $error['Source'],
@@ -198,7 +198,7 @@ class Exception extends \Exception
 			'line' => $error['Line'],
 			'last_output' => $error['LastOutput'],
 			'trace' => $error['Trace']
-		);
+		];
 
 		if (!NS_DEBUG_MODE) {
 			unset($error['exception'], $error['file'], $error['line'], $error['last_output'], $error['trace']);
@@ -210,7 +210,7 @@ class Exception extends \Exception
 
 	private function _showMessageXML($error)
 	{
-		$error = array(
+		$error = [
 			'Code' => $error['ErrorCode'],
 			'Message' => $error['Message'],
 			'Exception' => $error['Source'],
@@ -218,7 +218,7 @@ class Exception extends \Exception
 			'Line' => $error['Line'],
 			'LastOutput' => $error['LastOutput'],
 			'Trace' => $error['Trace']
-		);
+		];
 
 		if (!NS_DEBUG_MODE) {
 			unset($error['Exception'], $error['File'], $error['Line'], $error['Last_output'], $error['Trace']);

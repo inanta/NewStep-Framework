@@ -59,7 +59,12 @@ class Config extends SingletonObject
 	function load($name)
 	{
 		require (NS_SYSTEM_PATH . '/' . $this->ConfigFolder . '/' . $name . '.inc.php');
-		$this->createProperties(array($name => ${$name}), true);
+		$this->createProperties(
+			[
+				$name => ${$name}
+			],
+			true
+		);
 	}
 
 	/**
@@ -76,13 +81,24 @@ class Config extends SingletonObject
 		$mapper_config = [];
 		$ar = new ActiveRecord($table);
 
-		$ar->findAll(array($column_key, $column_value), $condition);
+		$ar->findAll(
+			[
+				$column_key,
+				$column_value
+			],
+			$condition
+		);
 		while ($ar->hasNext()) {
 			$mapper_config[$ar->{$column_key}] = $ar->{$column_value};
 			$ar->next();
 		}
 
-		$this->createProperties(array($name => $mapper_config), true);
+		$this->createProperties(
+			[
+				$name => $mapper_config
+			],
+			true
+		);
 	}
 
 	/**

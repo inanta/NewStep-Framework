@@ -43,7 +43,11 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	function __construct($args = [])
 	{
 		if (!function_exists('mysqli_connect'))
-			throw new LibraryException(array('code' => NS_EX_LIB_NOT_INSTALLED, 'class' => __CLASS__, 'library' => 'MySQL'));
+			throw new LibraryException([
+				'code' => NS_EX_LIB_NOT_INSTALLED,
+				'class' => __CLASS__,
+				'library' => 'MySQL'
+			]);
 
 		parent::__construct($args);
 	}
@@ -88,20 +92,34 @@ class MySQLDriver extends Database implements IDatabaseDriver
 		if (!$this->Connection != 0) {
 			switch (mysqli_connect_errno()) {
 				case 1045:
-					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_ACCESS, 'user' => $this->Username, 'database' => $this->Database));
+					throw new DatabaseException([
+						'code' => DatabaseException::UNABLE_TO_ACCESS,
+						'user' => $this->Username,
+						'database' => $this->Database
+					]);
 				case 2005:
 				default:
-					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_CONNECT, 'host' => $this->Host));
+					throw new DatabaseException([
+						'code' => DatabaseException::UNABLE_TO_CONNECT,
+						'host' => $this->Host
+					]);
 			}
 		}
 
 		if (!@mysqli_select_db($this->Connection, $this->Database)) {
 			switch (mysqli_errno($this->Connection)) {
 				case 1044:
-					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_ACCESS, 'user' => $this->Username, 'database' => $this->Database));
+					throw new DatabaseException([
+						'code' => DatabaseException::UNABLE_TO_ACCESS,
+						'user' => $this->Username,
+						'database' => $this->Database
+					]);
 				case 1049:
 				default:
-					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_USE, 'database' => $this->Database));
+					throw new DatabaseException([
+						'code' => DatabaseException::UNABLE_TO_USE,
+						'database' => $this->Database
+					]);
 			}
 		}
 	}
@@ -219,13 +237,26 @@ class MySQLDriver extends Database implements IDatabaseDriver
 
 		switch (@mysqli_errno($this->Connection)) {
 			case 1054:
-				throw new DatabaseException(array('code' => DatabaseException::QUERY_COLUMN_NOT_EXIST, 'query' => $query));
+				throw new DatabaseException([
+					'code' => DatabaseException::QUERY_COLUMN_NOT_EXIST,
+					'query' => $query
+				]);
 			case 1064:
-				throw new DatabaseException(array('code' => DatabaseException::QUERY_ERROR, 'query' => $query));
+				throw new DatabaseException([
+					'code' => DatabaseException::QUERY_ERROR,
+					'query' => $query
+				]);
 			case 1146:
-				throw new DatabaseException(array('code' => DatabaseException::QUERY_TABLE_NOT_EXIST, 'query' => $query));
+				throw new DatabaseException([
+					'code' => DatabaseException::QUERY_TABLE_NOT_EXIST,
+					'query' => $query
+				]);
 			default:
-				throw new DatabaseException(array('code' => @mysqli_errno($this->Connection), 'message' => @mysqli_error($this->Connection), 'query' => $query));
+				throw new DatabaseException([
+					'code' => @mysqli_errno($this->Connection),
+					'message' => @mysqli_error($this->Connection),
+					'query' => $query
+				]);
 		}
 	}
 

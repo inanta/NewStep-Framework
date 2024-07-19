@@ -20,7 +20,13 @@ class RemoteRequest extends BaseObject
 	function __construct()
 	{
 		if (!function_exists('curl_init'))
-			throw new LibraryException(array('code' => NS_EX_LIB_NOT_INSTALLED, 'class' => __CLASS__, 'library' => 'cURL'));
+			throw new LibraryException(
+				[
+					'code' => NS_EX_LIB_NOT_INSTALLED,
+					'class' => __CLASS__,
+					'library' => 'cURL'
+				]
+			);
 
 		$this->_ch = curl_init();
 

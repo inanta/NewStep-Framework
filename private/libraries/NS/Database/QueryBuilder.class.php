@@ -38,13 +38,17 @@ class QueryBuilder extends Object
 
 	function select($fields = '*')
 	{
-		$this->_fields = !is_array($fields) ? array($fields) : $fields;
+		$this->_fields = !is_array($fields) ? [
+			$fields
+		] : $fields;
 		return $this;
 	}
 
 	function from($tables)
 	{
-		$this->_tables = !is_array($tables) ? array($tables) : $tables;
+		$this->_tables = !is_array($tables) ? [
+			$tables
+		] : $tables;
 		return $this;
 	}
 

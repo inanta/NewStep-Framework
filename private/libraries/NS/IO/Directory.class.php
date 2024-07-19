@@ -37,7 +37,15 @@ class Directory extends BaseIterable
 	{
 		self::validate($path);
 
-		$this->createProperties(array('Path' => (substr($path, -1, 1) == '/' ? $path : $path . '/'), $path, 'FileName' => null, 'IsDirectory' => null, 'IsHidden' => null));
+		$this->createProperties(
+			[
+				'Path' => (substr($path, -1, 1) == '/' ? $path : $path . '/'),
+				$path,
+				'FileName' => null,
+				'IsDirectory' => null,
+				'IsHidden' => null
+			]
+		);
 
 		$dh = opendir($path);
 		while (($file = readdir($dh)) !== false) {
@@ -122,7 +130,12 @@ class Directory extends BaseIterable
 
 		if (!$recursive) {
 			if (!self::isEmpty($path))
-				throw new IOException(array('code' => IOException::DIRECTORY_IS_NOT_EMPTY, 'directory' => $path));
+				throw new IOException(
+					[
+						'code' => IOException::DIRECTORY_IS_NOT_EMPTY,
+						'directory' => $path
+					]
+				);
 		}
 
 		return rmdir($path);
@@ -148,9 +161,20 @@ class Directory extends BaseIterable
 	static function validate($path)
 	{
 		if (!is_dir($path))
-			throw new IOException(array('code' => IOException::DIRECTORY_NOT_FOUND, 'directory' => $path));
+			throw new IOException(
+				[
+					'code' => IOException::DIRECTORY_NOT_FOUND,
+					'directory' => $path
+				]
+			);
+
 		if (!is_readable($path))
-			throw new IOException(array('code' => IOException::DIRECTORY_NOT_WRITEABLE, 'directory' => $path));
+			throw new IOException(
+				[
+					'code' => IOException::DIRECTORY_NOT_WRITEABLE,
+					'directory' => $path
+				]
+			);
 	}
 
 	private static function createDirectory($path)
@@ -166,9 +190,20 @@ class Directory extends BaseIterable
 		}
 
 		if (is_file($path))
-			throw new IOException(array('code' => IOException::FILE_ALREADY_EXIST, 'filename' => $path));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_ALREADY_EXIST,
+					'filename' => $path
+				]
+			);
+
 		if (!is_readable($parent_folder))
-			throw new IOException(array('code' => IOException::DIRECTORY_NOT_WRITEABLE, 'directory' => str_replace('/' . $parent_folder, '', $path)));
+			throw new IOException(
+				[
+					'code' => IOException::DIRECTORY_NOT_WRITEABLE,
+					'directory' => str_replace('/' . $parent_folder, '', $path)
+				]
+			);
 
 		return mkdir($path);
 	}

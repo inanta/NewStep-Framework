@@ -33,9 +33,9 @@ class Import extends SingletonObject
 		$this->_conn = $conn;
 
 		$this->createProperties(
-			array(
+			[
 				'File' => null
-			)
+			]
 		);
 	}
 
@@ -60,9 +60,16 @@ class Import extends SingletonObject
 	private function _getFileContents()
 	{
 		if (!is_file($this->File))
-			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $this->File));
+			throw new IOException([
+				'code' => IOException::FILE_NOT_FOUND,
+				'filename' => $this->File
+			]);
+
 		if (!is_readable($this->File))
-			throw new IOException(array('code' => IOException::FILE_NOT_READABLE, 'filename' => $this->File));
+			throw new IOException([
+				'code' => IOException::FILE_NOT_READABLE,
+				'filename' => $this->File
+			]);
 
 		return file_get_contents($this->File);
 	}

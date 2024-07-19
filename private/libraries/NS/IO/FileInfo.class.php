@@ -29,9 +29,21 @@ class FileInfo extends BaseObject
 	function __construct($path)
 	{
 		if (!is_file($path))
-			throw new IOException(array('code' => IOException::FILE_NOT_FOUND, 'filename' => $path));
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_FOUND,
+					'filename' => $path
+				]
+			);
 
-		$this->createProperties(array('BaseName' => '', 'FullName' => $path, 'Extension' => '', 'Size' => sprintf("%u", filesize($path))));
+		$this->createProperties(
+			[
+				'BaseName' => '',
+				'FullName' => $path,
+				'Extension' => '',
+				'Size' => sprintf("%u", filesize($path))
+			]
+		);
 
 		$explode = explode('/', $path);
 		$this->BaseName = $explode[count(explode('/', $path)) - 1];
