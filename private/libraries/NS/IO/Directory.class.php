@@ -114,8 +114,6 @@ class Directory extends BaseIterable
 		} else {
 			return self::createDirectory($path . '/');
 		}
-
-		return false;
 	}
 
 	static function delete($path, $recursive = false)
@@ -123,11 +121,11 @@ class Directory extends BaseIterable
 		self::validate($path);
 
 		if (!$recursive) {
-			if (!self::isEmpty())
-				throw new IOException(array('code' => IOException::DIRECTORY_NOT_EMPTY, 'directory' => $path));
+			if (!self::isEmpty($path))
+				throw new IOException(array('code' => IOException::DIRECTORY_IS_NOT_EMPTY, 'directory' => $path));
 		}
 
-		return rm_dir($path);
+		return rmdir($path);
 	}
 
 	static function isEmpty($path)

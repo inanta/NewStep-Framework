@@ -81,8 +81,13 @@ class ClientBrowser extends SingletonObject
 
 		foreach ($UserAgent['Browser'] as $k => $v) {
 			if (preg_match('/' . $k . '/i', $_SERVER['HTTP_USER_AGENT'])) {
+				$user_agent = stristr($_SERVER['HTTP_USER_AGENT'], $v[1][2]);
+				$user_agent_parts = explode($v[1][0], $user_agent);
+				$user_agent_sub_parts = explode($v[1][1], current($user_agent_parts));
+
 				$this->BrowserName = $v[0];
-				$this->Version = end(explode($v[1][1], current(explode($v[1][0], stristr($_SERVER['HTTP_USER_AGENT'], $v[1][2])))));
+				$this->Version = end($user_agent_sub_parts);
+
 				break;
 			}
 		}

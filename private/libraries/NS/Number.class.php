@@ -21,6 +21,7 @@
 
 namespace NS;
 
+use Exception;
 use NS\Core\Config;
 
 /**
@@ -175,7 +176,6 @@ class Number extends BaseObject
 
 		if (($value >= 0 && (int) $value < 0) || (int) $value < 0 - PHP_INT_MAX) {
 			throw new Exception('Error');
-			return false;
 		}
 
 		if ($value < 0) {

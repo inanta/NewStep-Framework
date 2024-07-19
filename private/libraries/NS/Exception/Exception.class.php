@@ -77,11 +77,19 @@ class Exception extends \Exception
 
 		if (!NS_DEBUG_MODE)
 			$message = preg_replace('/\[[^\]]*\]/', '[HIDDEN]', $message);
+
 		parent::__construct($message);
+
+		$file = $this->getFile();
+
+		if (!NS_DEBUG_MODE) {
+			$file_parts = explode('/', $this->getFile());
+			$file = end($file_parts);
+		}
 
 		$this->Message = $this->getMessage();
 		$this->Source = get_class($this);
-		$this->File = (!NS_DEBUG_MODE ? end(explode('/', $this->getFile())) : $this->getFile());
+		$this->File = $file;
 		$this->Line = $this->getLine();
 	}
 

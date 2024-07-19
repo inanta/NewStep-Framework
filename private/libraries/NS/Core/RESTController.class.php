@@ -184,7 +184,7 @@ abstract class RESTController extends BaseObject
 	 */
 	protected function redirect($url, $message = null, $header = null, $time = 4)
 	{
-		$this->redirectURL(NS_BASE_URL . '/' . $url, $message, $header, $time);
+		$this->redirectURL(NS_BASE_URL . '/' . $url);
 	}
 
 	/**

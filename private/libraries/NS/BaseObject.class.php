@@ -122,7 +122,7 @@ class BaseObject
 	/**
 	 *Set object property to read only
 	 *
-	 *@param array $k Property name
+	 *@param string $k Property name
 	 */
 	final protected function setReadOnlyProperty($k)
 	{
@@ -150,7 +150,7 @@ class BaseObject
 	/**
 	 *Set object property to write-only
 	 *
-	 *@param array $k Property name
+	 *@param string $k Property name
 	 */
 	final protected function setWriteOnlyProperty($k)
 	{

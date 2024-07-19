@@ -93,12 +93,6 @@ final class IOException extends Exception
 			case self::DIRECTORY_NOT_READABLE:
 				$message = sprintf($this->_('Directory [%s] is not radeable'), $args['directory']);
 				break;
-			case self::FILE_NOT_READABLE:
-				$message = sprintf($this->_('File [%s] is not readable'), $args['filename']);
-				break;
-			case self::DIRECTORY_NOT_READABLE:
-				$message = sprintf($this->_('Directory [%s] is not radeable'), $args['directory']);
-				break;
 			case self::FILE_ALREADY_EXIST:
 				$message = sprintf($this->_('File [%s] is already exist'), $args['filename']);
 				break;

@@ -21,9 +21,10 @@
 
 namespace NS\IO;
 
-use NS\Object;
+use NS\BaseObject;
+use NS\Exception\IOException;
 
-class DirectoryInfo extends Object
+class DirectoryInfo extends BaseObject
 {
 	private $_entries = [];
 
@@ -92,7 +93,7 @@ class DirectoryInfo extends Object
 	private function initializeEntries()
 	{
 		if (!is_dir($this->Path))
-			throw new IOException(array('code' => DIRECTORY_NOT_FOUND, 'dirname' => $this->Path));
+			throw new IOException(array('code' => IOException::DIRECTORY_NOT_FOUND, 'dirname' => $this->Path));
 
 		$dir = dir($this->Path);
 		while (false !== ($entry = $dir->read())) {

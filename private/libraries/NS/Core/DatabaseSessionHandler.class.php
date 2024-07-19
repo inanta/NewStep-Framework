@@ -99,12 +99,11 @@ class DatabaseSessionHandler extends SingletonObject
 
 	function destroy($sid)
 	{
-		return true;
-
 		$result = $this->_db->query("DELETE FROM " . $this->_db->prefix('sessions') . " WHERE sid = '" . $sid . "'");
 
 		if ($this->_db->affectedRows())
 			return true;
+
 		return false;
 	}
 

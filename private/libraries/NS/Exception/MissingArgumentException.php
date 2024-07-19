@@ -21,10 +21,13 @@
 
 namespace NS\Exception;
 
-final class OverrideMethodException extends Exception
+class MissingArgumentException extends Exception
 {
-	public function __construct($name)
+	function __construct($function, $name)
 	{
-		parent::__construct(sprintf('Method [%s] must be overridden', $name));
+		$this->_httpHeader['code'] = 500;
+		$this->_httpHeader['message'] = 'Internal Server Error';
+
+		parent::__construct($this->_(sprintf('Missing argument [%s] in [%s]', $name, $function)));
 	}
 }

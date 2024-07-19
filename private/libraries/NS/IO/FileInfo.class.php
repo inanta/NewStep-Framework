@@ -21,7 +21,10 @@
 
 namespace NS\IO;
 
-class FileInfo extends Object
+use NS\BaseObject;
+use NS\Exception\IOException;
+
+class FileInfo extends BaseObject
 {
 	function __construct($path)
 	{

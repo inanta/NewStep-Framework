@@ -21,6 +21,9 @@
 
 namespace NS;
 
+use NS\Exception\OverrideMethodException;
+use NS\Exception\MissingArgumentException;
+
 /**
  *Base class for singleton object creation
  *

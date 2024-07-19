@@ -83,16 +83,12 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	 */
 	function connect()
 	{
-		$this->Connection = ($this->Persistent ? @mysqli_pconnect($this->Host, $this->Username, $this->Password) : @mysqli_connect($this->Host, $this->Username, $this->Password));
-
-
-		//var_dump($this->Connection);die();
+		$this->Connection = @mysqli_connect($this->Host, $this->Username, $this->Password);
 
 		if (!$this->Connection != 0) {
 			switch (mysqli_connect_errno()) {
 				case 1045:
 					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_ACCESS, 'user' => $this->Username, 'database' => $this->Database));
-					break;
 				case 2005:
 				default:
 					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_CONNECT, 'host' => $this->Host));
@@ -100,7 +96,7 @@ class MySQLDriver extends Database implements IDatabaseDriver
 		}
 
 		if (!@mysqli_select_db($this->Connection, $this->Database)) {
-			switch (mysqli_errno()) {
+			switch (mysqli_errno($this->Connection)) {
 				case 1044:
 					throw new DatabaseException(array('code' => DatabaseException::UNABLE_TO_ACCESS, 'user' => $this->Username, 'database' => $this->Database));
 				case 1049:
@@ -153,15 +149,6 @@ class MySQLDriver extends Database implements IDatabaseDriver
 	function fieldName($result, $offset)
 	{
 		return @mysqli_fetch_field_direct($result, $offset)->name;
-	}
-
-	/**
-	 *Get columns name that selected in last query
-	 *
-	 */
-	function fieldFlags($result, $offset)
-	{
-		return @mysqli_field_flags($result, $offset);
 	}
 
 	function getColumns($tables)
@@ -240,8 +227,6 @@ class MySQLDriver extends Database implements IDatabaseDriver
 			default:
 				throw new DatabaseException(array('code' => @mysqli_errno($this->Connection), 'message' => @mysqli_error($this->Connection), 'query' => $query));
 		}
-
-		return false;
 	}
 
 	/**

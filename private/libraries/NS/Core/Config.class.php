@@ -34,7 +34,7 @@ class Config extends SingletonObject
 	/**
 	 *Add new configuration on run time
 	 *
-	 *@param string $value Value that will be added to configuration object
+	 *@param array $value Value that will be added to configuration object
 	 */
 	function add($value)
 	{

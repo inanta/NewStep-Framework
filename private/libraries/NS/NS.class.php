@@ -69,11 +69,6 @@ class NS
 				header('X-Powered-By: NewStep Framework' . (NS_DEBUG_MODE ? ' - PHP/' . PHP_VERSION : ''));
 			$_SERVER['PHP_SELF'] .= (preg_match('/index.php$/', $_SERVER['PHP_SELF'])) ? (!empty($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : (!empty($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : '')) : '';
 
-			require (NS_GETTEXT_PATH);
-			if (isset($_GET['locale']))
-				$cf->Application->Locale = $_GET['locale'];
-			T_setlocale(LC_ALL, $cf->Application->Locale);
-
 			define('NS_CACHE', $cf->Application->Cache);
 			define('NS_BASE_URL', $System['Domain'] . (!$cf->Application->URLRewrite ? $_SERVER['SCRIPT_NAME'] : str_replace('/index.php', '', $_SERVER['SCRIPT_NAME'])));
 
@@ -103,9 +98,16 @@ class NS
 			if (isset($router->File)) {
 				foreach ($ex->getTrace() as $trace) {
 					if (isset($trace['file']) && $trace['file'] == $router->File) {
+						$file = $router->File;
+
+						if (!defined('NS_DEBUG_MODE') || !NS_DEBUG_MODE) {
+							$file_parts = explode('/', $router->File);
+							$file = end($file_parts);
+						}
+
 						$ex->Message = $ex->getMessage();
 						$ex->Source = get_class($ex);
-						$ex->File = (!defined('NS_DEBUG_MODE') || !NS_DEBUG_MODE ? end(explode('/', $router->File)) : $router->File);
+						$ex->File = $file;
 						$ex->Line = $trace['line'];
 
 						break;

@@ -69,7 +69,7 @@ abstract class Model extends ActiveRecord
 	 *Get single database record by primary key
 	 *
 	 *@param mixed $id Primary key value
-	 *@throws ActiveRecordException If primary key is not defined in this object 
+	 *@throws \NS\Database\ActiveRecord If primary key is not defined in this object 
 	 *@return array
 	 */
 	function getByPK($id, $with_relation = true)
@@ -83,7 +83,7 @@ abstract class Model extends ActiveRecord
 	 *
 	 *@param mixed $columns Array of column names that will be retrieved
 	 *@param boolean $with_relation Determine if query will be including related table
-	 *@throws ActiveRecordException If primary key is not defined in this object 
+	 *@throws \NS\Database\ActiveRecord If primary key is not defined in this object 
 	 *@return array
 	 */
 	function getFirst($columns = null, $condition = null, $with_relation = true)
@@ -97,7 +97,7 @@ abstract class Model extends ActiveRecord
 	 *
 	 *@param mixed $columns Array of column names that will be retrieved
 	 *@param boolean $with_relation Determine if query will be including related table
-	 *@throws ActiveRecordException If primary key is not defined in this object 
+	 *@throws \NS\Database\ActiveRecord If primary key is not defined in this object 
 	 *@return array
 	 */
 	function getLast($columns = null, $with_relation = true)
