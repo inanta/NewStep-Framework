@@ -95,15 +95,9 @@ abstract class Database extends BaseObject
 			return self::$_driversInstance[$conn];
 
 		switch ($Database[$conn]['Driver']) {
-			case self::DRIVER_POSTGRESQL:
-				return (self::$_driversInstance[$conn] = new Driver\PostgreSQLDriver($Database[$conn]));
-			case self::DRIVER_SQLITE2:
-				return (self::$_driversInstance[$conn] = new Driver\SQLite2Driver($Database[$conn]));
-			case self::DRIVER_SQLITE:
-				return (self::$_driversInstance[$conn] = new Driver\SQLiteDriver($Database[$conn]));
 			case self::DRIVER_MYSQL:
 			default:
-				return (self::$_driversInstance[$conn] = new Driver\MySQLDriver($Database[$conn]));
+				return self::$_driversInstance[$conn] = new Driver\MySQLDriver($Database[$conn]);
 		}
 	}
 }
