@@ -145,15 +145,24 @@ abstract class Model extends ActiveRecord
 		$path = NS_SYSTEM_PATH . '/' . $app_folder . '/models/' . $path . end($class) . '.php';
 
 		if (!is_file($path))
-			throw new IOException(['code' => IOException::FILE_NOT_FOUND, 'filename' => $path]);
+			throw new IOException([
+				'code' => IOException::FILE_NOT_FOUND,
+				'filename' => $path
+			]);
 
 		if (!is_readable($path))
-			throw new IOException(['code' => IOException::FILE_NOT_READABLE, 'filename' => $path]);
+			throw new IOException([
+				'code' => IOException::FILE_NOT_READABLE,
+				'filename' => $path
+			]);
 
 		require_once ($path);
 
 		if (!class_exists($model))
-			throw new ClassException(['code' => ClassException::CLASS_NOT_FOUND, 'class' => $model]);
+			throw new ClassException([
+				'code' => ClassException::CLASS_NOT_FOUND,
+				'class' => $model
+			]);
 
 		return (self::$_modelsInstance[$model]['0'] = new $model);
 	}
