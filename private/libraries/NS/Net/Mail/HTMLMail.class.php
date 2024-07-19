@@ -21,8 +21,6 @@
 
 namespace NS\Net\Mail;
 
-use NS\Object;
-
 /**
  *Send email in HTML format
  *
