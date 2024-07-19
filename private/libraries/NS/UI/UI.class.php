@@ -21,6 +21,7 @@
 
 namespace NS\UI;
 
+use Exception;
 use NS\BaseObject;
 
 /**

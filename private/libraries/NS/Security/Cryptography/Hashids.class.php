@@ -21,8 +21,6 @@
 
 namespace NS\Security\Cryptography;
 
-use NS\Exception\SecurityException;
-
 /**
  *Class encrype / decrype string using simple XOR
  *

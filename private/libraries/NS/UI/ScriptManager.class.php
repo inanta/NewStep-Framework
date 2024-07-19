@@ -33,7 +33,8 @@ use NS\Exception\IOException;
 class ScriptManager extends SingletonObject
 {
 	private $_scripts = [];
-	private $_sources = [], $_externalSources = [];
+	private $_sources = [];
+	private $_externalSources = [];
 
 	function __construct()
 	{

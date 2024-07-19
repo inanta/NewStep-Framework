@@ -33,7 +33,8 @@ use NS\Exception\IOException;
 class StyleManager extends SingletonObject
 {
 	private $_styles = [];
-	private $_sources = [], $_externalSources = [];
+	private $_sources = [];
+	private $_externalSources = [];
 
 	function __construct()
 	{
@@ -43,11 +44,12 @@ class StyleManager extends SingletonObject
 	function addSource($location)
 	{
 		if (!file_exists($location))
-			throw new IOException([
-				'code' => IOException::FILE_NOT_FOUND,
-				'filename' => $location
-			]);
-
+			throw new IOException(
+				[
+					'code' => IOException::FILE_NOT_FOUND,
+					'filename' => $location
+				]
+			);
 
 		$this->_sources[md5($location)] = $location;
 	}
