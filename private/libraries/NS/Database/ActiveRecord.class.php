@@ -385,6 +385,13 @@ class ActiveRecord
 		return $return;
 	}
 
+	function getHasOneQuery($with_relation = true)
+	{
+		$return = $this->_hasOneQuery;
+
+		return $return;
+	}
+
 	/**
 	 *Get all columns name for current active record (relation columns included)
 	 *
@@ -1221,6 +1228,22 @@ class ActiveRecord
 				$return[] = $relation['ar'];
 
 				$this->_getHasOne($relation['ar'], $with_relation, $return);
+			}
+		}
+	}
+
+	private function _getHasOneQuery($parent_relation, $with_relation, &$return)
+	{
+		if (count($parent_relation->_hasOne) > 0) {
+			foreach ($parent_relation->_hasOne as $relation) {
+				if ($with_relation === false || (is_array($with_relation) && !in_array($relation['ar']->Table, $with_relation)))
+					continue;
+
+				if (count($relation['ar']->_hasOneQuery) > 0) {
+					$return[] = $relation['ar']->_hasOneQuery;
+				}
+
+				$this->_getHasOneQuery($relation['ar'], $with_relation, $return);
 			}
 		}
 	}
