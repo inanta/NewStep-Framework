@@ -201,8 +201,6 @@ abstract class RESTController extends BaseObject
 	 */
 	protected function redirectURL($url)
 	{
-		ns_gettext_init('NS');
-
 		header('Location: ' . $url);
 
 		exit;

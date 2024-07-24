@@ -100,12 +100,7 @@ class Exception extends \Exception
 	 */
 	function _($msg)
 	{
-		if (function_exists('ns_gettext_init')) {
-			ns_gettext_init(str_replace('\\', '.', get_class($this)));
-
-			return _($msg);
-		}
-
+		// TODO: Add localization
 		return $msg;
 	}
 

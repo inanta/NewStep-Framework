@@ -163,8 +163,6 @@ abstract class Controller extends BaseObject
 	 */
 	protected function redirectURL($url, $message = null, $header = null, $time = 4)
 	{
-		ns_gettext_init('NS');
-
 		if ($message == null)
 			header('Location: ' . $url);
 		else {
