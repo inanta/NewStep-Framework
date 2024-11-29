@@ -82,7 +82,7 @@ class Router extends SingletonObject
 		if (!is_readable($this->File))
 			throw new PageNotFoundException();
 
-		require ($this->File);
+		require($this->File);
 		if (defined('_NAMESPACE_'))
 			$class = _NAMESPACE_ . '\\' . $class;
 

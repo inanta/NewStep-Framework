@@ -180,7 +180,7 @@ abstract class Controller extends BaseObject
 					'IfNotReload' => _('If the page does not automatically reload, please click here')
 				]);
 
-				include ($ex_path);
+				include($ex_path);
 			} else {
 				echo '<html><head><title>' . $header . '</title><meta charset="utf-8"><meta http-equiv="Refresh" content="' . $time . '; url=' . $url . '" /></head><body><h2>' . $message . '</h2><h3><a href="' . $url . '">' . _('If the page does not automatically reload, please click here') . '</a></h3></body></html>';
 			}
