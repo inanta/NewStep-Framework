@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -35,7 +35,7 @@ define('INATIONSOFT_SITE', 'http://www.inationsoft.com');
 /**
  *Main NewStep framework
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class NS
 {
@@ -51,7 +51,7 @@ class NS
 				]
 			);
 
-			require (NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/NS/ClassMapper.class.php');
+			require(NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/NS/ClassMapper.class.php');
 			ClassMapper::$ClassPath = NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/';
 			spl_autoload_register(
 				[
@@ -60,8 +60,8 @@ class NS
 				]
 			);
 
-			require (NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Event.inc.php');
-			require (NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Constant.inc.php');
+			require(NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Event.inc.php');
+			require(NS_SYSTEM_PATH . '/' . $System['ConfigFolder'] . '/Constant.inc.php');
 			foreach ($Constant as $k => $v)
 				define($k, $v);
 
@@ -190,7 +190,7 @@ class NS
 					'Line' => $error['line']
 				]);
 
-				require ($er_file);
+				require($er_file);
 			} else
 				echo sprintf('PHP Fatal Error<br />NS Error Message: %s<br/>File: %s line %s', $error['message'], $error['file'], $error['line']);
 
@@ -216,7 +216,7 @@ class NS
 	function autoload($classname)
 	{
 		if ($file = ClassMapper::getClassPath($classname))
-			require ($file);
+			require($file);
 	}
 
 	function triggerEvent(&$callback)

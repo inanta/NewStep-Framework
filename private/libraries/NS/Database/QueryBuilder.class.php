@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -25,7 +25,7 @@ use NS\Object;
 /**
  *Handle SQL command creation with object style
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class QueryBuilder extends Object
 {

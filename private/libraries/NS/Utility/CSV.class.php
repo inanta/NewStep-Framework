@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2013 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -28,7 +28,7 @@ use NS\IO\FileWriter;
 /**
  *CSV (Comma-separated values) file processing
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class CSV extends Iterable
 {

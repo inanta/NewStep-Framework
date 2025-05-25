@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2019 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -27,7 +27,7 @@ use NS\Core\Config;
 /**
  *Handle HTTP response
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class Response
 {
@@ -116,7 +116,7 @@ class Response
 			return;
 		}
 
-		include (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/HttpCode.inc.php');
+		include(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/HttpCode.inc.php');
 
 		$this->_statusText = isset($HttpCode[$this->_statusCode]) ? $HttpCode[$this->_statusCode] : 'Unknown Status';
 

@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -27,7 +27,7 @@ use NS\Core\Session;
 /**
  *Handle client request
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  *@property ClientRequest $Post Get value from $_POST variable
  *@property ClientRequest $Get Get value from $_GET variable
  *@property ClientRequest $QueryString Get value from $_GET variable

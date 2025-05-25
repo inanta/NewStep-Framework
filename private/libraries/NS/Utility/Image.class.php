@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2013 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -29,7 +29,7 @@ use NS\Exception\IOException;
 /**
  *Image file processing
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  *@property int $Width Image width
  *@property int $Height Image height
  */

@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -27,7 +27,7 @@ use NS\Core\Config;
 /**
  *Handle function to manipulate number
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class Number extends BaseObject
 {
@@ -240,7 +240,7 @@ class Number extends BaseObject
 	private static function loadLocale()
 	{
 		if (self::$_locale == null) {
-			require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
+			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
 			self::$_locale = $Locale;
 		}
 	}

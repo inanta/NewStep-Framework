@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -26,7 +26,7 @@ use NS\Utility\XML;
 /**
  *Exception class
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class Exception extends \Exception
 {
@@ -167,9 +167,9 @@ class Exception extends \Exception
 		extract($error);
 
 		if (is_file($ex_path = NS_SYSTEM_PATH . '/asset/template/error/' . str_replace('\\', '.', get_class($this)) . '.php'))
-			include ($ex_path);
+			include($ex_path);
 		else if (is_file($ex_path = $this->DefaultMessageTemplate))
-			include ($ex_path);
+			include($ex_path);
 		else {
 			echo sprintf('NS Error Message: %s<br/>Exception: %s<br/>File: %s line %s', $this->Message, $this->Source, $this->File, $this->Line);
 			if (NS_DEBUG_MODE) {

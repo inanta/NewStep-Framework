@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2016 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -24,7 +24,7 @@ namespace NS\Security\Cryptography;
 /**
  *Class encrype / decrype string using simple XOR
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class SimpleXor
 {

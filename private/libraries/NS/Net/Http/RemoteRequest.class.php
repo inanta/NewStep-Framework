@@ -8,7 +8,7 @@ use NS\Exception\NetException;
 /**
  *Handle remote request (cURL) wrapper
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class RemoteRequest extends BaseObject
 {

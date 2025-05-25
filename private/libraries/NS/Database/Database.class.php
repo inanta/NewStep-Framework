@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -28,7 +28,7 @@ use NS\Exception\DatabaseException;
 /**
  *Database connection handler
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 abstract class Database extends BaseObject
 {
@@ -75,7 +75,7 @@ abstract class Database extends BaseObject
 		$Database = [];
 
 		if (is_string($conn) || $conn == null) {
-			require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Database.inc.php');
+			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Database.inc.php');
 
 			if ($conn == null)
 				$conn = key($Database);

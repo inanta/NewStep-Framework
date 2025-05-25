@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -27,7 +27,7 @@ class HttpRequestException extends Exception
 {
 	function __construct($code, $message = null)
 	{
-		@include (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/HttpCode.inc.php');
+		@include(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/HttpCode.inc.php');
 
 		if (isset($HttpCode[$code])) {
 			$this->_httpHeader['code'] = $code;

@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2014 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -26,7 +26,7 @@ use NS\Core\Config;
 /**
  *Handle date and time manipulation
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  *@property int $Date Represent date in integer
  *@property int $Month Represent month  in integer
  *@property int $Year Represent year in 4 digit number
@@ -453,7 +453,7 @@ class DateTime extends BaseObject
 	private static function loadLocale()
 	{
 		if (self::$_locale == null) {
-			require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
+			require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/Locale.inc.php');
 			self::$_locale = $Locale;
 		}
 	}

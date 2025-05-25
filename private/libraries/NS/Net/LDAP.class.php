@@ -8,7 +8,7 @@ use NS\Exception\NetException;
 /**
  *Handle LDAP protocol functionality
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class LDAP extends BaseObject
 {

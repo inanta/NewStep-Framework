@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2014 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -28,7 +28,7 @@ use NS\Exception\ClassException;
 /**
  *Model base class
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 abstract class Model extends ActiveRecord
 {
@@ -156,7 +156,7 @@ abstract class Model extends ActiveRecord
 				'filename' => $path
 			]);
 
-		require_once ($path);
+		require_once($path);
 
 		if (!class_exists($model))
 			throw new ClassException([

@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -32,7 +32,7 @@ use NS\UI\StyleManager;
 /**
  *Controller base class
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  *@property string $Content Content generated from current controller
  *@property Template $View Template object that will be used for rendering in view file
  *@property Session $Session Session object that will handle session manipulation

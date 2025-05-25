@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2014 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -27,7 +27,7 @@ use NS\Exception\ActiveRecordException;
 /**
  *Active record / ORM
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class ActiveRecord
 {
@@ -375,6 +375,14 @@ class ActiveRecord
 		return $this->_findAll($column, null, null, [
 			$this->PrimaryKey => self::ORDER_DESC
 		], 1, null, $with_relation);
+	}
+
+	function getHasMany($with_relation = true)
+	{
+		$return = [];
+		$this->_getHasOne($this, $with_relation, $return);
+
+		return $return;
 	}
 
 	function getHasOne($with_relation = true)
@@ -1216,6 +1224,20 @@ class ActiveRecord
 		$this->_isDataInitialized = false;
 
 		return false;
+	}
+
+	private function _getHasMany($parent_relation, $with_relation, &$return)
+	{
+		if (count($parent_relation->_hasMany) > 0) {
+			foreach ($parent_relation->_hasMany as $relation) {
+				if ($with_relation === false || (is_array($with_relation) && !in_array($relation['ar']->Table, $with_relation)))
+					continue;
+
+				$return[] = $relation['ar'];
+
+				$this->_getHasMany($relation['ar'], $with_relation, $return);
+			}
+		}
 	}
 
 	private function _getHasOne($parent_relation, $with_relation, &$return)

@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -45,4 +45,4 @@ define('NS_PUBLIC_URL', $System['Domain'] . substr($_SERVER['SCRIPT_NAME'], 0, -
 define('NS_CURRENT_URL', $System['Domain'] . $_SERVER['REQUEST_URI'] . $System['Port']);
 
 require(NS_SYSTEM_PATH . '/' . $System['LibrariesFolder'] . '/NS/NS.class.php');
-new NS\NS($System);    
+new NS\NS($System);

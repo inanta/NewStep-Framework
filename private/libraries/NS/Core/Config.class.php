@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2014 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -27,7 +27,7 @@ use NS\Database\ActiveRecord;
 /**
  *Handle configuration values from multiplle file in configuration folder, database table  and run-time configuration
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 class Config extends SingletonObject
 {
@@ -58,7 +58,7 @@ class Config extends SingletonObject
 	 */
 	function load($name)
 	{
-		require (NS_SYSTEM_PATH . '/' . $this->ConfigFolder . '/' . $name . '.inc.php');
+		require(NS_SYSTEM_PATH . '/' . $this->ConfigFolder . '/' . $name . '.inc.php');
 		$this->createProperties(
 			[
 				$name => ${$name}

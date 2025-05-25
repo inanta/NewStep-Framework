@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2024 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -28,7 +28,7 @@ use NS\Exception\IOException;
 /**
  *Handle file upload from client
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  *@property string $Error Error code if upload proccess fail
  *@property string $FileExtension File extension of uploaded file
  *@property string $FileName File name of uploaded file

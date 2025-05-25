@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -27,7 +27,7 @@ use NS\Core\Config;
 /**
  *Detect client's internet browser
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  *@property string $BrowserName Client browser name
  *@property string $Device Client device name (if available)
  *@property string $IsMobile Determine if client access using mobile device
@@ -61,7 +61,7 @@ class ClientBrowser extends SingletonObject
 
 	private function detect()
 	{
-		require (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/UserAgent.inc.php');
+		require(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/UserAgent.inc.php');
 
 		foreach ($UserAgent['OS'] as $k => $v) {
 			if (preg_match('/' . $k . '/i', $_SERVER['HTTP_USER_AGENT'])) {

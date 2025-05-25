@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -28,7 +28,7 @@ use NS\Exception\IOException;
 /**
  *Handle file download processing for client
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  *@property string $ContentType MIME content type for the file
  *@property string $FileExtension File extension
  *@property string $FileName File name for download header
@@ -40,7 +40,7 @@ class Download extends Object
 
 	function startTransfer()
 	{
-		include (NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/MimeType.inc.php');
+		include(NS_SYSTEM_PATH . '/' . Config::getInstance()->ConfigFolder . '/MimeType.inc.php');
 		if (isset($MimeType[$ext]))
 			$this->ContentType = $MimeType[$ext];
 

@@ -1,7 +1,7 @@
 <?php
 /*
 	Copyright (C) 2008 - 2012 Inanta Martsanto
-	Inanta Martsanto (inanta@inationsoft.com)
+	Inanta Martsanto (inanta@8daysproject.com)
 
 	This file is part of NewStep Framework.
 
@@ -27,7 +27,7 @@ use NS\Exception\IOException;
 /**
  *Native PHP templating engine
  *
- *@author Inanta Martsanto <inanta@inationsoft.com>
+ *@author Inanta Martsanto <inanta@8daysproject.com>
  */
 final class PHPTemplate extends Template
 {
@@ -53,7 +53,7 @@ final class PHPTemplate extends Template
 		ob_start();
 		extract($this->_vars, EXTR_REFS);
 
-		include ($resource_name);
+		include($resource_name);
 		$contents = ob_get_contents();
 		ob_end_clean();
 
