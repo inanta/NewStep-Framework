@@ -70,7 +70,7 @@ class ActiveRecord
 	$_numRows = 0, $_rowIterator, $_isDataInitialized = false, $_hasRelation = false, $_dataShadow,
 	$_hasOne = [], $_hasMany = [], $_relationHasMany = [],
 	$_hasOneQuery = [], $_hasManyQuery = [], $_queryWithRelation = false, $_lastQueryFromRelation = false,
-	$_column_aliases = [];
+	$_column_aliases = [], $_whereHas = [];
 
 	/**
 	 *Initialize active record with table name, primary key (if any) and database connection configuration (if any)
@@ -140,6 +140,17 @@ class ActiveRecord
 	}
 
 	/**
+
+	 * Remove whereHas filter
+	 *
+	 * @param string $table Related table name
+	 */
+	function clearWhereHas($table)
+	{
+		unset($this->_whereHas[$table]);
+	}
+
+	/**
 	 *Count query result by condition
 	 *
 	 *@param array|DatabaseFilterCriteria $condition Filter or conditon
@@ -156,13 +167,20 @@ class ActiveRecord
 		}
 
 		if (isset($constructed['join']) && count($constructed['join']) > 0) {
-			$this->LastQuery = 'SELECT COUNT(' . $this->quote(key($this->_columns)) . ') FROM `' . $this->Table . '` ' . ($this->TableAlias != '' ? '`' . $this->TableAlias . '` ' : ' ') . implode(' ', $constructed['join']);
+			$this->LastQuery = 'SELECT COUNT(DISTINCT ' . $this->quote(key($this->_columns)) . ') FROM `' . $this->Table . '` ' . ($this->TableAlias != '' ? '`' . $this->TableAlias . '` ' : ' ') . implode(' ', $constructed['join']);
 		} else {
-			$this->LastQuery = 'SELECT COUNT(' . $this->quote(key($this->_columns)) . ') FROM `' . $this->Table . '`' . ($this->TableAlias != '' ? ' `' . $this->TableAlias . '`' : '');
+			$this->LastQuery = 'SELECT COUNT(DISTINCT ' . $this->quote(key($this->_columns)) . ') FROM `' . $this->Table . '`' . ($this->TableAlias != '' ? ' `' . $this->TableAlias . '`' : '');
 		}
 
-		if ($condition != null || $this->_hasRelation) {
-			$this->LastQuery .= $this->_constructCondition($condition);
+		$condition_expression = $this->_constructCondition($condition);
+		$where_has = $this->_constructWhereHas();
+
+		if ($condition_expression !== '' && $where_has !== '') {
+			$this->LastQuery .= ' WHERE (' . $condition_expression . ' AND ' . $where_has . ')';
+		} else if ($condition_expression !== '') {
+			$this->LastQuery .= ' WHERE ' . $condition_expression;
+		} else if ($where_has !== '') {
+			$this->LastQuery .= ' WHERE ' . $where_has;
 		}
 
 		if (
@@ -220,8 +238,10 @@ class ActiveRecord
 
 		$this->LastQuery = 'DELETE FROM ' . $this->Table;
 
-		if ($condition != null) {
-			$this->LastQuery .= $this->_constructCondition($condition);
+		$condition_expression = $this->_constructCondition($condition);
+
+		if ($condition_expression !== '') {
+			$this->LastQuery .= ' WHERE ' . $condition_expression;
 		}
 
 		if ($limit != null)
@@ -380,7 +400,7 @@ class ActiveRecord
 	function getHasMany($with_relation = true)
 	{
 		$return = [];
-		$this->_getHasOne($this, $with_relation, $return);
+		$this->_getHasMany($this, $with_relation, $return);
 
 		return $return;
 	}
@@ -793,8 +813,12 @@ class ActiveRecord
 
 		$this->LastQuery = "UPDATE " . $this->Table . " SET " . implode(', ', $column);
 
-		if ($condition != null)
-			$this->LastQuery .= $this->_constructCondition($condition);
+		$condition_expression = $this->_constructCondition($condition);
+
+		if ($condition_expression !== '') {
+			$this->LastQuery .= ' WHERE ' . $condition_expression;
+		}
+
 		if ($limit != null)
 			$this->LastQuery .= ' LIMIT ' . $limit;
 
@@ -887,6 +911,17 @@ class ActiveRecord
 			'fk' => $fk,
 			'join_type' => $join_type
 		];
+	}
+
+	/**
+
+	 * Filter records that have at least one related hasMany record
+	 *
+	 * @param string $table Related table name
+	 */
+	function whereHas($table)
+	{
+		$this->_whereHas[$table] = true;
 	}
 
 	/**
@@ -1016,6 +1051,10 @@ class ActiveRecord
 
 	private function _constructCondition($condition)
 	{
+		if ($condition === null) {
+			return '';
+		}
+
 		if (is_array($condition)) {
 			foreach ($condition as $k => $v) {
 				if ($v instanceof DatabaseFilterCriteria) {
@@ -1050,11 +1089,14 @@ class ActiveRecord
 			}
 
 			if (!empty($condition)) {
-				return (' WHERE ' . implode(' AND ', $condition));
+				return implode(' AND ', $condition);
 			}
 		} else if ($condition instanceof DatabaseFilterCriteria) {
-			if ($condition != '')
-				return (' WHERE ' . $condition);
+			$value = (string) $condition;
+
+			if ($value !== '') {
+				return $value;
+			}
 		}
 
 		return '';
@@ -1082,6 +1124,31 @@ class ActiveRecord
 				$this->_constructJoin($relation['ar'], $with_relation, $construct_column, $return);
 			}
 		}
+	}
+
+	private function _constructWhereHas()
+	{
+		$exists = [];
+
+		foreach ($this->_whereHas as $table => $enabled) {
+			if (!$enabled || !isset($this->_hasMany[$table])) {
+				continue;
+			}
+
+			$relation = $this->_hasMany[$table];
+
+			$exists[] =
+				'EXISTS (
+					SELECT 1 FROM `' . $relation['ar']->Table . '`
+                		WHERE ' . $relation['ar']->quote($relation['fk']) . ' = ' . $this->quote($relation['pk']) . '
+            	)';
+		}
+
+		if (count($exists) > 0) {
+			return implode(' AND ', $exists);
+		}
+
+		return '';
 	}
 
 	private function _findAll($column = '*', $condition = null, $group = null, $order = null, $offset = null, $limit = null, $with_relation = true, $distinct = false, $query_from_relation = false)
@@ -1157,8 +1224,15 @@ class ActiveRecord
 			$this->LastQuery = 'SELECT ' . ($distinct ? 'DISTINCT ' : '') . $column . ' FROM `' . $this->Table . '`' . ($this->TableAlias != '' ? ' `' . $this->TableAlias . '`' : '');
 		}
 
-		if ($condition != null || $this->_hasRelation) {
-			$this->LastQuery .= $this->_constructCondition($condition);
+		$condition_expression = $this->_constructCondition($condition);
+		$where_has = $this->_constructWhereHas();
+
+		if ($condition_expression !== '' && $where_has !== '') {
+			$this->LastQuery .= ' WHERE (' . $condition_expression . ' AND ' . $where_has . ')';
+		} else if ($condition_expression !== '') {
+			$this->LastQuery .= ' WHERE ' . $condition_expression;
+		} else if ($where_has !== '') {
+			$this->LastQuery .= ' WHERE ' . $where_has;
 		}
 
 		if (is_array($group)) {
