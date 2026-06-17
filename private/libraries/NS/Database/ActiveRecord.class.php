@@ -914,14 +914,14 @@ class ActiveRecord
 	}
 
 	/**
-
 	 * Filter records that have at least one related hasMany record
 	 *
 	 * @param string $table Related table name
+	 * @param mixed $condition Optional condition array for the related table
 	 */
-	function whereHas($table)
+	function whereHas($table, $condition = null)
 	{
-		$this->_whereHas[$table] = true;
+		$this->_whereHas[$table] = $condition;
 	}
 
 	/**
@@ -1130,18 +1130,36 @@ class ActiveRecord
 	{
 		$exists = [];
 
-		foreach ($this->_whereHas as $table => $enabled) {
-			if (!$enabled || !isset($this->_hasMany[$table])) {
+		foreach ($this->_whereHas as $table => $condition) {
+			if (!isset($this->_hasMany[$table])) {
 				continue;
 			}
 
 			$relation = $this->_hasMany[$table];
 
+			$sub_conditions = [
+				$relation['ar']->quote($relation['fk']) . ' = ' . $this->quote($relation['pk'])
+			];
+
+			if (is_array($condition)) {
+				foreach ($condition as $column => $value) {
+					if (!$relation['ar']->hasColumn($column)) {
+						throw new ActiveRecordException([
+							'code' => ActiveRecordException::COLUMN_NOT_EXIST,
+							'column' => $column,
+							'table' => $relation['ar']->Table
+						]);
+					}
+
+					$sub_conditions[] = $relation['ar']->quote($column) . " = '" . $relation['ar']->Database->escape($value) . "'";
+				}
+			}
+
 			$exists[] =
 				'EXISTS (
 					SELECT 1 FROM `' . $relation['ar']->Table . '`
-                		WHERE ' . $relation['ar']->quote($relation['fk']) . ' = ' . $this->quote($relation['pk']) . '
-            	)';
+					WHERE ' . implode(' AND ', $sub_conditions) . '
+				)';
 		}
 
 		if (count($exists) > 0) {
