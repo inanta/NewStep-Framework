@@ -1153,6 +1153,8 @@ class ActiveRecord
 
 					$sub_conditions[] = $relation['ar']->quote($column) . " = '" . $relation['ar']->Database->escape($value) . "'";
 				}
+			} else if ($condition instanceof DatabaseFilterCriteria) {
+				$sub_conditions[] = '' . $condition;
 			}
 
 			$exists[] =
